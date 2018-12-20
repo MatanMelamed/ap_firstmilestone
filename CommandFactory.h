@@ -12,23 +12,25 @@ using namespace std;
 class CommandFactory {
 
     DataHandler *_dataHandler;
+    VarManager *_varManager;
 
 public:
 
     CommandFactory(DataHandler *dataHandler) {
         this->_dataHandler = dataHandler;
+        this->_varManager = nullptr;
     }
 
     Command *GetCommand(const string &name) {
         Command *target;
         if (name == "var" || name == "Var") {
-            target = new VarCommand();
-        } else if (name == "all commands..") {
-
+            target = new VarCommand(this->_dataHandler, this->_varManager);
         }
-
-        target->SetDataHandler(this->_dataHandler);
         return target;
+    }
+
+    void SetVarManager(VarManager *varManager) {
+        this->_varManager = varManager;
     }
 
 };

@@ -7,11 +7,15 @@
 #include "ExpressionManager.h"
 #include "DataHandler.h"
 #include <fstream>
+#include "Utils.h"
 
 #define NOT_FILE "not a file."
 #define CONSOLE_PREFIX ">> "
 
 using namespace std;
+
+vector<string> *VarSpliter(string line);
+
 
 class Lexer {
 
@@ -26,7 +30,10 @@ class Lexer {
     vector<string> *Split(const string &line) {
         auto *result = new vector<string>;
 
+        result = VarSpliter(line);
+
         // delete all white spaces and separate by commands and ','
+
 
         return result;
     }
@@ -34,7 +41,8 @@ class Lexer {
     void CommandLineLexer() {
         string line;
         cout << CONSOLE_PREFIX;
-        cin >> line;
+        getline(cin, line);
+        //cin >> line;
 
         vector<string> *splitted = Split(line);
 
@@ -55,7 +63,12 @@ class Lexer {
     void FileLexer() {
         if (this->_lines.empty()) {
             LoadFile();
-            this->_lineNumber = (int) this->_lines.size();
+            this->_lineNumber = 0;
+        }
+
+        if ((int) this->_lines.size() >= this->_lineNumber) {
+            this->_target = NOT_FILE;
+            CommandLineLexer();
         }
 
         string line = this->_lines[this->_lineNumber];
@@ -80,10 +93,53 @@ public:
     string Interpret() {
         if (this->_target == NOT_FILE) {
             CommandLineLexer();
-        } else {
+        }
+        else {
             FileLexer();
         }
     }
 };
+
+vector<string> *VarSpliter(string line) {
+    auto *splitted = new vector<string>;
+    int space_index;
+    int index = line.find("var");
+    line = line.substr(index, line.length());
+    string st = line.substr(0, line.find(" "));
+    splitted->push_back(st);
+    space_index = line.find(' ');
+    line = line.substr(space_index, line.length());
+    while (line[0] == ' ') {
+        line = line.substr(1, line.length());
+    }
+    space_index = line.find(' ');
+    st = line.substr(0, space_index);
+    splitted->push_back(st);
+    line = line.substr(space_index, line.length());
+    while (line[0] == ' ' && line[0] != '=') {
+        line = line.substr(1, line.length());
+    }
+    st = line[0];
+    splitted->push_back(st);
+    space_index = line.find(' ');
+    line = line.substr(space_index, line.length());
+    while (line[0] == ' ') {
+        line = line.substr(1, line.length());
+    }
+    st = line.substr(0, 4);
+    if (st == "bind") {
+        splitted->push_back(st);
+        line = line.substr(5, line.length());
+        while (line[0] == ' ') {
+            line.substr(1, line.length());
+        }
+        splitted->push_back(line.substr(5, line.length()));
+    }
+    else {
+        splitted->push_back(line);
+    }
+    return splitted;
+}
+
 
 #endif

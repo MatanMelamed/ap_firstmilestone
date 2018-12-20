@@ -40,6 +40,8 @@ public:
 
     ExpressionManager(DataHandler *dataHandler) : _factory(dataHandler) {
         this->_dataHandler = dataHandler;
+        this->_factory.SetVarManager(&(this->_varManager));
+        _knownExpressions["var"]= nullptr;
     }
 
     Expression *GetNextExpression() {

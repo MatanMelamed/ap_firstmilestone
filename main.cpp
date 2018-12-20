@@ -33,10 +33,8 @@ int main(int args, char **argv) {
 
 
 void Parser(DataHandler *dataHandler, ExpressionManager *expressionManager) {
-
     while (dataHandler->hasMoreStrings()) {
-        Expression *e = expressionManager->GetNextExpression();
-        e->Calculate();
+        expressionManager->GetNextExpression()->Calculate();
     }
 }
 

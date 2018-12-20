@@ -1,6 +1,7 @@
 #ifndef AP_FIRSTMILESTONE_DATAHANDLER_H
 #define AP_FIRSTMILESTONE_DATAHANDLER_H
 
+#define INDEX_OFFSET_ERR "The offset is not valid."
 
 #include <vector>
 
@@ -27,7 +28,19 @@ public:
     }
 
     bool hasMoreStrings() {
-        return this->_lexedLine->size() <= this->index;
+        return this->_lexedLine->size() > this->index;
+    }
+
+    int GetIndex() {
+        return this->index;
+    }
+
+    string GetStringInOffSet(int offset) {
+        int wanted_index = this->index + offset;
+        if (0 <= wanted_index && wanted_index < this->_lexedLine->size()) {
+            return (*this->_lexedLine)[wanted_index];
+        }
+        return INDEX_OFFSET_ERR;
     }
 
     string Advance(int steps) {
@@ -36,4 +49,4 @@ public:
 };
 
 
-#endif //AP_FIRSTMILESTONE_DATAHANDLER_H
+#endif
