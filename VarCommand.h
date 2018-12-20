@@ -6,7 +6,7 @@
 
 #define INIT_VAL 0
 #define ONE 1
-#define STEPS 2
+#define STEPS 3
 
 class VarCommand : public Command {
 

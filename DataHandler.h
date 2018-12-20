@@ -13,7 +13,9 @@ class DataHandler {
 
 public:
 
-    DataHandler() {}
+    DataHandler() {
+        this->_lexedLine = NULL;
+    }
 
     void SetData(vector<string> *newLine) {
         if (this->_lexedLine != nullptr) {
@@ -43,7 +45,7 @@ public:
         return INDEX_OFFSET_ERR;
     }
 
-    string Advance(int steps) {
+    void Advance(int steps) {
         this->index += steps;
     }
 };

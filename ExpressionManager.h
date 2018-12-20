@@ -42,6 +42,11 @@ public:
         this->_dataHandler = dataHandler;
         this->_factory.SetVarManager(&(this->_varManager));
         _knownExpressions["var"]= nullptr;
+        _knownExpressions["="] = nullptr;
+        _knownExpressions["sleep"] = nullptr;
+        _knownExpressions["print"] = nullptr;
+        _knownExpressions["openDataServer"] = nullptr;
+        _knownExpressions["connect"] = nullptr;
     }
 
     Expression *GetNextExpression() {

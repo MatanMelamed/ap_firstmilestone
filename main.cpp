@@ -24,9 +24,21 @@ int main(int args, char **argv) {
 
         // loads dataHandler with new splitted vector of strings
         // either from file or from command line
-        l.Interpret();
+        //l.Interpret();
+        vector<string>* strings = new vector<string>;;
+        strings->push_back("print");
+        strings->push_back("\"Matan&Tom\"");
+        strings->push_back("connect");
+        strings->push_back("127.0.0.1");
+        strings->push_back("5402");
+        strings->push_back("openDataServer");
+        strings->push_back("5400");
+        strings->push_back("3");
+        dataHandler.SetData(strings);
 
         Parser(&dataHandler, &expressionManager);
+        int x =3;
+        break;
     }
 
 };
