@@ -1,0 +1,1 @@
+/usr/bin/c++   -std=c++1y -pthread -g   CMakeFiles/ap-firstmilestone.dir/main.cpp.o CMakeFiles/ap-firstmilestone.dir/tries.cpp.o  -o ap-firstmilestone 
