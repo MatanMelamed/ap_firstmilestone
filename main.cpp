@@ -35,6 +35,15 @@ int main(int args, char **argv) {
         strings->push_back("djKhaled");
         strings->push_back("=");
         strings->push_back("3");
+        strings->push_back("connect");
+        strings->push_back("127.0.0.1");
+        strings->push_back("5402");
+        strings->push_back("openDataServer");
+        strings->push_back("5400");
+        strings->push_back("-10");
+        strings->push_back("gog");
+        strings->push_back("=");
+        strings->push_back("23");
         dataHandler.SetData(strings);
 
         Parser(&dataHandler, &expressionManager);
