@@ -17,9 +17,9 @@ public:
 
     void doCommand() {
         _dataHandler->Advance(1);
-        string port = _dataHandler->GetCurrentString();
+        string ip = _dataHandler->GetCurrentString();
         _dataHandler->Advance(1);
-        string hertz =  _dataHandler->GetCurrentString();
+        string port =  _dataHandler->GetCurrentString();
         _dataHandler->Advance(1);
     }
 };
