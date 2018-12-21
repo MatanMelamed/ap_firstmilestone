@@ -25,9 +25,9 @@ public:
 
     double doCommand() {
         _dataHandler->Advance(1);
-        string sleepTime = _dataHandler->GetCurrentString();
+        Token sleepTime = _dataHandler->GetCurrentToken();
         this_thread::sleep_for(chrono::milliseconds((unsigned int)stoi
-                (sleepTime)));
+                (sleepTime.get_value())));
         _dataHandler->Advance(1);
         return 0;
     }

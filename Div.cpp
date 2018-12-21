@@ -2,6 +2,7 @@
 // Created by tomme on 21/12/2018.
 //
 
+#include <cmath>
 #include "Div.h"
 
 Div::Div(Expression* expression1, Expression* expression2) {
@@ -10,6 +11,8 @@ Div::Div(Expression* expression1, Expression* expression2) {
 }
 
 double Div::Calculate() {
-    return this->exp1->Calculate() / this->exp2->Calculate();
+    double d1 = this->exp1->Calculate();
+    double d2 = this->exp2->Calculate();
+    return  d1/d2 ;
 
 }

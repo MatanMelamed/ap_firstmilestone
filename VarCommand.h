@@ -19,10 +19,10 @@ public:
     double doCommand() override {
 
         this->_dataHandler->Advance(ONE);
-        string newVar = this->_dataHandler->GetCurrentString();
+        Token newVar = this->_dataHandler->GetCurrentToken();
         // if valid
 
-        this->_varManager->SetValue(newVar, INIT_VAL);
+        this->_varManager->SetValue(newVar.get_value(), INIT_VAL);
         this->_dataHandler->Advance(ONE);
         return 0;
     }

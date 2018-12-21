@@ -18,6 +18,14 @@
 #include "Plus.h"
 #include "Minus.h"
 #include "Number.h"
+#include "AndCondtitionalExpression.h"
+#include "OrConditionalExpression.h"
+#include "EqualConditionalExpression.h"
+#include "NotEqualConditionalExpression.h"
+#include "SmallConditionalExpression.h"
+#include "SmallEqualConditionalExpression.h"
+#include "BigConditionalExpression.h"
+#include "BigEqualConditionalExpression.h"
 
 using namespace std;
 
@@ -44,8 +52,8 @@ public:
             if(token.get_type()==NUM || token.get_type() ==STR) {
                 queuE.push(token);
             }
-            if(token.get_type()==MATH) {
-                if(stacK.empty()) {
+            if(token.get_type()==MATH ||token.get_type()==BOOL) {
+                if(stacK.empty() || token.get_value()=="(") {
                     stacK.push(token);
                 } else {
                     Token token1 = stacK.top();
@@ -78,47 +86,52 @@ public:
     }
 
     double CalculateQueue(queue<Token> queuE) {
-        queue<Expression*> ququeExp;
+        stack<Expression*> stackExp;
+        vector<Token>vecToken;
+        Expression* temp;
         while(!queuE.empty()) {
             Token token = queuE.front();
+            vecToken.push_back(token);
+            queuE.pop();
+        }
+        for(int index= 0; index<vecToken.size();index++){
+            Token token = vecToken[index];
             if(token.get_type()== NUM){
-                ququeExp.push(new Number(stod(token.get_value())));
+                stackExp.push(new Number(stod(token.get_value())));
             }
             else {
                 if (token.get_type() == STR) {
                     if (this->varManager->isExist(token.get_value())) {
                         double *number = new double();
                         this->varManager->GetValue(token.get_value(),number);
-                        ququeExp.push(new Number(*number));
+                        stackExp.push(new Number(*number));
                         delete number;
                     } else {
                         throw "no valid variable";
                     }
                 } else {
                     try {
-                        ququeExp.push(getFitExp(token.get_value(),
-                                ququeExp));
+                        stackExp.push(getFitExp(token.get_value(),stackExp));
                     } catch (const out_of_range &e) {
                         cout<<"Something is wrong with the input";
                     }
                 }
             }
-            queuE.pop();
-            if(!queuE.empty()) {
-                token = queuE.front();
-            }
         }
-        Expression* expression = ququeExp.front();
+        Expression* expression = stackExp.top();
+        stackExp.pop();
         double result = expression->Calculate();
         delete expression;
         return result;
 
     }
-    Expression* getFitExp(string operation,queue<Expression*>& ququeExp ){
-        Expression* leftExp = ququeExp.front();
-        ququeExp.pop();
-        Expression* rightExp = ququeExp.front();
-        ququeExp.pop();
+    Expression* getFitExp(string operation,stack<Expression*>& stackExp ){
+        vector<string>c;
+
+        Expression* rightExp = stackExp.top();
+        stackExp.pop();
+        Expression* leftExp = stackExp.top();
+        stackExp.pop();
         if(operation == "+") {
             return new Plus(leftExp,rightExp);
         }
@@ -128,8 +141,32 @@ public:
         if(operation == "*") {
             return new Mult(leftExp,rightExp);
         }
-        if(operation == "+") {
+        if(operation == "/") {
             return new Div(leftExp,rightExp);
+        }
+        if(operation == "&&") {
+            return new AndCondtitionalExpression(leftExp,rightExp);
+        }
+        if(operation == "||") {
+            return new OrConditionalExpression(leftExp,rightExp);
+        }
+        if(operation == "<") {
+            return new SmallConditionalExpression(leftExp,rightExp);
+        }
+        if(operation == "<=") {
+            return new SmallEqualConditionalExpression(leftExp,rightExp);
+        }
+        if(operation == ">") {
+            return new BigConditionalExpression(leftExp,rightExp);
+        }
+        if(operation == ">=") {
+            return new BigEqualConditionalExpression(leftExp,rightExp);
+        }
+        if(operation == "==") {
+            return new EqualConditionalExpression(leftExp,rightExp);
+        }
+        if(operation == "!=") {
+            return new NotEqualConditionalExpression(leftExp,rightExp);
         }
     }
 };
