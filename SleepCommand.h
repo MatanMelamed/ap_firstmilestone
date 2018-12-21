@@ -1,18 +1,11 @@
-//
-// Created by tomme on 20/12/2018.
-//
-
 #ifndef PROJECT_SLEEPCOMMAND_H
 #define PROJECT_SLEEPCOMMAND_H
-
-
-#define ONE 1
-#define TWO 2
 
 #include "Command.h"
 #include <chrono>
 #include <thread>
 #include <stdexcept>
+
 using namespace std;
 
 class SleepCommand: public Command {
@@ -23,11 +16,11 @@ public:
         this->_dataHandler = dataHandler;
     }
     void doCommand() {
-        _dataHandler->Advance(1);
-        string sleepTime = _dataHandler->GetCurrentString();
+        _dataHandler->Advance(ONE);
+        string sleepTime = _dataHandler->GetCurrentToken().get_value();
         this_thread::sleep_for(chrono::milliseconds((unsigned int)stoi
                 (sleepTime)));
-        _dataHandler->Advance(1);
+        _dataHandler->Advance(ONE);
     }
 };
-#endif //PROJECT_SLEEPCOMMAND_H
+#endif

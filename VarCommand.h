@@ -4,10 +4,23 @@
 
 #include "Command.h"
 
+#define INVALID_NAME "var name must not contains numbers."
 #define INIT_VAL 0
 #define ONE 1
 
 class VarCommand : public Command {
+
+
+    bool hasNumber(const string &name) {
+        bool result = false;
+        for (char c : name) {
+            if (48 <= c && c <= 57) {
+                result = true;
+                break;
+            }
+        }
+        return result;
+    }
 
 public:
 
@@ -19,13 +32,16 @@ public:
     void doCommand() override {
 
         this->_dataHandler->Advance(ONE);
-        string newVar = this->_dataHandler->GetCurrentString();
-        // if valid
+        string newVarName = this->_dataHandler->GetCurrentToken().get_value();
 
-        this->_varManager->SetValue(newVar, INIT_VAL);
-        this->_dataHandler->Advance(ONE);
+        if (!hasNumber(newVarName)) {
+            this->_varManager->SetValue(newVarName, INIT_VAL);
+            this->_dataHandler->Advance(ONE);
+        }
+        else {
+            cout << INVALID_NAME;
+        }
     }
-
 };
 
 #endif

@@ -1,15 +1,9 @@
-//
-// Created by tomme on 20/12/2018.
-//
-
 #ifndef PROJECT_OPENDATASERVERCOMMAND_H
 #define PROJECT_OPENDATASERVERCOMMAND_H
 
-#define ONE 1
-
 #include "Command.h"
 
-class OpenDataServerCommand: public Command{
+class OpenDataServerCommand : public Command {
 public:
     OpenDataServerCommand(DataHandler *dataHandler, VarManager *varManager) {
         this->_varManager = varManager;
@@ -17,13 +11,13 @@ public:
     }
 
     void doCommand() {
-        _dataHandler->Advance(1);
-        string port = _dataHandler->GetCurrentString();
-        _dataHandler->Advance(1);
-        string hertz =  _dataHandler->GetCurrentString();
-        _dataHandler->Advance(1);
+        _dataHandler->Advance(ONE);
+        string port = _dataHandler->GetCurrentToken().get_value();
+        _dataHandler->Advance(ONE);
+        string hertz = _dataHandler->GetCurrentToken().get_value();
+        _dataHandler->Advance(ONE);
     }
 };
 
 
-#endif //PROJECT_OPENDATASERVERCOMMAND_H
+#endif

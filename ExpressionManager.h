@@ -10,6 +10,7 @@
 #include "CommandFactory.h"
 #include "CommandExpression.h"
 
+
 using namespace std;
 
 class ExpressionManager {
@@ -36,12 +37,8 @@ class ExpressionManager {
         return target;
     }
 
-public:
-
-    ExpressionManager(DataHandler *dataHandler) : _factory(dataHandler) {
-        this->_dataHandler = dataHandler;
-        this->_factory.SetVarManager(&(this->_varManager));
-        _knownExpressions["var"]= nullptr;
+    void LoadKnownExpressions() {
+        _knownExpressions["var"] = nullptr;
         _knownExpressions["="] = nullptr;
         _knownExpressions["sleep"] = nullptr;
         _knownExpressions["print"] = nullptr;
@@ -49,8 +46,16 @@ public:
         _knownExpressions["connect"] = nullptr;
     }
 
+public:
+
+    ExpressionManager(DataHandler *dataHandler) : _factory(dataHandler) {
+        this->_dataHandler = dataHandler;
+        this->_factory.SetVarManager(&(this->_varManager));
+        LoadKnownExpressions();
+    }
+
     Expression *GetNextExpression() {
-        string exp = _dataHandler->GetCurrentString();
+        string exp = _dataHandler->GetCurrentToken().get_value();
 
         if (!(_knownExpressions.find(exp) == _knownExpressions.end())) {
             // is an expression in map
@@ -59,8 +64,8 @@ public:
 
         else { // is not an expression, may be var - check next
 
-            _dataHandler->Advance(1);
-            exp = _dataHandler->GetCurrentString();
+            _dataHandler->Advance(NEXT);
+            exp = _dataHandler->GetCurrentToken().get_value();
 
             if (!(_knownExpressions.find(exp) == _knownExpressions.end())) {
                 return GetExpression(exp);

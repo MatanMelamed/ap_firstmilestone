@@ -17,37 +17,20 @@ int asd(int args, char **argv) {
 
     DataHandler dataHandler;
     ExpressionManager expressionManager(&dataHandler);
-    string target = args == 2 ? argv[1] : NOT_FILE;
-    Lexer l = Lexer(&dataHandler, &expressionManager, target);
+    string target = args == TWO ? argv[ONE] : NOT_FILE;
+    Lexer l = Lexer(&dataHandler, target);
 
     while (true) {
 
         // loads dataHandler with new splitted vector of strings
         // either from file or from command line
         //l.Interpret();
-        vector<string>* strings = new vector<string>;;
-        strings->push_back("var");
-        strings->push_back("gog");
-        strings->push_back("=");
-        strings->push_back("bind");
-        strings->push_back("john/cena");
-        strings->push_back("var");
-        strings->push_back("djKhaled");
-        strings->push_back("=");
-        strings->push_back("3");
-        strings->push_back("connect");
-        strings->push_back("127.0.0.1");
-        strings->push_back("5402");
-        strings->push_back("openDataServer");
-        strings->push_back("5400");
-        strings->push_back("-10");
-        strings->push_back("gog");
-        strings->push_back("=");
-        strings->push_back("23");
-        dataHandler.SetData(strings);
+        auto *strings = new vector<Token>;;
+        strings->push_back(Token(STR, "var", 0, "", ""));
+        dataHandler.SetNewLine(strings);
 
         Parser(&dataHandler, &expressionManager);
-        int x =3;
+        int x = 3;
         break;
     }
 
@@ -55,7 +38,7 @@ int asd(int args, char **argv) {
 
 
 void Parser(DataHandler *dataHandler, ExpressionManager *expressionManager) {
-    while (dataHandler->hasMoreStrings()) {
+    while (dataHandler->hasMoreTokens()) {
         expressionManager->GetNextExpression()->Calculate();
     }
 }

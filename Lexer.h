@@ -8,32 +8,27 @@
 #include "DataHandler.h"
 #include <fstream>
 #include "Utils.h"
+#include "Tokenizer.h"
 
 #define NOT_FILE "not a file."
 #define CONSOLE_PREFIX ">> "
 
 using namespace std;
 
-vector<string> *VarSpliter(string line);
-
-
 class Lexer {
 
-    ExpressionManager *_expressionManager;
     DataHandler *_dataHandler;
+    Tokenizer _tokenizer;
 
     vector<string> _lines;
     int _lineNumber;
     string _target;
 
 
-    vector<string> *Split(const string &line) {
-        auto *result = new vector<string>;
+    vector<Token> *Split(const string &line) {
+        auto *result = new vector<Token>;
 
-        result = VarSpliter(line);
-
-        // delete all white spaces and separate by commands and ','
-
+        (*result) = _tokenizer.Lex(line);
 
         return result;
     }
@@ -44,9 +39,9 @@ class Lexer {
         getline(cin, line);
         //cin >> line;
 
-        vector<string> *splitted = Split(line);
+        vector<Token> *splitted = Split(line);
 
-        this->_dataHandler->SetData(splitted);
+        this->_dataHandler->SetNewLine(splitted);
     }
 
     void LoadFile() {
@@ -74,19 +69,19 @@ class Lexer {
         string line = this->_lines[this->_lineNumber];
         this->_lineNumber++;
 
-        vector<string> *splitted = Split(line);
+        vector<Token> *splitted = Split(line);
 
-        this->_dataHandler->SetData(splitted);
+        this->_dataHandler->SetNewLine(splitted);
     }
 
 public:
 
-    Lexer() {};
+    Lexer() {
+        this->_tokenizer.SetCommandTokenizer();
+    };
 
-    Lexer(DataHandler *dataHandler, ExpressionManager *expressionManager,
-          const string &target) {
+    Lexer(DataHandler *dataHandler, const string &target) {
         this->_dataHandler = dataHandler;
-        this->_expressionManager = expressionManager;
         this->_target = target;
     }
 
@@ -99,47 +94,6 @@ public:
         }
     }
 };
-
-vector<string> *VarSpliter(string line) {
-    auto *splitted = new vector<string>;
-    int space_index;
-    int index = line.find("var");
-    line = line.substr(index, line.length());
-    string st = line.substr(0, line.find(" "));
-    splitted->push_back(st);
-    space_index = line.find(' ');
-    line = line.substr(space_index, line.length());
-    while (line[0] == ' ') {
-        line = line.substr(1, line.length());
-    }
-    space_index = line.find(' ');
-    st = line.substr(0, space_index);
-    splitted->push_back(st);
-    line = line.substr(space_index, line.length());
-    while (line[0] == ' ' && line[0] != '=') {
-        line = line.substr(1, line.length());
-    }
-    st = line[0];
-    splitted->push_back(st);
-    space_index = line.find(' ');
-    line = line.substr(space_index, line.length());
-    while (line[0] == ' ') {
-        line = line.substr(1, line.length());
-    }
-    st = line.substr(0, 4);
-    if (st == "bind") {
-        splitted->push_back(st);
-        line = line.substr(5, line.length());
-        while (line[0] == ' ') {
-            line.substr(1, line.length());
-        }
-        splitted->push_back(line.substr(5, line.length()));
-    }
-    else {
-        splitted->push_back(line);
-    }
-    return splitted;
-}
 
 
 #endif

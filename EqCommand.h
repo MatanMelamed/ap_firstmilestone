@@ -1,13 +1,7 @@
-//
-// Created by tomme on 20/12/2018.
-//
-
 #ifndef PROJECT_EQCOMMAND_H
 #define PROJECT_EQCOMMAND_H
 
-#define MINUS_ONE -1
-#define ONE 1
-#define TWO 2
+
 
 #include "Command.h"
 using namespace std;
@@ -22,14 +16,14 @@ public:
     void doCommand() override {
 
         this->_dataHandler->Advance(MINUS_ONE);
-        string varName = this->_dataHandler->GetCurrentString();
+        string varName = this->_dataHandler->GetCurrentToken().get_value();
         this->_dataHandler->Advance(TWO);
 
 
-        string value = this->_dataHandler->GetCurrentString();
+        string value = this->_dataHandler->GetCurrentToken().get_value();
         if(value=="bind"){
             this->_dataHandler->Advance(ONE);
-            value = this->_dataHandler->GetCurrentString();
+            value = this->_dataHandler->GetCurrentToken().get_value();
             this->_varManager->SetPath(varName, value);
         } else {
             //change it to get Expression
@@ -40,4 +34,4 @@ public:
     }
 };
 
-#endif //PROJECT_EQCOMMAND_H
+#endif
