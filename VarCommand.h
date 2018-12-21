@@ -6,7 +6,6 @@
 
 #define INIT_VAL 0
 #define ONE 1
-#define STEPS 3
 
 class VarCommand : public Command {
 
@@ -24,7 +23,7 @@ public:
         // if valid
 
         this->_varManager->SetValue(newVar, INIT_VAL);
-        this->_dataHandler->Advance(STEPS);
+        this->_dataHandler->Advance(ONE);
     }
 
 };

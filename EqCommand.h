@@ -25,10 +25,16 @@ public:
         string varName = this->_dataHandler->GetCurrentString();
         this->_dataHandler->Advance(TWO);
 
-        //change it to get Expression
-        string value = this->_dataHandler->GetCurrentString();
 
-        this->_varManager->SetValue(varName,stod(value));
+        string value = this->_dataHandler->GetCurrentString();
+        if(value=="bind"){
+            this->_dataHandler->Advance(ONE);
+            value = this->_dataHandler->GetCurrentString();
+            this->_varManager->SetPath(varName, value);
+        } else {
+            //change it to get Expression
+            this->_varManager->SetValue(varName, stod(value));
+        }
 
         this->_dataHandler->Advance(ONE);
     }
