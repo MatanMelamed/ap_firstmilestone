@@ -16,13 +16,12 @@ public:
         this->_dataHandler = dataHandler;
     }
 
-    double doCommand() {
+    void doCommand() {
         _dataHandler->Advance(1);
         string port = _dataHandler->GetCurrentString();
         _dataHandler->Advance(1);
         string hertz =  _dataHandler->GetCurrentString();
         _dataHandler->Advance(1);
-        return 0;
     }
 };
 

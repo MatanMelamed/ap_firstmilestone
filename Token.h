@@ -8,7 +8,7 @@
 using namespace std;
 
 enum type {
-    CMD = 0,
+    CMD,
     SKIP,
     STR,
     DELIMITER,
@@ -16,18 +16,11 @@ enum type {
     RCB, //Right Curly Brace
     MATH,
     NUM,
-    BOOL
+    BOOL,
+    ERR
 };
 
-map<int, string> type_converter = {{0, "CMD"},
-                                   {1, "SKIP"},
-                                   {2, "STR"},
-                                   {3, "DELIMITER"},
-                                   {4, "LCB"},
-                                   {5, "RCB"},
-                                   {6, "MATH"},
-                                   {7, "NUM"},
-                                   {8, "BOOL"}};
+
 
 class Token {
 
@@ -36,6 +29,17 @@ class Token {
     int _priority;
     string _must_be_after;
     string _cant_be_after;
+
+    map<int, string> type_converter = {{0, "CMD"},
+                                       {1, "SKIP"},
+                                       {2, "STR"},
+                                       {3, "DELIMITER"},
+                                       {4, "LCB"},
+                                       {5, "RCB"},
+                                       {6, "MATH"},
+                                       {7, "NUM"},
+                                       {8, "BOOL"},
+                                       {9, "ERR"}};
 
 public:
 
