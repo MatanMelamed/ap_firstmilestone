@@ -44,7 +44,7 @@ public:
 
     bool GetPath(const string &var, string *path) {
         try {
-            *path = this->_symbolTable[var];
+            *path = this->_pathConnected[var];
             return true;
         } catch (const out_of_range &e) {
             return false;

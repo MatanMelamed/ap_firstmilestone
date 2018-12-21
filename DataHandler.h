@@ -14,7 +14,7 @@ class DataHandler {
 public:
 
     DataHandler() {
-        this->_lexedLine = NULL;
+        this->_lexedLine = nullptr;
     }
 
     void SetData(vector<string> *newLine) {
