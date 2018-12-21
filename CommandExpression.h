@@ -13,8 +13,9 @@ public:
         this->_command = command;
     }
 
-    void Calculate() override {
+    double Calculate() override {
         _command->doCommand();
+        return 0;
     }
 };
 

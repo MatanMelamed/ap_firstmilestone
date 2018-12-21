@@ -4,7 +4,7 @@
 class Expression {
 
 public:
-    virtual void Calculate() = 0;
+    virtual double Calculate() = 0;
 };
 
 #endif

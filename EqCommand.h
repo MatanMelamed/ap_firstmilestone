@@ -19,7 +19,7 @@ public:
         this->_dataHandler = dataHandler;
     }
 
-    void doCommand() override {
+    double doCommand() override {
 
         this->_dataHandler->Advance(MINUS_ONE);
         string varName = this->_dataHandler->GetCurrentString();
@@ -37,6 +37,7 @@ public:
         }
 
         this->_dataHandler->Advance(ONE);
+        return 0;
     }
 };
 

@@ -21,7 +21,8 @@ public:
         this->_varManager = varManager;
         this->_dataHandler = dataHandler;
     }
-    void doCommand() {
+
+    double doCommand() {
         _dataHandler->Advance(1);
         string toPrint = _dataHandler->GetCurrentString();
         if(toPrint[0]=='\"'){
@@ -32,6 +33,7 @@ public:
             //calculte expression
         }
         _dataHandler->Advance(1);
+        return 0;
     }
 };
 

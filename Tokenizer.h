@@ -175,18 +175,18 @@ public:
     void SetShuntingYard() {
         valid_tokens.push_back(Token(MATH, "(", 0, "", ""));
         valid_tokens.push_back(Token(MATH, ")", 0, "", ""));
-        valid_tokens.push_back(Token(MATH, "+", 0, "", ""));
-        valid_tokens.push_back(Token(MATH, "-", 0, "", ""));
-        valid_tokens.push_back(Token(MATH, "/", 0, "", ""));
-        valid_tokens.push_back(Token(MATH, "*", 0, "", ""));
-        valid_tokens.push_back(Token(BOOL, ">", 0, "", ""));
-        valid_tokens.push_back(Token(BOOL, "<", 0, "", ""));
-        valid_tokens.push_back(Token(BOOL, ">=", 0, "", ""));
-        valid_tokens.push_back(Token(BOOL, "<=", 0, "", ""));
-        valid_tokens.push_back(Token(BOOL, "==", 0, "", ""));
-        valid_tokens.push_back(Token(BOOL, "!=", 0, "", ""));
-        valid_tokens.push_back(Token(BOOL, "&&", 0, "", ""));
-        valid_tokens.push_back(Token(BOOL, "||", 0, "", ""));
+        valid_tokens.push_back(Token(MATH, "+", 4, "", ""));
+        valid_tokens.push_back(Token(MATH, "-", 4, "", ""));
+        valid_tokens.push_back(Token(MATH, "/", 5, "", ""));
+        valid_tokens.push_back(Token(MATH, "*", 5, "", ""));
+        valid_tokens.push_back(Token(BOOL, ">", 3, "", ""));
+        valid_tokens.push_back(Token(BOOL, "<", 3, "", ""));
+        valid_tokens.push_back(Token(BOOL, ">=", 3, "", ""));
+        valid_tokens.push_back(Token(BOOL, "<=", 3, "", ""));
+        valid_tokens.push_back(Token(BOOL, "==", 3, "", ""));
+        valid_tokens.push_back(Token(BOOL, "!=", 3, "", ""));
+        valid_tokens.push_back(Token(BOOL, "&&", 2, "", ""));
+        valid_tokens.push_back(Token(BOOL, "||", 1, "", ""));
     }
 };
 

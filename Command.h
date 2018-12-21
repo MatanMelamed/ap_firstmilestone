@@ -16,7 +16,7 @@ public:
     }
 
     //MUST advance handler by parameters used + 1
-    virtual void doCommand() = 0;
+    virtual double doCommand() = 0;
 };
 
 #endif

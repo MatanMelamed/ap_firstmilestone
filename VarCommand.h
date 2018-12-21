@@ -16,7 +16,7 @@ public:
         this->_dataHandler = dataHandler;
     }
 
-    void doCommand() override {
+    double doCommand() override {
 
         this->_dataHandler->Advance(ONE);
         string newVar = this->_dataHandler->GetCurrentString();
@@ -24,6 +24,7 @@ public:
 
         this->_varManager->SetValue(newVar, INIT_VAL);
         this->_dataHandler->Advance(ONE);
+        return 0;
     }
 
 };

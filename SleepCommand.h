@@ -22,12 +22,14 @@ public:
         this->_varManager = varManager;
         this->_dataHandler = dataHandler;
     }
-    void doCommand() {
+
+    double doCommand() {
         _dataHandler->Advance(1);
         string sleepTime = _dataHandler->GetCurrentString();
         this_thread::sleep_for(chrono::milliseconds((unsigned int)stoi
                 (sleepTime)));
         _dataHandler->Advance(1);
+        return 0;
     }
 };
 #endif //PROJECT_SLEEPCOMMAND_H
