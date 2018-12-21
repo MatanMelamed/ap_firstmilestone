@@ -1,2 +1,10 @@
-to add commands and after that, add them to command factory
-Lexer logic in Split method
+
+1. Lexer logic
+
+2. Server + client
+
+3. boolean expression calculation
+
+4. while + if {/}
+
+5. shunting yard + plugin
