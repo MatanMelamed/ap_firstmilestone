@@ -30,7 +30,6 @@
 using namespace std;
 
 class ShuntingYard {
-    map<string,int> priority;
     VarManager* varManager;
     Tokenizer* tokenizer;
 public:
@@ -59,11 +58,12 @@ public:
                     stacK.push(token);
                 } else {
                     if (token.get_value() == ")") {
-                        while (token.get_value() != "(" || stacK.empty()) {
-                            queuE.push(stacK.top());
+                        Token token1 = stacK.top();
+                        while (token1.get_value() != "(" || stacK.empty()) {
+                            queuE.push(token1);
                             stacK.pop();
                             if (!stacK.empty()) {
-                                token = stacK.top();
+                                token1 = stacK.top();
                             } else {
                                 break;
                             }

@@ -179,8 +179,8 @@ public:
         valid_tokens.push_back(Token(MATH, "-", 4, "", ""));
         valid_tokens.push_back(Token(MATH, "/", 5, "", ""));
         valid_tokens.push_back(Token(MATH, "*", 5, "", ""));
-        valid_tokens.push_back(Token(BOOL, ">", 3, "", ""));
-        valid_tokens.push_back(Token(BOOL, "<", 3, "", ""));
+        valid_tokens.push_back(Token(BOOL, ">", 3, "", "="));
+        valid_tokens.push_back(Token(BOOL, "<", 3, "", "="));
         valid_tokens.push_back(Token(BOOL, ">=", 3, "", ""));
         valid_tokens.push_back(Token(BOOL, "<=", 3, "", ""));
         valid_tokens.push_back(Token(BOOL, "==", 3, "", ""));
