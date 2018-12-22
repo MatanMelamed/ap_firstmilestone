@@ -48,7 +48,9 @@ public:
      queue<Token> ShuntingYardAlgorithm(vector<Token>splitPhrase){
         stack<Token> stacK;
         queue<Token> queuE;
+
         for(Token token: splitPhrase) {
+            bool flag = false;
             if(token.get_type()==NUM || token.get_type() ==STR) {
                 queuE.push(token);
             }
@@ -56,24 +58,38 @@ public:
                 if(stacK.empty() || token.get_value()=="(") {
                     stacK.push(token);
                 } else {
-                    Token token1 = stacK.top();
-                    while((token1.getPriority() > token.getPriority()) &&
-                                                            !stacK.empty()) {
-                        queuE.push(token1);
-                        stacK.pop();
-                        if(!stacK.empty()) {
-                            token1 = stacK.top();
-                        } else {
-                            break;
+                    if (token.get_value() == ")") {
+                        while (token.get_value() != "(" || stacK.empty()) {
+                            queuE.push(stacK.top());
+                            stacK.pop();
+                            if (!stacK.empty()) {
+                                token = stacK.top();
+                            } else {
+                                break;
+                            }
                         }
-                    }
-                    if(token.get_value()==")") {
                         stacK.pop();
+                        flag = true;
                     }
-                    else{
-                        stacK.push(token);
-                    }
+                    if (!flag) {
+                        Token token1 = stacK.top();
+                        while ((token1.getPriority() >= token.getPriority()) &&
+                               !stacK.empty()) {
+                            queuE.push(token1);
+                            stacK.pop();
+                            if (!stacK.empty()) {
+                                token1 = stacK.top();
+                            } else {
+                                break;
+                            }
+                        }
+                        if (token.get_value() == ")") {
+                            stacK.pop();
+                        } else {
+                            stacK.push(token);
+                        }
 
+                    }
                 }
             }
         }
