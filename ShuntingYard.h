@@ -142,12 +142,17 @@ public:
 
     }
     Expression* getFitExp(string operation,stack<Expression*>& stackExp ){
-        vector<string>c;
+        Expression* rightExp=nullptr;
+        Expression* leftExp=nullptr;
+        rightExp = stackExp.top();
+        stackExp.pop();
+        if(!stackExp.empty()) {
+            leftExp = stackExp.top();
+            stackExp.pop();
+        } else {
+            leftExp=new Number(0);
+        }
 
-        Expression* rightExp = stackExp.top();
-        stackExp.pop();
-        Expression* leftExp = stackExp.top();
-        stackExp.pop();
         if(operation == "+") {
             return new Plus(leftExp,rightExp);
         }
