@@ -4,7 +4,7 @@
 
 #include <map>
 #include <string>
-
+#include <vector>
 #include "Expression.h"
 
 using namespace std;
@@ -39,7 +39,7 @@ public:
         this->_pathConnected[var] = path;
     }
 
-    bool isPathExist(const string &var) {
+    bool varHasPath(const string &var) {
         return !(this->_pathConnected.find(var) == this->_pathConnected.end());
     }
     string GetPath(const string &var) {
@@ -57,6 +57,19 @@ public:
         } catch (const out_of_range &e) {
             return false;
         }
+    }
+
+    void UpdateAllVars(string path, double value) {
+        for(int i=0; i<this->_pathToVars[path].size();i++){
+            string var = this->_pathToVars[path][i];
+            this->_symbolTable[var] = value;
+        }
+    }
+    bool pathExist(const string &path) {
+        if(!_pathToVars.empty()) {
+            return !(this->_pathToVars.find(path) == this->_pathToVars.end());
+        }
+        return false;
     }
 
 };

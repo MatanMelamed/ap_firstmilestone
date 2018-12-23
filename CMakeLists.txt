@@ -16,4 +16,4 @@ add_executable(ap-firstmilestone main.cpp
         NotEqualConditionalExpression.cpp
         NotEqualConditionalExpression.h AndCondtitionalExpression.cpp AndCondtitionalExpression.h
         OrConditionalExpression.cpp OrConditionalExpression.h WhileCommand.h
-        IfCommand.h ScopeCommand.h DataHandler.h)
+        IfCommand.h ScopeCommand.h DataHandler.h DataReaderServer.cpp DataReaderServer.h)
