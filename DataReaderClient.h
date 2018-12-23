@@ -2,20 +2,19 @@
 // Created by tomme on 23/12/2018.
 //
 
-#ifndef PROJECT_DATAREADERSERVER_H
-#define PROJECT_DATAREADERSERVER_H
+#ifndef PROJECT_DATAREADERCLIENT_H
+#define PROJECT_DATAREADERCLIENT_H
 
 #include "VarManager.h"
 #include <stdio.h>
 #include <stdlib.h>
 
 #include <netdb.h>
+#include <sys/socket.h>
 #include <unistd.h>
 #include <netinet/in.h>
 
 #include <string.h>
-
-#include <sys/socket.h>
 
 //windows
 #define INDICATE_SPD "\"/instrumentation/airspeed-indicator/indicated-speed-kt\""
@@ -68,34 +67,32 @@
 #define THROTTLE "/controls/engines/engine/throttle"
 #define RPM "/engines/engine/rpm"
 */
-
 #define XML_AMOUNT_VARS 23
-#define MILI_SEC 1000
+using namespace std;
 
-class DataReaderServer {
+class DataReaderClient {
 private:
     VarManager* _varManager;
     bool stop;
 public:
     struct MyParams {
+        string ip;
         int port;
-        int time;
-        DataReaderServer *data;
+        DataReaderClient *data;
     };
-    DataReaderServer(VarManager *varManager){
+
+    DataReaderClient(VarManager *varManager){
         this->_varManager = varManager;
         this->stop = false;
     }
-    void OpenServer(int port, int hertz);
+    void ConnectClient(string ip, int port);
 
-    void UpdateSymbleTable(float* buffer);
+    void UpdateSimulator(int sockfd);
 
     static void* thread_func(void* arg);
 
-    void needToStop(){
-        this->stop = true;
-    }
+    void needToStop();
 };
 
 
-#endif //PROJECT_DATAREADERSERVER_H
+#endif //PROJECT_DATAREADERCLIENT_H

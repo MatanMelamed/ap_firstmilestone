@@ -6,6 +6,8 @@
 #include <string>
 #include <vector>
 #include "Expression.h"
+#include <mutex>
+#include <pthread.h>
 
 using namespace std;
 
@@ -14,6 +16,7 @@ class VarManager {
     map<string, double> _symbolTable;
     map<string,string> _pathConnected;
     map<string,vector<string>> _pathToVars;
+    mutex lock;
 
 public:
     VarManager() {};
@@ -60,18 +63,19 @@ public:
     }
 
     void UpdateAllVars(string path, double value) {
+        this->lock.lock();
         for(int i=0; i<this->_pathToVars[path].size();i++){
             string var = this->_pathToVars[path][i];
             this->_symbolTable[var] = value;
         }
+        this->lock.unlock();
     }
-    bool pathExist(string path) {
-        if(this->_pathToVars.count(path)>0){
-            return true;
-        }
-        return false;
+    bool pathExist(const string &path) {
+        return !(this->_pathToVars.find(path) == this->_pathToVars.end());
     }
-
+    vector<string> getVarsOfPath(string path){
+        return this->_pathToVars[path];
+    }
 };
 
 
