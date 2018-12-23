@@ -17,7 +17,7 @@
 
 #include <sys/socket.h>
 
-#define INDICATE_SPEED "/instrumentation/airspeed-indicator/indicated-speed-kt"
+#define INDICATE_SPD "\"/instrumentation/airspeed-indicator/indicated-speed-kt\""
 #define INDICATE_ALT "/instrumentation/altimeter/indicated-altitude-ft"
 #define PRESSURE_ALT "/instrumentation/altimeter/pressure-alt-ft"
 #define PITCH_DEG "/instrumentation/attitude-indicator/indicated-pitch-deg"

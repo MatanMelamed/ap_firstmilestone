@@ -77,7 +77,7 @@ void* DataReaderServer::thread_func(void *arg) {
 }
 
 void DataReaderServer::UpdateSymbleTable(float *buffer) {
-    string pathToAllVars[XML_AMOUNT_VARS] = {INDICATE_SPEED, INDICATE_ALT,
+    string pathToAllVars[XML_AMOUNT_VARS] = {INDICATE_SPD, INDICATE_ALT,
            PRESSURE_ALT, PITCH_DEG,ROLL_DEG, IN_PITCH_DEG,IN_ROLL_DEG,
            ENC_INDICATE_ALT,ENC_PRESURE_ALT, GPS_ALT,
            GPS_GRND_SPD, GPS_VERTICAL_SPD,HEAD_DEG, CMPS_HEAD_DEG,

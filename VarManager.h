@@ -65,9 +65,9 @@ public:
             this->_symbolTable[var] = value;
         }
     }
-    bool pathExist(const string &path) {
-        if(!_pathToVars.empty()) {
-            return !(this->_pathToVars.find(path) == this->_pathToVars.end());
+    bool pathExist(string path) {
+        if(this->_pathToVars.count(path)>0){
+            return true;
         }
         return false;
     }
