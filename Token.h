@@ -9,7 +9,7 @@ using namespace std;
 
 enum TokenType {
     CMD,
-    SKIP,
+    SP,
     STR,
     DELIMITER,
     LCB, //Left Curly Brace
@@ -17,9 +17,10 @@ enum TokenType {
     MATH,
     NUM,
     BOOL,
-    ERR
+    ERR,
+    LRB,
+    RRB,
 };
-
 
 
 class Token {
@@ -30,22 +31,25 @@ class Token {
     string _must_be_after;
     string _cant_be_after;
 
-    map<int, string> type_converter = {{0, "CMD"},
-                                       {1, "SKIP"},
-                                       {2, "STR"},
-                                       {3, "DELIMITER"},
-                                       {4, "LCB"},
-                                       {5, "RCB"},
-                                       {6, "MATH"},
-                                       {7, "NUM"},
-                                       {8, "BOOL"},
-                                       {9, "ERR"}};
+    map<int, string> type_converter = {{0,  "CMD"},
+                                       {1,  "SP"},
+                                       {2,  "STR"},
+                                       {3,  "DELIMITER"},
+                                       {4,  "LCB"},
+                                       {5,  "RCB"},
+                                       {6,  "MATH"},
+                                       {7,  "NUM"},
+                                       {8,  "BOOL"},
+                                       {9,  "ERR"},
+                                       {10, "LRB"},
+                                       {11, "RRB"},};
 
 public:
 
     Token() {}
 
-    Token(TokenType type, const string &value, int priority, string must_kriptonite,
+    Token(TokenType type, const string &value, int priority,
+          string must_kriptonite,
           string cant_kriptonite) {
         this->_type = type;
         this->_value = value;
@@ -70,15 +74,14 @@ public:
         bool result = true;
 
         if (!_must_be_after.empty()) {
+            result = false;
             for (char c : _must_be_after) {
                 if (check == c) {
                     result = true;
                     break;
                 }
             }
-        }
-
-        else if (!_cant_be_after.empty()) {
+        } else if (!_cant_be_after.empty()) {
             result = true;
             for (char c: _cant_be_after) {
                 if (check == c) {
@@ -94,6 +97,7 @@ public:
     void Print() {
         cout << "Type: " << type_converter.at(_type) << " ,";
         cout << "Value: " << _value << " ,";
+        cout << "len: " << _value.length() << ", ";
         cout << "Priority: " << _priority << endl;
     }
 };
