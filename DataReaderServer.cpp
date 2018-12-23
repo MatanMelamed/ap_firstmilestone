@@ -3,6 +3,9 @@
 //
 
 #include "DataReaderServer.h"
+#include <iostream>
+#include <string>
+using namespace std;
 
 void DataReaderServer::OpenServer(int port, int time) {
 
@@ -16,7 +19,7 @@ void DataReaderServer::OpenServer(int port, int time) {
 void* DataReaderServer::thread_func(void *arg) {
     struct MyParams* params = (struct MyParams*) arg;
     int sockfd, newsockfd, portno, clilen;
-    float buffer[1024];
+    char buffer[1024];
     struct sockaddr_in serv_addr, cli_addr;
     int n;
 
@@ -67,7 +70,8 @@ void* DataReaderServer::thread_func(void *arg) {
             perror("ERROR reading from socket");
             exit(1);
         }
-        params->data->UpdateSymbleTable(buffer);
+        vector<double>convertedInfo  = StringToInfo(buffer);
+        params->data->UpdateSymbleTable(convertedInfo);
 
         sleep(params->time / MILI_SEC);
     }
@@ -76,7 +80,25 @@ void* DataReaderServer::thread_func(void *arg) {
     return nullptr;
 }
 
-void DataReaderServer::UpdateSymbleTable(float *buffer) {
+vector<double>DataReaderServer::StringToInfo(string input) {
+
+    vector<double> result;
+    string sum;
+    for (int i = 0; i < input.length(); ++i) {
+        if (input[i] == ',') {
+            result.push_back(stod(sum));
+            sum.clear();
+        } else {
+            sum += input[i];
+        }
+    }
+    if (!sum.empty()) {
+        result.push_back(stod(sum));
+    }
+
+    return result;
+}
+void DataReaderServer::UpdateSymbleTable(vector<double> convertedInfo) {
     string pathToAllVars[XML_AMOUNT_VARS] = {INDICATE_SPD, INDICATE_ALT,
            PRESSURE_ALT, PITCH_DEG,ROLL_DEG, IN_PITCH_DEG,IN_ROLL_DEG,
            ENC_INDICATE_ALT,ENC_PRESURE_ALT, GPS_ALT,
@@ -85,7 +107,7 @@ void DataReaderServer::UpdateSymbleTable(float *buffer) {
                                FLAPS, THROTTLE, RPM};
     for (int i = 0; i <= XML_AMOUNT_VARS; ++i) {
         if(this->_varManager->pathExist(pathToAllVars[i])) {
-            this->_varManager->UpdateAllVars(pathToAllVars[i],buffer[i]);
+            this->_varManager->UpdateAllVars(pathToAllVars[i],convertedInfo[i]);
         }
     }
 }

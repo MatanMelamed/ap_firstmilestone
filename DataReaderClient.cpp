@@ -53,11 +53,8 @@ void* DataReaderClient::thread_func(void *arg) {
     /* Now ask for a message from the user, this message
        * will be read by server
     */
-    while(params->data->stop) {
+    while(!params->data->stop) {
         params->data->UpdateSimulator(sockfd);
-
-
-
     }
 }
 
@@ -69,6 +66,8 @@ void DataReaderClient::UpdateSimulator(int sockfd){
          GPS_GRND_SPD, GPS_VERTICAL_SPD,HEAD_DEG, CMPS_HEAD_DEG,
          SLIP_SKID, TURN_RATE, SPEED_FPM,AILERON, ELEVATOR, RUDDER,
          FLAPS, THROTTLE, RPM};
+
+
     for (int i = 0; i <= XML_AMOUNT_VARS; ++i) {
         if (this->_varManager->pathExist(pathToAllVars[i])) {
             vector<string> vars =
@@ -77,7 +76,7 @@ void DataReaderClient::UpdateSimulator(int sockfd){
                 double* number = new double();
                 string value = to_string(this->_varManager->GetValue(vars[i],
                         number));
-                string set = "set " + pathToAllVars[i] +" "+value;
+                string set = "set " + pathToAllVars[i] +" "+value+"\r\n";
                 int n = write(sockfd, set.c_str(), set.size());
                 if (n < 0) {
                     perror("ERROR writing to socket");
