@@ -4,19 +4,19 @@
 #include "Command.h"
 
 class ConnectCommand : public Command {
-public:
-    ConnectCommand(DataHandler *dataHandler, VarManager *varManager) {
-        this->_varManager = varManager;
-        this->_dataHandler = dataHandler;
-    }
 
-    double doCommand() {
+public:
+    ConnectCommand(DataHandler *_dataHandler, VarManager *_varManager,
+                   ShuntingYard *_expCalculator) : Command(_dataHandler,
+                                                           _varManager,
+                                                           _expCalculator) {}
+
+    void doCommand() override {
         _dataHandler->Advance(1);
         string ip = _dataHandler->GetCurrentToken().get_value();
         _dataHandler->Advance(1);
         string port = _dataHandler->GetCurrentToken().get_value();
         _dataHandler->Advance(1);
-        return 0;
     }
 };
 

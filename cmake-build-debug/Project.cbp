@@ -88,6 +88,27 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/home/user/CLionProjects/ap-firstmilestone/AndCondtitionalExpression.cpp">
+			<Option target="ap-firstmilestone"/>
+		</Unit>
+		<Unit filename="/home/user/CLionProjects/ap-firstmilestone/AndCondtitionalExpression.h">
+			<Option target="ap-firstmilestone"/>
+		</Unit>
+		<Unit filename="/home/user/CLionProjects/ap-firstmilestone/BigConditionalExpression.cpp">
+			<Option target="ap-firstmilestone"/>
+		</Unit>
+		<Unit filename="/home/user/CLionProjects/ap-firstmilestone/BigConditionalExpression.h">
+			<Option target="ap-firstmilestone"/>
+		</Unit>
+		<Unit filename="/home/user/CLionProjects/ap-firstmilestone/BigEqualConditionalExpression.cpp">
+			<Option target="ap-firstmilestone"/>
+		</Unit>
+		<Unit filename="/home/user/CLionProjects/ap-firstmilestone/BigEqualConditionalExpression.h">
+			<Option target="ap-firstmilestone"/>
+		</Unit>
+		<Unit filename="/home/user/CLionProjects/ap-firstmilestone/BinaryExpression.h">
+			<Option target="ap-firstmilestone"/>
+		</Unit>
 		<Unit filename="/home/user/CLionProjects/ap-firstmilestone/Command.h">
 			<Option target="ap-firstmilestone"/>
 		</Unit>
@@ -97,7 +118,28 @@
 		<Unit filename="/home/user/CLionProjects/ap-firstmilestone/CommandFactory.h">
 			<Option target="ap-firstmilestone"/>
 		</Unit>
+		<Unit filename="/home/user/CLionProjects/ap-firstmilestone/ConditionalExpression.h">
+			<Option target="ap-firstmilestone"/>
+		</Unit>
+		<Unit filename="/home/user/CLionProjects/ap-firstmilestone/ConnectCommand.h">
+			<Option target="ap-firstmilestone"/>
+		</Unit>
 		<Unit filename="/home/user/CLionProjects/ap-firstmilestone/DataHandler.h">
+			<Option target="ap-firstmilestone"/>
+		</Unit>
+		<Unit filename="/home/user/CLionProjects/ap-firstmilestone/Div.cpp">
+			<Option target="ap-firstmilestone"/>
+		</Unit>
+		<Unit filename="/home/user/CLionProjects/ap-firstmilestone/Div.h">
+			<Option target="ap-firstmilestone"/>
+		</Unit>
+		<Unit filename="/home/user/CLionProjects/ap-firstmilestone/EqCommand.h">
+			<Option target="ap-firstmilestone"/>
+		</Unit>
+		<Unit filename="/home/user/CLionProjects/ap-firstmilestone/EqualConditionalExpression.cpp">
+			<Option target="ap-firstmilestone"/>
+		</Unit>
+		<Unit filename="/home/user/CLionProjects/ap-firstmilestone/EqualConditionalExpression.h">
 			<Option target="ap-firstmilestone"/>
 		</Unit>
 		<Unit filename="/home/user/CLionProjects/ap-firstmilestone/Expression.h">
@@ -106,7 +148,73 @@
 		<Unit filename="/home/user/CLionProjects/ap-firstmilestone/ExpressionManager.h">
 			<Option target="ap-firstmilestone"/>
 		</Unit>
+		<Unit filename="/home/user/CLionProjects/ap-firstmilestone/IfCommand.h">
+			<Option target="ap-firstmilestone"/>
+		</Unit>
 		<Unit filename="/home/user/CLionProjects/ap-firstmilestone/Lexer.h">
+			<Option target="ap-firstmilestone"/>
+		</Unit>
+		<Unit filename="/home/user/CLionProjects/ap-firstmilestone/Minus.cpp">
+			<Option target="ap-firstmilestone"/>
+		</Unit>
+		<Unit filename="/home/user/CLionProjects/ap-firstmilestone/Minus.h">
+			<Option target="ap-firstmilestone"/>
+		</Unit>
+		<Unit filename="/home/user/CLionProjects/ap-firstmilestone/Mult.cpp">
+			<Option target="ap-firstmilestone"/>
+		</Unit>
+		<Unit filename="/home/user/CLionProjects/ap-firstmilestone/Mult.h">
+			<Option target="ap-firstmilestone"/>
+		</Unit>
+		<Unit filename="/home/user/CLionProjects/ap-firstmilestone/NotEqualConditionalExpression.cpp">
+			<Option target="ap-firstmilestone"/>
+		</Unit>
+		<Unit filename="/home/user/CLionProjects/ap-firstmilestone/NotEqualConditionalExpression.h">
+			<Option target="ap-firstmilestone"/>
+		</Unit>
+		<Unit filename="/home/user/CLionProjects/ap-firstmilestone/Number.cpp">
+			<Option target="ap-firstmilestone"/>
+		</Unit>
+		<Unit filename="/home/user/CLionProjects/ap-firstmilestone/Number.h">
+			<Option target="ap-firstmilestone"/>
+		</Unit>
+		<Unit filename="/home/user/CLionProjects/ap-firstmilestone/OpenDataServerCommand.h">
+			<Option target="ap-firstmilestone"/>
+		</Unit>
+		<Unit filename="/home/user/CLionProjects/ap-firstmilestone/OrConditionalExpression.cpp">
+			<Option target="ap-firstmilestone"/>
+		</Unit>
+		<Unit filename="/home/user/CLionProjects/ap-firstmilestone/OrConditionalExpression.h">
+			<Option target="ap-firstmilestone"/>
+		</Unit>
+		<Unit filename="/home/user/CLionProjects/ap-firstmilestone/Plus.cpp">
+			<Option target="ap-firstmilestone"/>
+		</Unit>
+		<Unit filename="/home/user/CLionProjects/ap-firstmilestone/Plus.h">
+			<Option target="ap-firstmilestone"/>
+		</Unit>
+		<Unit filename="/home/user/CLionProjects/ap-firstmilestone/PrintCommand.h">
+			<Option target="ap-firstmilestone"/>
+		</Unit>
+		<Unit filename="/home/user/CLionProjects/ap-firstmilestone/ScopeCommand.h">
+			<Option target="ap-firstmilestone"/>
+		</Unit>
+		<Unit filename="/home/user/CLionProjects/ap-firstmilestone/ShuntingYard.h">
+			<Option target="ap-firstmilestone"/>
+		</Unit>
+		<Unit filename="/home/user/CLionProjects/ap-firstmilestone/SleepCommand.h">
+			<Option target="ap-firstmilestone"/>
+		</Unit>
+		<Unit filename="/home/user/CLionProjects/ap-firstmilestone/SmallConditionalExpression.cpp">
+			<Option target="ap-firstmilestone"/>
+		</Unit>
+		<Unit filename="/home/user/CLionProjects/ap-firstmilestone/SmallConditionalExpression.h">
+			<Option target="ap-firstmilestone"/>
+		</Unit>
+		<Unit filename="/home/user/CLionProjects/ap-firstmilestone/SmallEqualConditionalExpression.cpp">
+			<Option target="ap-firstmilestone"/>
+		</Unit>
+		<Unit filename="/home/user/CLionProjects/ap-firstmilestone/SmallEqualConditionalExpression.h">
 			<Option target="ap-firstmilestone"/>
 		</Unit>
 		<Unit filename="/home/user/CLionProjects/ap-firstmilestone/Utils.h">
@@ -116,6 +224,9 @@
 			<Option target="ap-firstmilestone"/>
 		</Unit>
 		<Unit filename="/home/user/CLionProjects/ap-firstmilestone/VarManager.h">
+			<Option target="ap-firstmilestone"/>
+		</Unit>
+		<Unit filename="/home/user/CLionProjects/ap-firstmilestone/WhileCommand.h">
 			<Option target="ap-firstmilestone"/>
 		</Unit>
 		<Unit filename="/home/user/CLionProjects/ap-firstmilestone/main.cpp">

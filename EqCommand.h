@@ -1,37 +1,37 @@
 #ifndef PROJECT_EQCOMMAND_H
 #define PROJECT_EQCOMMAND_H
 
-
-
 #include "Command.h"
+
 using namespace std;
 
-class EqCommand: public Command {
+class EqCommand : public Command {
+
 public:
-    EqCommand(DataHandler *dataHandler, VarManager *varManager) {
-        this->_varManager = varManager;
-        this->_dataHandler = dataHandler;
-    }
+    EqCommand(DataHandler *_dataHandler, VarManager *_varManager,
+              ShuntingYard *_expCalculator) : Command(_dataHandler, _varManager,
+                                                      _expCalculator) {}
 
-    double doCommand() override {
+    void doCommand() override {
 
-        this->_dataHandler->Advance(MINUS_ONE);
-        string varName = this->_dataHandler->GetCurrentToken().get_value();
-        this->_dataHandler->Advance(TWO);
+        _dataHandler->Advance(RESET_LINE_INDEX);
+        string varName = _dataHandler->GetCurrentToken().get_value();
 
+        _dataHandler->Advance(TWO);
+        string value = _dataHandler->GetCurrentToken().get_value();
 
-        string value = this->_dataHandler->GetCurrentToken().get_value();
-        if(value=="bind"){
-            this->_dataHandler->Advance(ONE);
+        if (value == "bind") {
+            _dataHandler->Advance(ONE);
             value = this->_dataHandler->GetCurrentToken().get_value();
-            this->_varManager->SetPath(varName, value);
+            _varManager->SetPath(varName, value);
         } else {
             //change it to get Expression
-            this->_varManager->SetValue(varName, stod(value));
+            string expression = _dataHandler->GetCurrentToken().get_value();
+            double newValue = _expCalculator->GetResults(expression);
+            _varManager->SetValue(varName, newValue);
         }
 
         this->_dataHandler->Advance(ONE);
-        return 0;
     }
 };
 

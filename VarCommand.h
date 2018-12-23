@@ -1,4 +1,3 @@
-
 #ifndef PROJECT_VARCOMMAND_H
 #define PROJECT_VARCOMMAND_H
 
@@ -11,12 +10,12 @@ class VarCommand : public Command {
 
 public:
 
-    VarCommand(DataHandler *dataHandler, VarManager *varManager) {
-        this->_varManager = varManager;
-        this->_dataHandler = dataHandler;
-    }
+    VarCommand(DataHandler *_dataHandler, VarManager *_varManager,
+               ShuntingYard *_expCalculator) : Command(_dataHandler,
+                                                       _varManager,
+                                                       _expCalculator) {}
 
-    double doCommand() override {
+    void doCommand() override {
 
         this->_dataHandler->Advance(ONE);
         Token newVar = this->_dataHandler->GetCurrentToken();
@@ -24,7 +23,6 @@ public:
 
         this->_varManager->SetValue(newVar.get_value(), INIT_VAL);
         this->_dataHandler->Advance(ONE);
-        return 0;
     }
 
 };

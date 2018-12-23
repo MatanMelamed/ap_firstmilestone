@@ -165,6 +165,7 @@ public:
         valid_tokens.push_back(Token(DELIMITER, ",", 0, "", ""));
         valid_tokens.push_back(Token(CMD, "=", 0, "", "="));
         valid_tokens.push_back(Token(CMD, "bind", 0, " ", ""));
+        valid_tokens.push_back(Token(CMD, "print", 0, " ", ""));
         valid_tokens.push_back(Token(CMD, "connect", 0, " ", ""));
         valid_tokens.push_back(Token(CMD, "openDataServer", 0, " ", ""));
         valid_tokens.push_back(Token(CMD, "var", 0, " ", ""));

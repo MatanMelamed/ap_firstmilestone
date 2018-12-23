@@ -13,33 +13,36 @@ using namespace std;
 
 void Parser(DataHandler *dataHandler, ExpressionManager *expressionManager);
 
-int asd(int args, char **argv) {
+int main(int args, char **argv) {
 
     DataHandler dataHandler;
     ExpressionManager expressionManager(&dataHandler);
-    string target = args == TWO ? argv[ONE] : NOT_FILE;
+    //string target = args == TWO ? argv[ONE] : NOT_FILE;
+    string target = "run.txt";
     Lexer l = Lexer(&dataHandler, target);
 
     while (true) {
-
         // loads dataHandler with new splitted vector of strings
         // either from file or from command line
-        //l.Interpret();
-        auto *strings = new vector<Token>;;
-        strings->push_back(Token(STR, "var", 0, "", ""));
-        dataHandler.SetNewLine(strings);
-
+        l.Interpret();
         Parser(&dataHandler, &expressionManager);
-        int x = 3;
-        break;
     }
-
 };
 
 
 void Parser(DataHandler *dataHandler, ExpressionManager *expressionManager) {
-    while (dataHandler->hasMoreTokens()) {
-        expressionManager->GetNextExpression()->Calculate();
+
+    if (dataHandler->GetState() != READ) {
+        while (dataHandler->hasMoreTokens()) {
+            Expression *e = expressionManager->GetNextExpression();
+            /**
+             * expression might be invalid, dont break the code,
+             * just ignore and a message would be printed
+             */
+            if (e != nullptr) {
+                e->Calculate();
+            }
+        }
     }
 }
 

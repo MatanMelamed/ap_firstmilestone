@@ -1,7 +1,3 @@
-//
-// Created by tomme on 20/12/2018.
-//
-
 #ifndef PROJECT_SLEEPCOMMAND_H
 #define PROJECT_SLEEPCOMMAND_H
 
@@ -13,23 +9,23 @@
 #include <chrono>
 #include <thread>
 #include <stdexcept>
+
 using namespace std;
 
 class SleepCommand: public Command {
 
 public:
-    SleepCommand(DataHandler *dataHandler, VarManager *varManager) {
-        this->_varManager = varManager;
-        this->_dataHandler = dataHandler;
-    }
+    SleepCommand(DataHandler *_dataHandler, VarManager *_varManager,
+                 ShuntingYard *_expCalculator) : Command(_dataHandler,
+                                                         _varManager,
+                                                         _expCalculator) {}
 
-    double doCommand() {
+    void doCommand() override {
         _dataHandler->Advance(1);
         Token sleepTime = _dataHandler->GetCurrentToken();
         this_thread::sleep_for(chrono::milliseconds((unsigned int)stoi
                 (sleepTime.get_value())));
         _dataHandler->Advance(1);
-        return 0;
     }
 };
-#endif //PROJECT_SLEEPCOMMAND_H
+#endif

@@ -7,7 +7,7 @@
 
 using namespace std;
 
-enum type {
+enum TokenType {
     CMD,
     SKIP,
     STR,
@@ -24,7 +24,7 @@ enum type {
 
 class Token {
 
-    type _type;
+    TokenType _type;
     string _value;
     int _priority;
     string _must_be_after;
@@ -45,7 +45,7 @@ public:
 
     Token() {}
 
-    Token(type type, const string &value, int priority, string must_kriptonite,
+    Token(TokenType type, const string &value, int priority, string must_kriptonite,
           string cant_kriptonite) {
         this->_type = type;
         this->_value = value;
@@ -54,7 +54,7 @@ public:
         this->_cant_be_after = cant_kriptonite;
     }
 
-    type get_type() const {
+    TokenType get_type() const {
         return _type;
     }
 

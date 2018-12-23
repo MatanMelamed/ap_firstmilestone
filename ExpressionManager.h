@@ -44,6 +44,8 @@ class ExpressionManager {
         _knownExpressions["print"] = nullptr;
         _knownExpressions["openDataServer"] = nullptr;
         _knownExpressions["connect"] = nullptr;
+        _knownExpressions["if"] = nullptr;
+        _knownExpressions["while"] = nullptr;
     }
 
 public:
@@ -60,21 +62,22 @@ public:
         if (!(_knownExpressions.find(exp) == _knownExpressions.end())) {
             // is an expression in map
             return GetExpression(exp);
-        }
-
-        else { // is not an expression, may be var - check next
+        } else { // is not an expression, may be var - check next
 
             _dataHandler->Advance(NEXT);
-            exp = _dataHandler->GetCurrentToken().get_value();
+            if (_dataHandler->hasMoreTokens()) {
+                exp = _dataHandler->GetCurrentToken().get_value();
 
-            if (!(_knownExpressions.find(exp) == _knownExpressions.end())) {
-                return GetExpression(exp);
-            }
+                if (!(_knownExpressions.find(exp) == _knownExpressions.end())) {
+                    return GetExpression(exp);
+                }
 
-            else {
-                // syntax error
             }
         }
+
+        cout << "Syntax error! " << exp << " line: "
+             << _dataHandler->GetCurrentLineIndex() << endl;
+        return nullptr;
 
     }
 

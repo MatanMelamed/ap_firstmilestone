@@ -10,7 +10,7 @@ using namespace std;
 
 void analyze(string s);
 
-int main() {
+int asd() {
 
     string s;// = "var six=6 + seven ";
 
