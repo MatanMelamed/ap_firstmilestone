@@ -13,6 +13,7 @@ class VarManager {
 
     map<string, double> _symbolTable;
     map<string,string> _pathConnected;
+    map<string,vector<string>> _pathToVars;
 
 public:
     VarManager() {};
@@ -38,18 +39,26 @@ public:
         this->_pathConnected[var] = path;
     }
 
-    bool pathExist(const string &var) {
+    bool isPathExist(const string &var) {
         return !(this->_pathConnected.find(var) == this->_pathConnected.end());
     }
+    string GetPath(const string &var) {
+            string path = this->_pathConnected[var];
+            return path;
+    }
+    void SetPathAndVar(const string &path, string var) {
+        this->_pathToVars[path].push_back(var);
+    }
 
-    bool GetPath(const string &var, string *path) {
+    bool GetVarByPath(const string &path, string *var) {
         try {
-            *path = this->_pathConnected[var];
+            *var = this->_pathToVars[path][0];
             return true;
         } catch (const out_of_range &e) {
             return false;
         }
     }
+
 };
 
 

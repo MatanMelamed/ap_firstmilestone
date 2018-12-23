@@ -23,7 +23,20 @@ public:
         if (value == "bind") {
             _dataHandler->Advance(ONE);
             value = this->_dataHandler->GetCurrentToken().get_value();
-            _varManager->SetPath(varName, value);
+            if(value[0]=='\"'){
+                _varManager->SetPath(varName, value);
+                _varManager->SetPathAndVar(value,varName);
+            }
+            else{
+                if(_varManager->isExist(value)){
+                    string path = _varManager->GetPath(value);
+                    _varManager->SetPath(varName, path);
+                    _varManager->SetPathAndVar(path,varName);
+
+                } else{
+                    /// what to do?
+                }
+            }
         } else {
             //change it to get Expression
             string expression = _dataHandler->GetCurrentToken().get_value();
