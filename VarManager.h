@@ -19,7 +19,8 @@ class VarManager {
     mutex lock;
 
 public:
-    VarManager() {};
+    VarManager() {
+    };
 
     void SetValue(const string &var, double value) {
         this->_symbolTable[var] = value;
@@ -39,7 +40,9 @@ public:
     }
 
     void SetPath(const string &var, string path) {
+        this->lock.lock();
         this->_pathConnected[var] = path;
+        this->lock.unlock();
     }
 
     bool varHasPath(const string &var) {
@@ -49,8 +52,16 @@ public:
             string path = this->_pathConnected[var];
             return path;
     }
-    void SetPathAndVar(const string &path, string var) {
-        this->_pathToVars[path].push_back(var);
+    void SetPathAndVar(string path, string var) {
+        if(this->_pathToVars.count(path)>0) {
+            this->_pathToVars[path].push_back(var);
+        } else {
+            string vaR = var;
+            string patH = path;
+            vector<string> vector1;
+            vector1.push_back(vaR);
+            this->_pathToVars[patH] = vector1;
+        }
     }
 
     bool GetVarByPath(const string &path, string *var) {
@@ -60,6 +71,7 @@ public:
         } catch (const out_of_range &e) {
             return false;
         }
+
     }
 
     void UpdateAllVars(string path, double value) {
