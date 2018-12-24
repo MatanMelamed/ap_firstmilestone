@@ -3,7 +3,6 @@
 
 #include "Command.h"
 #include <list>
-#include "ExpressionManager.h"
 
 class ScopeCommand : public Command {
 

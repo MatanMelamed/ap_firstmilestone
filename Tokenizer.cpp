@@ -68,7 +68,7 @@ void Tokenizer::DoTokenSpecification(PacketAnalyzer &pa, const Token &t) {
             pa.index++;
         }
         pa.new_tokens.emplace_back(STR, pa.current_value, 0, "", "");
-        pa.current_value.empty();
+        pa.current_value.clear();
         return;
     } else if ((t.get_type() != DELIMITER || _mergeExpressions) &&
                (t.get_type() != SP)) {
@@ -157,7 +157,8 @@ vector<Token> Tokenizer::MergeExpressionToStrings(PacketAnalyzer &pa) {
 
         // for tokens that do not need to be merged.
         if (currentToken->get_type() == CMD ||
-            currentToken->get_type() == LCB) {
+            currentToken->get_type() == LCB ||
+            currentToken->get_type() == RCB) {
             PushSumAsToken(afterMerge, tokenSum);
             afterMerge.push_back(*currentToken);
             continue;

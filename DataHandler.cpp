@@ -108,10 +108,10 @@ void DataHandler::HandleREADState() {
     } else if (hasTokenTypeInCurrentLine(RCB)) {
         if (_openBrackets == START_BRACkETS_NUM) {
             // there are 0 open scopes
-            InvalidLineHandle();
+            InvalidLineHandle(BRACKETS_ERR);
         } else if ((_all_lines[_currentLineIndex])->size() > 1) {
             // line has } and more than one token.
-            InvalidLineHandle();
+            InvalidLineHandle(BRACKETS_ERR);
         } else {  // there is at least one open scope and valid RCB
             AddCloseBracket(_currentLineIndex);
             if (_openBrackets == START_BRACkETS_NUM) {
@@ -122,9 +122,10 @@ void DataHandler::HandleREADState() {
 }
 
 void DataHandler::InvalidLineHandle(string extra) {
-    cout << INVALID_LINE_ERR << extra << endl;
+    cout << INVALID_LINE_ERR << endl << extra << endl;
     _all_lines.erase(_all_lines.end() - 1); // delete last line
     ResetScopeControl();
+    TriggerSkipLine();
 }
 
 void DataHandler::ResetScopeControl() {
@@ -194,7 +195,7 @@ int DataHandler::GetStartOfScope(int closeLine) {
     return openLine;
 }
 
-bool DataHandler::ShouldSkipLine(){
+bool DataHandler::ShouldSkipLine() {
     return _skipLine;
 }
 

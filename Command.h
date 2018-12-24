@@ -24,8 +24,7 @@ public:
     }
 
     void SyntaxErrorHandler(const Token &t) {
-        cout << STNX_ERR<<t.get_value();
-        _dataHandler->InvalidLineHandle();
+        _dataHandler->InvalidLineHandle(STNX_ERR + t.get_value());
     }
 
     //MUST advance handler by parameters used + 1

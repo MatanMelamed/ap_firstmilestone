@@ -26,6 +26,8 @@ public:
     bool IsInSpecialNames(const string &name);
 
     bool IsLegal(const string &varName) {
+        bool r =!IsExist(varName);
+        bool l=!IsInSpecialNames(varName);
         return !IsExist(varName) && !IsInSpecialNames(varName);
     }
 

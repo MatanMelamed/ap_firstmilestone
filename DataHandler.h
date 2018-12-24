@@ -5,6 +5,7 @@
 #include <stack>
 #include "Tokenizer.h"
 
+#define BRACKETS_ERR "Brackets error."
 #define NEXT 1
 #define START_BRACkETS_NUM 0
 #define RESET_TOKEN_INDEX 0
@@ -126,6 +127,7 @@ public:
 
     void GoToNextLine();
 
+    // print error message with line number and optionally the extra string.
     void InvalidLineHandle(string extra);
 
     /**

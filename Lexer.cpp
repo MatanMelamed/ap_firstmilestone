@@ -41,6 +41,8 @@ void Lexer::FileLexer() {
     // there has been an error with the code inside the file.
     if (_dataHandler->ShouldSkipLine()) {
         _target = NOT_FILE;
+        CommandLineLexer();
+        return;
     }
 
     if ((int) _lines.size() <= _lineNumber) {

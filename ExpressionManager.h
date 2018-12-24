@@ -7,9 +7,9 @@
 #include "Expression.h"
 #include "VarManager.h"
 #include "DataHandler.h"
+#include "CommandFactory.h"
 
 #include "CommandExpression.h"
-#include "CommandFactory.h"
 
 #define UNKNOWN_CMD ", unknown command: "
 
