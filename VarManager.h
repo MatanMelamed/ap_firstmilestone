@@ -43,7 +43,7 @@ public:
     bool GetValue(const string &var, double *target);
 
     void SetPath(const string &var, string path) {
-        this->_pathConnected[var] = std::move(path);
+        this->_pathConnected[var] = path;
     }
 
     bool varHasPath(const string &var) {
@@ -64,6 +64,7 @@ public:
     void UpdateAllVars(string path, double value);
 
     bool pathExist(const string &path) {
+        bool r = !(this->_pathToVars.find(path) == this->_pathToVars.end());
         return !(this->_pathToVars.find(path) == this->_pathToVars.end());
     }
 

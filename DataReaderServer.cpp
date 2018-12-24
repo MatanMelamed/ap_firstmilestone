@@ -2,36 +2,39 @@
 #include <iostream>
 #include <string>
 
+#define NUM_OF_PATHS 23
+
 using namespace std;
 
 void DataReaderServer::OpenServer(int port, int time) {
+    cout << "Please wait until simulator is opened";
     int serverSocket = this->CreateServerSocket(port);
+    cin.get();
     struct MyParams *params = new MyParams();
     params->port = port;
     params->hertz = time;
     params->serverSocket = serverSocket;
     params->data = this;
     pthread_t trid;
-    cout << "Please wait until simulator is opened";
-    cin.get();
     pthread_create(&trid, nullptr, DataReaderServer::thread_func, params);
 }
 
 void *DataReaderServer::thread_func(void *arg) {
     struct MyParams *params = (struct MyParams *) arg;
     int n;
-    char buffer[1024];
+    char buffer[256];
 
     /* If connection is established then start communicating */
     while (!params->data->stop) {
 
-        bzero(buffer, 1024);
-        n = read(params->serverSocket, buffer, 1023);
+        bzero(buffer, 256);
+        n = read(params->serverSocket, buffer, 255);
 
         if (n < 0) {
             perror("ERROR reading from socket");
             exit(1);
         }
+
         vector<double> convertedInfo = StringToInfo(buffer);
         params->data->UpdateSymbleTable(convertedInfo);
 
@@ -46,14 +49,18 @@ vector<double> DataReaderServer::StringToInfo(string input) {
 
     vector<double> result;
     string sum;
-    for (int i = 0; i < input.length(); ++i) {
-        if (input[i] == ',') {
+    int index = 0;
+
+    while (result.size() == NUM_OF_PATHS) {
+        if (input[index] == ',' || input[index] == '\n') {
             result.push_back(stod(sum));
             sum.clear();
         } else {
-            sum += input[i];
+            sum += input[index];
         }
+        index++;
     }
+
     if (!sum.empty()) {
         result.push_back(stod(sum));
     }

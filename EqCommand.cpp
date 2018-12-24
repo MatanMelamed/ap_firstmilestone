@@ -10,7 +10,7 @@ void EqCommand::doCommand() {
     if (value == "bind") {
         _dataHandler->Advance(ONE);
         value = this->_dataHandler->GetCurrentToken().get_value();
-        if (value[0] == '\'') {
+        if (value[0] == '\"') {
             _varManager->SetPath(varName, value);
             _varManager->SetPathAndVar(value, varName);
         } else {

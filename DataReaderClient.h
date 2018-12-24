@@ -38,11 +38,10 @@
 #define ELEVATOR "\"/controls/flight/elevator\""
 #define RUDDER "\"/controls/flight/rudder\""
 #define FLAPS "\"/controls/flight/flaps\""
-#define THROTTLE "\"/controls/engines/engine/throttle\""
+#define THROTTLE "\"/controls/engines/current-engine/throttle\""
 #define RPM "\"/engines/engine/rpm\""
 
-//linux
-/*
+/*//linux
 #define INDICATE_SPD "/instrumentation/airspeed-indicator/indicated-speed-kt"
 #define INDICATE_ALT "/instrumentation/altimeter/indicated-altitude-ft"
 #define PRESSURE_ALT "/instrumentation/altimeter/pressure-alt-ft"
@@ -64,9 +63,8 @@
 #define ELEVATOR "/controls/flight/elevator"
 #define RUDDER "/controls/flight/rudder"
 #define FLAPS "/controls/flight/flaps"
-#define THROTTLE "/controls/engines/engine/throttle"
-#define RPM "/engines/engine/rpm"
-*/
+#define THROTTLE "/controls/engines/current-engine/throttle"
+#define RPM "/engines/engine/rpm"*/
 #define XML_AMOUNT_VARS 23
 using namespace std;
 
