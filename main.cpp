@@ -32,7 +32,7 @@ int asd(int args, char **argv) {
 
 void Parser(DataHandler *dataHandler, ExpressionManager *expressionManager) {
 
-    if (dataHandler->GetState() != READ) {
+    if (dataHandler->GetState() != READ && !dataHandler->ShouldSkipLine()) {
         while (dataHandler->hasMoreTokens()) {
             Expression *e = expressionManager->GetNextExpression();
             /**
