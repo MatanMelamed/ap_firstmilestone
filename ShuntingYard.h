@@ -44,7 +44,10 @@ public:
     }
 
     double GetResults(string phrase) {
-        return GetExpression(phrase)->Calculate();
+        Expression *e = GetExpression(phrase);
+        double result = e->Calculate();
+        delete e;
+        return result;
     }
 
     Expression *GetExpression(string phrase) {

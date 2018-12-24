@@ -219,7 +219,7 @@ void DataHandler::EmptyBrackets() {
     if (!_brackets.empty()) {
         vector<BracketPair *>::iterator it;
         // delete all objects from the end to the first, without the first.
-        for (it = _brackets.end() - 1; it != _brackets.begin(); it++) {
+        for (it = _brackets.end() - 1; it != _brackets.begin(); it--) {
             if(*it !=nullptr){
                 delete *it;
             }

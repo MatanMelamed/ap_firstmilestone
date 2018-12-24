@@ -12,7 +12,10 @@ protected:
 public:
     double Calculate() override = 0;
 
-    ~BinaryExpression() override {};
+    ~BinaryExpression() override {
+        delete exp1;
+        delete exp2;
+    };
 };
 
 #endif

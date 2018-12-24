@@ -17,6 +17,9 @@ void ScopeCommand::doCommand() {
 
 void ScopeCommand::SetScope() {
     this->_start_line = _dataHandler->GetCurrentLineIndex();
+    if (this->_condition != nullptr) {
+        delete this->_condition;
+    }
     this->_condition = _expCalculator->GetExpression(
             _dataHandler->GetTokenInOffSet(ONE).get_value());
 }
