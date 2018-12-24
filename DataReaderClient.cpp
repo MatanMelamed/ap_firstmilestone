@@ -76,8 +76,8 @@ void DataReaderClient::UpdateSimulator(int sockfd){
                 double* number = new double();
                 string value = to_string(this->_varManager->GetValue(vars[i],
                         number));
-                string tmp = pathToAllVars[i].substr(0,pathToAllVars->length()-1);
-                tmp = pathToAllVars[i].substr(1,pathToAllVars->length());
+                string tmp = pathToAllVars[i].substr(1,pathToAllVars->length());
+                tmp = tmp.substr(0,tmp.length()-1);
                 string set = "set " +  tmp +" "+value+"\r\n";
                 int n = write(sockfd, set.c_str(), set.size());
                 if (n < 0) {
