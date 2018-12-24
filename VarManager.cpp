@@ -21,20 +21,25 @@ bool VarManager::GetValue(const string &var, double *target) {
     }
 }
 
-bool VarManager::GetVarByPath(const string &path, string *var) {
-    try {
-        *var = this->_pathToVars[path][0];
-        return true;
-    } catch (const out_of_range &e) {
-        return false;
-    }
+vector<string> VarManager:: GetVarsByPath(string path) {
+    return this->_pathToVars[path];
 }
 
 void VarManager::UpdateAllVars(string path, double value) {
-    this->lock.lock();
-    for (int i = 0; i < this->_pathToVars[path].size(); i++) {
-        string var = this->_pathToVars[path][i];
-        this->_symbolTable[var] = value;
+    vector<string> vars = GetVarsByPath(path);
+    lock.lock();
+    for(string var: vars) {
+        this->SetValue(var,value);
     }
-    this->lock.unlock();
+    lock.unlock();
+}
+bool VarManager::hasBindVars(string var) {
+    return !(this->_varToVars.find(var) == this->_varToVars.end());
+}
+
+vector<string> VarManager::getBindedVars(string var) {
+    return  this->_varToVars[var];
+}
+void VarManager::SetBindBetweenVars(string sourceVar,string targetVar){
+    this->_varToVars[sourceVar].push_back(targetVar);
 }

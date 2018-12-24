@@ -14,20 +14,29 @@ void EqCommand::doCommand() {
             _varManager->SetPath(varName, value);
             _varManager->SetPathAndVar(value, varName);
         } else {
-            if (_varManager->IsExist(value)) {
+            double *number = new double();
+            if (_varManager->GetValue(value, number)) {
                 string path = _varManager->GetPath(value);
-                _varManager->SetPath(varName, path);
-                _varManager->SetPathAndVar(path, varName);
+                _varManager->SetValue(varName, *number);
+                _varManager->SetBindBetweenVars(value, varName);
 
             } else {
                 // get '=' token.
                 SyntaxErrorHandler(_dataHandler->GetTokenInOffSet(-2));
             }
+            delete number;
         }
     } else {
         string expression = _dataHandler->GetCurrentToken().get_value();
         double newValue = _expCalculator->GetResults(expression);
         _varManager->SetValue(varName, newValue);
+        if (this->_varManager->hasBindVars(varName)) {
+            vector<string> varsConected = this->_varManager->getBindedVars(
+                    varName);
+            for (string var: varsConected) {
+                this->_varManager->SetValue(var, newValue);
+            }
+        }
     }
 
     this->_dataHandler->Advance(ONE);

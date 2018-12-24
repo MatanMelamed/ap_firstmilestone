@@ -17,6 +17,7 @@ class VarManager {
     map<string, double> _symbolTable;
     map<string, string> _pathConnected;
     map<string, vector<string>> _pathToVars;
+    map<string,vector<string>> _varToVars;
     mutex lock;
     vector<string> _specialNames;
 
@@ -68,7 +69,11 @@ public:
 
     vector<string> getVarsOfPath(const string &path) {
         return this->_pathToVars[path];
-    }
+}
+    bool hasBindVars(string var);
+    vector<string> getBindedVars(string var);
+    vector<string> GetVarsByPath(string path);
+    void SetBindBetweenVars(string sourceVar,string targetVar);
 };
 
 #endif

@@ -76,9 +76,7 @@ void DataReaderClient::UpdateSimulator(int sockfd){
                 double* number = new double();
                 string value = to_string(this->_varManager->GetValue(vars[i],
                         number));
-                string d = pathToAllVars[i].substr(1,pathToAllVars[i].length());
-                d = d.substr(0,d.length()-1);
-                string set = "set " + d +" "+value+"\r\n";
+                string set = "set " +  pathToAllVars[i] +" "+value+"\r\n";
                 int n = write(sockfd, set.c_str(), set.size());
                 if (n < 0) {
                     perror("ERROR writing to socket");

@@ -75,7 +75,8 @@ private:
 public:
     struct MyParams {
         int port;
-        int time;
+        int hertz;
+        int serverSocket;
         DataReaderServer *data;
     };
 
@@ -85,6 +86,8 @@ public:
     }
 
     void OpenServer(int port, int hertz);
+
+    int CreateServerSocket(int port);
 
     void UpdateSymbleTable(vector<double> convertedInfo);
 
