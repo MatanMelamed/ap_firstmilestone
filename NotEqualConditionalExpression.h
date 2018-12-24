@@ -1,11 +1,10 @@
 #ifndef PROJECT_NOTEQUALCONDITIONALEXPRESSION_H
 #define PROJECT_NOTEQUALCONDITIONALEXPRESSION_H
 
-#include "ConditionalExpression.h"
+#include "BinaryExpression.h"
 
-class NotEqualConditionalExpression : public ConditionalExpression {
-    Expression *exp1;
-    Expression *exp2;
+class NotEqualConditionalExpression : public BinaryExpression {
+
 public:
     NotEqualConditionalExpression(Expression *expression1,
                                   Expression *expression2);

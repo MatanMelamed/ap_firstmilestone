@@ -5,7 +5,7 @@
 #include "DataReaderClient.h"
 
 class ConnectCommand : public Command {
-private:
+
     DataReaderClient *client;
 public:
     ConnectCommand(DataHandler *_dataHandler, VarManager *_varManager,
@@ -15,17 +15,9 @@ public:
         client = new DataReaderClient(_varManager);
     }
 
-    void doCommand() override {
-        _dataHandler->Advance(ONE);
-        string ip = _dataHandler->GetCurrentToken().get_value();
-        _dataHandler->Advance(ONE);
-        string portString = _dataHandler->GetCurrentToken().get_value();
-        double port = _expCalculator->GetExpression(portString)->Calculate();
-        _dataHandler->Advance(ONE);
-        this->client->ConnectClient(ip, port);
-    }
+    void doCommand() override;
 
-    ~ConnectCommand() {
+    ~ConnectCommand() override {
         delete this->client;
     }
 };

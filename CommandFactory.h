@@ -36,6 +36,7 @@ public:
         this->_expressionCalculator = new ShuntingYard(varManager);
     }
 
+    virtual ~CommandFactory();
 };
 
 #endif

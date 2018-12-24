@@ -4,11 +4,15 @@
 #include "Expression.h"
 
 class BinaryExpression : public Expression {
+
+protected:
     Expression *exp1;
     Expression *exp2;
 
-    virtual double Calculate() = 0;
+public:
+    double Calculate() override = 0;
 
+    ~BinaryExpression() override = default;
 };
 
 #endif

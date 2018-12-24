@@ -27,6 +27,7 @@ enum recv_state {
     READ,       // only read
     EXECUTE,    // read and execute
     RUN,        // only execute
+    HALT,       // shuting down
 };
 
 /**
@@ -67,6 +68,10 @@ class DataHandler {
     bool hasTokenTypeInCurrentLine(const TokenType &type);
 
     void ResetScopeControl();
+
+    void EmptyBracketsQueue();
+
+    void EmptyBrackets();
 
     // upon invalid line - resets scope control and continue with EXECUTE mode.
 
@@ -141,6 +146,12 @@ public:
     bool ShouldSkipLine();
 
     bool IsScopeReady(int scopeLine) { return _openBrackets == 0; }
+
+    bool IsShuttingDown();
+
+    void EraseAllLines();
+
+    void EraseAll();
 };
 
 #endif

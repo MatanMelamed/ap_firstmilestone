@@ -1,11 +1,10 @@
 #ifndef PROJECT_EQUALCONDITIONALEXPRESSION_H
 #define PROJECT_EQUALCONDITIONALEXPRESSION_H
 
-#include "ConditionalExpression.h"
+#include "BinaryExpression.h"
 
-class EqualConditionalExpression : public ConditionalExpression {
-    Expression *exp1;
-    Expression *exp2;
+class EqualConditionalExpression : public BinaryExpression {
+
 public:
     EqualConditionalExpression(Expression *expression1,
                                Expression *expression2);

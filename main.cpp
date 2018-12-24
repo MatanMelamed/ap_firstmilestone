@@ -21,7 +21,7 @@ int main(int args, char **argv) {
     //string target = "run.txt";
     Lexer l = Lexer(&dataHandler, target);
 
-    while (true) {
+    while (!dataHandler.IsShuttingDown()) {
         // loads dataHandler with new splitted vector of strings
         // either from file or from command line
         l.Interpret();
@@ -33,7 +33,7 @@ int main(int args, char **argv) {
 void Parser(DataHandler *dataHandler, ExpressionManager *expressionManager) {
 
     if (dataHandler->GetState() != READ && !dataHandler->ShouldSkipLine()) {
-        while (dataHandler->hasMoreTokens()) {
+        while (dataHandler->hasMoreTokens() && !dataHandler->IsShuttingDown()) {
             Expression *e = expressionManager->GetNextExpression();
             /**
              * expression might be invalid, dont break the code,

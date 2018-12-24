@@ -1,6 +1,5 @@
 #include "Tokenizer.h"
 
-
 Token Tokenizer::GetToken(const string &value) {
     for (Token t : valid_tokens) {
         if (value == t.get_value()) {
@@ -8,9 +7,9 @@ Token Tokenizer::GetToken(const string &value) {
         }
     }
     if (IsNumber(value)) {
-        return Token(NUM, value, 0, "", "");
+        return Token(NUM, value);
     }
-    return Token(WORD, value, 0, "", "");
+    return Token(WORD, value);
 }
 
 bool Tokenizer::IsNumber(const string &value) {
@@ -115,32 +114,23 @@ vector<Token> Tokenizer::Lex(string str) {
 }
 
 void Tokenizer::PopulateSplitSequences(list<vector<Token>> &skipSequences) {
-    skipSequences.push_back({Token(RRB, ")", 0, "", ""),
-                             Token(LRB, "(", 0, "", "")});
+    skipSequences.push_back({Token(RRB, ")"), Token(LRB, "(")});
 
-    skipSequences.push_back({Token(NUM, "1", 0, "", ""),
-                             Token(LRB, "(", 0, "", "")});
+    skipSequences.push_back({Token(NUM, "1"), Token(LRB, "(")});
 
-    skipSequences.push_back({Token(WORD, "x", 0, "", ""),
-                             Token(LRB, "(", 0, "", "")});
+    skipSequences.push_back({Token(WORD, "x"), Token(LRB, "(")});
 
-    skipSequences.push_back({Token(RRB, ")", 0, "", ""),
-                             Token(NUM, "1", 0, "", "")});
+    skipSequences.push_back({Token(RRB, ")"), Token(NUM, "1")});
 
-    skipSequences.push_back({Token(RRB, ")", 0, "", ""),
-                             Token(WORD, "X", 0, "", "")});
+    skipSequences.push_back({Token(RRB, ")"), Token(WORD, "X")});
 
-    skipSequences.push_back({Token(NUM, "1", 0, "", ""),
-                             Token(NUM, "1", 0, "", "")});
+    skipSequences.push_back({Token(NUM, "1"), Token(NUM, "1")});
 
-    skipSequences.push_back({Token(NUM, "1", 0, "", ""),
-                             Token(WORD, "x", 0, "", "")});
+    skipSequences.push_back({Token(NUM, "1"), Token(WORD, "x")});
 
-    skipSequences.push_back({Token(WORD, "x", 0, "", ""),
-                             Token(NUM, "1", 0, "", "")});
+    skipSequences.push_back({Token(WORD, "x"), Token(NUM, "1")});
 
-    skipSequences.push_back({Token(WORD, "x", 0, "", ""),
-                             Token(WORD, "X", 0, "", "")});
+    skipSequences.push_back({Token(WORD, "x"), Token(WORD, "X")});
 }
 
 vector<Token> Tokenizer::MergeExpressionToStrings(PacketAnalyzer &pa) {
@@ -150,7 +140,6 @@ vector<Token> Tokenizer::MergeExpressionToStrings(PacketAnalyzer &pa) {
     list<vector<Token>> splitSequences;
 
     PopulateSplitSequences(splitSequences);
-
 
     for (int i = 0; i < pa.new_tokens.size(); ++i) {
         Token *currentToken = &pa.new_tokens[i];
@@ -203,55 +192,57 @@ vector<Token> Tokenizer::MergeExpressionToStrings(PacketAnalyzer &pa) {
 
 void Tokenizer::PushSumAsToken(vector<Token> &afterMerge, string &tokenSum) {
     if (!tokenSum.empty()) {
-        afterMerge.push_back(Token(WORD, tokenSum, 0, "", ""));
+        afterMerge.emplace_back(WORD, tokenSum);
         tokenSum.clear();
     }
 }
 
 void Tokenizer::SetCommandTokenizer() {
     _mergeExpressions = true;
-    valid_tokens.push_back(Token(SP, " ", 0, "", ""));
-    valid_tokens.push_back(Token(STR, "\"", 0, "", ""));
-    valid_tokens.push_back(Token(LRB, "(", 0, "", ""));
-    valid_tokens.push_back(Token(RRB, ")", 0, "", ""));
-    valid_tokens.push_back(Token(MATH, "+", 4, "", ""));
-    valid_tokens.push_back(Token(MATH, "-", 4, "", ""));
-    valid_tokens.push_back(Token(MATH, "/", 5, "", ""));
-    valid_tokens.push_back(Token(MATH, "*", 5, "", ""));
-    valid_tokens.push_back(Token(BOOL, ">", 3, "", "="));
-    valid_tokens.push_back(Token(BOOL, "<", 3, "", "="));
-    valid_tokens.push_back(Token(BOOL, ">=", 3, "", ""));
-    valid_tokens.push_back(Token(BOOL, "<=", 3, "", ""));
-    valid_tokens.push_back(Token(BOOL, "==", 3, "", ""));
-    valid_tokens.push_back(Token(BOOL, "!=", 3, "", ""));
-    valid_tokens.push_back(Token(BOOL, "&&", 2, "", ""));
-    valid_tokens.push_back(Token(BOOL, "||", 1, "", ""));
-    valid_tokens.push_back(Token(LCB, "{", 0, "", ""));
-    valid_tokens.push_back(Token(RCB, "}", 0, "", ""));
-    valid_tokens.push_back(Token(DELIMITER, ",", 0, "", ""));
-    valid_tokens.push_back(Token(CMD, "=", 0, "", "="));
-    valid_tokens.push_back(Token(CMD, "bind", 0, " ", ""));
-    valid_tokens.push_back(Token(CMD, "print", 0, " ", ""));
-    valid_tokens.push_back(Token(CMD, "connect", 0, " ", ""));
-    valid_tokens.push_back(Token(CMD, "openDataServer", 0, " ", ""));
-    valid_tokens.push_back(Token(CMD, "var", 0, " ", ""));
-    valid_tokens.push_back(Token(CMD, "while", 0, " ", ""));
-    valid_tokens.push_back(Token(CMD, "if", 0, " ", ""));
+    valid_tokens.emplace_back(SP, " ");
+    valid_tokens.emplace_back(STR, "\"");
+    valid_tokens.emplace_back(LRB, "(");
+    valid_tokens.emplace_back(RRB, ")");
+    valid_tokens.emplace_back(MATH, "+");
+    valid_tokens.emplace_back(MATH, "-");
+    valid_tokens.emplace_back(MATH, "/");
+    valid_tokens.emplace_back(MATH, "*");
+    valid_tokens.emplace_back(BOOL, ">");
+    valid_tokens.emplace_back(BOOL, "<");
+    valid_tokens.emplace_back(BOOL, ">=");
+    valid_tokens.emplace_back(BOOL, "<=");
+    valid_tokens.emplace_back(BOOL, "==");
+    valid_tokens.emplace_back(BOOL, "!=");
+    valid_tokens.emplace_back(BOOL, "&&");
+    valid_tokens.emplace_back(BOOL, "||");
+    valid_tokens.emplace_back(LCB, "{");
+    valid_tokens.emplace_back(RCB, "}");
+    valid_tokens.emplace_back(DELIMITER, ",");
+    valid_tokens.emplace_back(CMD, "=", 0, "", "=");
+    valid_tokens.emplace_back(CMD, "bind", 0, " ", "");
+    valid_tokens.emplace_back(CMD, "print", 0, " ", "");
+    valid_tokens.emplace_back(CMD, "connect", 0, " ", "");
+    valid_tokens.emplace_back(CMD, "openDataServer", 0, " ", "");
+    valid_tokens.emplace_back(CMD, "var", 0, " ", "");
+    valid_tokens.emplace_back(CMD, "while", 0, " ", "");
+    valid_tokens.emplace_back(CMD, "if", 0, " ", "");
+    valid_tokens.emplace_back(CMD, "exit", 0, " ", "");
+
 }
 
 void Tokenizer::SetShuntingYard() {
-    valid_tokens.push_back(Token(MATH, "(", 0, "", ""));
-    valid_tokens.push_back(Token(MATH, ")", 0, "", ""));
-    valid_tokens.push_back(Token(MATH, "+", 4, "", ""));
-    valid_tokens.push_back(Token(MATH, "-", 4, "", ""));
-    valid_tokens.push_back(Token(MATH, "/", 5, "", ""));
-    valid_tokens.push_back(Token(MATH, "*", 5, "", ""));
-    valid_tokens.push_back(Token(BOOL, ">", 3, "", "="));
-    valid_tokens.push_back(Token(BOOL, "<", 3, "", "="));
-    valid_tokens.push_back(Token(BOOL, ">=", 3, "", ""));
-    valid_tokens.push_back(Token(BOOL, "<=", 3, "", ""));
-    valid_tokens.push_back(Token(BOOL, "==", 3, "", ""));
-    valid_tokens.push_back(Token(BOOL, "!=", 3, "", ""));
-    valid_tokens.push_back(Token(BOOL, "&&", 2, "", ""));
-    valid_tokens.push_back(Token(BOOL, "||", 1, "", ""));
+    valid_tokens.emplace_back(MATH, "(", 0, "", "");
+    valid_tokens.emplace_back(MATH, ")", 0, "", "");
+    valid_tokens.emplace_back(MATH, "+", 4, "", "");
+    valid_tokens.emplace_back(MATH, "-", 4, "", "");
+    valid_tokens.emplace_back(MATH, "/", 5, "", "");
+    valid_tokens.emplace_back(MATH, "*", 5, "", "");
+    valid_tokens.emplace_back(BOOL, ">", 3, "", "=");
+    valid_tokens.emplace_back(BOOL, "<", 3, "", "=");
+    valid_tokens.emplace_back(BOOL, ">=", 3, "", "");
+    valid_tokens.emplace_back(BOOL, "<=", 3, "", "");
+    valid_tokens.emplace_back(BOOL, "==", 3, "", "");
+    valid_tokens.emplace_back(BOOL, "!=", 3, "", "");
+    valid_tokens.emplace_back(BOOL, "&&", 2, "", "");
+    valid_tokens.emplace_back(BOOL, "||", 1, "", "");
 }

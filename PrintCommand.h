@@ -15,6 +15,8 @@ public:
                                                          _expCalculator) {}
 
     void doCommand() override;
+
+    ~PrintCommand() override = default;
 };
 
 #endif

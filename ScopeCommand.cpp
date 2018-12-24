@@ -20,3 +20,7 @@ void ScopeCommand::SetScope() {
     this->_condition = _expCalculator->GetExpression(
             _dataHandler->GetTokenInOffSet(ONE).get_value());
 }
+
+ScopeCommand::~ScopeCommand() {
+    delete _condition;
+}

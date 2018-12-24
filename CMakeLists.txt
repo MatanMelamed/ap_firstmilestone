@@ -9,7 +9,7 @@ add_executable(ap-firstmilestone main.cpp
         Expression.h ExpressionManager.h VarCommand.h CommandExpression.h
         EqCommand.h SleepCommand.h PrintCommand.h OpenDataServerCommand.h ConnectCommand.h
         ShuntingYard.h BinaryExpression.h Minus.cpp Minus.h Mult.cpp Mult.h Number.cpp Number.h
-        Plus.cpp Plus.h Div.cpp Div.h ConditionalExpression.h SmallEqualConditionalExpression.cpp
+        Plus.cpp Plus.h Div.cpp Div.h SmallEqualConditionalExpression.cpp
         SmallEqualConditionalExpression.h SmallConditionalExpression.cpp SmallConditionalExpression.h
         BigConditionalExpression.cpp BigConditionalExpression.h BigEqualConditionalExpression.cpp
         BigEqualConditionalExpression.h EqualConditionalExpression.cpp EqualConditionalExpression.h
@@ -20,4 +20,4 @@ add_executable(ap-firstmilestone main.cpp
         EqCommand.cpp
         CommandFactory.cpp DataReaderServer.cpp
         CommandFactory.h
-        DataReaderServer.h DataReaderClient.cpp DataReaderClient.h ExpressionManager.cpp IfCommand.cpp Lexer.cpp PrintCommand.cpp ScopeCommand.cpp ShuntingYard.cpp SleepCommand.cpp Token.cpp Tokenizer.cpp VarCommand.cpp VarManager.cpp)
+        DataReaderServer.h DataReaderClient.cpp DataReaderClient.h ExpressionManager.cpp IfCommand.cpp Lexer.cpp PrintCommand.cpp ScopeCommand.cpp ShuntingYard.cpp SleepCommand.cpp Token.cpp Tokenizer.cpp VarCommand.cpp VarManager.cpp ExitCommand.h ConnectCommand.cpp)

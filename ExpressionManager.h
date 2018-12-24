@@ -41,6 +41,10 @@ public:
     }
 
     Expression *GetNextExpression();
+
+    void EmptyExpressionMap();
+
+    virtual ~ExpressionManager();
 };
 
 

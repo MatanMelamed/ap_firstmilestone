@@ -15,6 +15,8 @@ public:
                                                            _expCalculator) {}
 
     bool ShouldStop() override;
+
+    ~IfCommand() override = default;
 };
 
 #endif

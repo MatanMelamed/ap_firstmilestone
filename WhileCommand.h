@@ -16,6 +16,7 @@ public:
         return _condition->Calculate() == 0;
     }
 
+    ~WhileCommand() override = default;
 };
 
 #endif

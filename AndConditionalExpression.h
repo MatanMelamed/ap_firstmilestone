@@ -1,11 +1,10 @@
 #ifndef PROJECT_ANDCONDITIONALEXPRESSION_H
 #define PROJECT_ANDCONDITIONALEXPRESSION_H
 
-#include "ConditionalExpression.h"
+#include "BinaryExpression.h"
 
-class AndConditionalExpression : public ConditionalExpression {
-    Expression *exp1;
-    Expression *exp2;
+class AndConditionalExpression : public BinaryExpression {
+
 public:
     AndConditionalExpression(Expression *expression1, Expression *expression2);
 

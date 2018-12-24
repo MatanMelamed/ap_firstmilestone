@@ -5,9 +5,6 @@
 
 class Plus : public BinaryExpression {
 
-private:
-    Expression *exp1;
-    Expression *exp2;
 public:
     Plus(Expression *expression1, Expression *expression2);
 

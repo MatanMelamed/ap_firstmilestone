@@ -1,11 +1,10 @@
 #ifndef PROJECT_BIGCONDITIONALEXPRESSION_H
 #define PROJECT_BIGCONDITIONALEXPRESSION_H
 
-#include "ConditionalExpression.h"
+#include "BinaryExpression.h"
 
-class BigConditionalExpression : public ConditionalExpression {
-    Expression *exp1;
-    Expression *exp2;
+class BigConditionalExpression : public BinaryExpression {
+
 public:
     BigConditionalExpression(Expression *expression1, Expression *expression2);
 

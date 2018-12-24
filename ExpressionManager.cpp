@@ -43,3 +43,14 @@ Expression *ExpressionManager::GetNextExpression() {
     _dataHandler->InvalidLineHandle(UNKNOWN_CMD + exp);
     return nullptr;
 }
+
+void ExpressionManager::EmptyExpressionMap() {
+    map<string, Expression *>::iterator it;
+    for (it = _knownExpressions.begin(); it != _knownExpressions.end(); it++) {
+        delete (*it).second; // has no effect if ptr is null
+    }
+}
+
+ExpressionManager::~ExpressionManager() {
+    EmptyExpressionMap();
+}

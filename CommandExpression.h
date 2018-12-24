@@ -16,6 +16,10 @@ public:
         _command->doCommand();
         return 0;
     }
+
+    ~CommandExpression() override {
+        delete _command;
+    }
 };
 
 #endif

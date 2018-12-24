@@ -7,5 +7,5 @@ AndConditionalExpression::AndConditionalExpression
 }
 
 double AndConditionalExpression::Calculate() {
-    return this->exp1->Calculate() && this->exp2->Calculate();
+    return this->exp1->Calculate() != 0 && this->exp2->Calculate() != 0;
 }

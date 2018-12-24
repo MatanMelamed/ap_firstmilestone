@@ -33,7 +33,7 @@ void EqCommand::doCommand() {
         if (this->_varManager->hasBindVars(varName)) {
             vector<string> varsConected = this->_varManager->getBindedVars(
                     varName);
-            for (string var: varsConected) {
+            for (const string &var: varsConected) {
                 this->_varManager->SetValue(var, newValue);
             }
         }

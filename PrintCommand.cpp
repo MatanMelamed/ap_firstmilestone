@@ -13,3 +13,4 @@ void PrintCommand::doCommand() {
     }
     _dataHandler->Advance(ONE);
 }
+

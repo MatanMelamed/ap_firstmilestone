@@ -1,11 +1,10 @@
 #ifndef PROJECT_BIGEQUALCONDITIONALEXPRESSION_H
 #define PROJECT_BIGEQUALCONDITIONALEXPRESSION_H
 
-#include "ConditionalExpression.h"
+#include "BinaryExpression.h"
 
-class BigEqualConditionalExpression : public ConditionalExpression {
-    Expression *exp1;
-    Expression *exp2;
+class BigEqualConditionalExpression : public BinaryExpression {
+
 public:
     BigEqualConditionalExpression(Expression *expression1,
                                   Expression *expression2);

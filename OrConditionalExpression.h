@@ -1,11 +1,10 @@
 #ifndef PROJECT_ORCONDITIONALEXPRESSION_H
 #define PROJECT_ORCONDITIONALEXPRESSION_H
 
-#include "ConditionalExpression.h"
+#include "BinaryExpression.h"
 
-class OrConditionalExpression : public ConditionalExpression {
-    Expression *exp1;
-    Expression *exp2;
+class OrConditionalExpression : public BinaryExpression {
+
 public:
     OrConditionalExpression(Expression *expression1, Expression *expression2);
 

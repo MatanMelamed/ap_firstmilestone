@@ -25,7 +25,6 @@ enum TokenType {
     STR,
 };
 
-
 class Token {
 
     TokenType _type;
@@ -34,6 +33,7 @@ class Token {
     string _must_be_after;
     string _cant_be_after;
 
+    // for debug purposes
     map<int, string> type_converter = {{0,  "CMD"},
                                        {1,  "SP"},
                                        {2,  "WORD"},
@@ -52,9 +52,9 @@ public:
 
     Token() {}
 
-    Token(TokenType type, const string &value, int priority,
-          string must_kriptonite,
-          string cant_kriptonite) {
+    Token(TokenType type, const string &value, int priority = 0,
+          string must_kriptonite = "",
+          string cant_kriptonite = "") {
         this->_type = type;
         this->_value = value;
         this->_priority = priority;

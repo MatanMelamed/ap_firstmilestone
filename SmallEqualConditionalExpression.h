@@ -1,11 +1,10 @@
 #ifndef PROJECT_SMALLEQUALCONDITIONALEXPRESSION_H
 #define PROJECT_SMALLEQUALCONDITIONALEXPRESSION_H
 
-#include "ConditionalExpression.h"
+#include "BinaryExpression.h"
 
-class SmallEqualConditionalExpression : public ConditionalExpression {
-    Expression *exp1;
-    Expression *exp2;
+class SmallEqualConditionalExpression : public BinaryExpression {
+
 public:
     SmallEqualConditionalExpression(Expression *expression1,
                                     Expression *expression2);

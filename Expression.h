@@ -5,6 +5,8 @@ class Expression {
 
 public:
     virtual double Calculate() = 0;
+
+    virtual ~Expression() = 0;
 };
 
 #endif

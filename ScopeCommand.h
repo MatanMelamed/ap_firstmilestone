@@ -26,6 +26,8 @@ public:
     void SetScope();
 
     virtual bool ShouldStop() = 0;
+
+    ~ScopeCommand() override;
 };
 
 #endif

@@ -128,10 +128,11 @@ void DataHandler::InvalidLineHandle(string extra) {
     TriggerSkipLine();
 }
 
+
 void DataHandler::ResetScopeControl() {
     _state = EXECUTE;
     _openBrackets = START_BRACkETS_NUM;
-    _brackets_queue.empty();
+    EmptyBracketsQueue();
 }
 
 bool DataHandler::hasTokenTypeInCurrentLine(const TokenType &type) {
@@ -202,3 +203,43 @@ bool DataHandler::ShouldSkipLine() {
 void DataHandler::TriggerSkipLine() {
     _skipLine = true;
 }
+
+void DataHandler::EmptyBracketsQueue() {
+    // symmetry in insertion, symmetry in deletion.
+    while (!_brackets_queue.empty()) {
+        BracketPair *pair = _brackets_queue.top();
+        _brackets_queue.pop();
+        _brackets.erase(_brackets.end() - 1);
+        delete pair;
+    }
+}
+
+void DataHandler::EmptyBrackets() {
+    vector<BracketPair *>::iterator it;
+    // delete all objects from the end to the first, without the first.
+    for (it = _brackets.end() - 1; it != _brackets.begin(); it++) {
+        delete *it;
+    }
+    delete *it; // delete first object
+}
+
+void DataHandler::EraseAllLines() {
+    if (!_all_lines.empty()) {
+        vector<vector<Token> *>::iterator it;
+        for (it = _all_lines.begin(); it != _all_lines.end(); ++it) {
+            delete *it;
+        }
+    }
+}
+
+void DataHandler::EraseAll() {
+    EmptyBracketsQueue();
+    EmptyBrackets();
+    EraseAllLines();
+    _state = HALT;
+}
+
+bool DataHandler::IsShuttingDown() {
+    return _state == HALT;
+}
+

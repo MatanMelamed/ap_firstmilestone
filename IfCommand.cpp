@@ -21,3 +21,4 @@ bool IfCommand::ShouldStop() {
 
     return result;
 }
+

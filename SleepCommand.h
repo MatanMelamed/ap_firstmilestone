@@ -17,6 +17,8 @@ public:
                                                          _expCalculator) {}
 
     void doCommand() override;
+
+    ~SleepCommand() override = default;
 };
 
 #endif
