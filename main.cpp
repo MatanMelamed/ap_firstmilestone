@@ -13,7 +13,7 @@ using namespace std;
 
 void Parser(DataHandler *dataHandler, ExpressionManager *expressionManager);
 
-int main(int args, char **argv) {
+int asd(int args, char **argv) {
 
     DataHandler dataHandler;
     ExpressionManager expressionManager(&dataHandler);

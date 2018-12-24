@@ -25,53 +25,13 @@ class Lexer {
     string _target;
 
 
-    vector<Token> *Split(const string &line) {
-        auto *result = new vector<Token>;
+    vector<Token> *Split(const string &line);
 
-        (*result) = _tokenizer.Lex(line);
+    void CommandLineLexer();
 
-        return result;
-    }
+    void LoadFile();
 
-    void CommandLineLexer() {
-        string line;
-        cout << CONSOLE_PREFIX;
-        getline(cin, line);
-        if (!line.empty()) {
-            vector<Token> *splitted = Split(line);
-            this->_dataHandler->SetNewLine(splitted);
-        }
-    }
-
-    void LoadFile() {
-        ifstream file(this->_target);
-        if (file.is_open()) {
-            string newLine;
-            while (getline(file, newLine)) {
-                this->_lines.push_back(newLine);
-            }
-            file.close();
-        }
-    }
-
-    void FileLexer() {
-        if (this->_lines.empty()) {
-            LoadFile();
-            this->_lineNumber = 0;
-        }
-
-        if ((int) this->_lines.size() <= this->_lineNumber) {
-            this->_target = NOT_FILE;
-            CommandLineLexer();
-        } else {
-            string line = this->_lines[this->_lineNumber];
-            this->_lineNumber++;
-
-            vector<Token> *splitted = Split(line);
-
-            this->_dataHandler->SetNewLine(splitted);
-        }
-    }
+    void FileLexer();
 
 public:
 
@@ -81,15 +41,7 @@ public:
         this->_tokenizer.SetCommandTokenizer();
     }
 
-    void Interpret() {
-        if (_dataHandler->GetState() != RUN) {
-            if (this->_target == NOT_FILE) {
-                CommandLineLexer();
-            } else {
-                FileLexer();
-            }
-        }
-    }
+    void Interpret();
 };
 
 

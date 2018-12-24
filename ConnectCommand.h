@@ -6,25 +6,26 @@
 
 class ConnectCommand : public Command {
 private:
-    DataReaderClient* client;
+    DataReaderClient *client;
 public:
     ConnectCommand(DataHandler *_dataHandler, VarManager *_varManager,
                    ShuntingYard *_expCalculator) : Command(_dataHandler,
                                                            _varManager,
                                                            _expCalculator) {
-            client = new DataReaderClient(_varManager);
+        client = new DataReaderClient(_varManager);
     }
 
     void doCommand() override {
-        _dataHandler->Advance(1);
+        _dataHandler->Advance(ONE);
         string ip = _dataHandler->GetCurrentToken().get_value();
-        _dataHandler->Advance(1);
+        _dataHandler->Advance(ONE);
         string portString = _dataHandler->GetCurrentToken().get_value();
-        double port =  _expCalculator->GetExpression(portString)->Calculate();
-        _dataHandler->Advance(1);
-        this->client->ConnectClient(ip,port);
+        double port = _expCalculator->GetExpression(portString)->Calculate();
+        _dataHandler->Advance(ONE);
+        this->client->ConnectClient(ip, port);
     }
-    ~ConnectCommand(){
+
+    ~ConnectCommand() {
         delete this->client;
     }
 };

@@ -10,6 +10,7 @@
 #define RESET_TOKEN_INDEX 0
 #define RESET_LINE_INDEX -1
 #define MINUS_ONE -1
+#define INVALID_LINE_ERR "syntax error occurs in line: " << _currentLineIndex
 #define ONE 1
 #define TWO 2
 #define INDEX_OFFSET_ERR Token(ERR,"offset out of range",0,"","");
@@ -43,6 +44,7 @@ class DataHandler {
     vector<vector<Token> *> _all_lines;
     int _currentLineIndex;
     int _currentTokenIndex;
+    bool _skipLine;
 
     recv_state _state;
 
@@ -51,105 +53,27 @@ class DataHandler {
     vector<BracketPair *> _brackets;  // all brackets pairs - keep track
     stack<BracketPair *> _brackets_queue; // for building main scopes.
 
-    int GetStartOfScope(int closeLine) {
-        int openLine = closeLine;
-        for (BracketPair *pair : _brackets) {
-            if (pair->_closeLine == closeLine) {
-                openLine = pair->_openLine;
-                break;
-            }
-        }
-        return openLine;
-    }
+    int GetStartOfScope(int closeLine);
 
-    bool IsBracketPairExists(int startLine) {
-        bool result = false;
-        for (BracketPair *pair : _brackets) {
-            if (pair->_openLine == startLine) {
-                result = true;
-                break;
-            }
-        }
-        return result;
-    }
+    bool IsBracketPairExists(int startLine);
 
-    void AddOpenBracket(int startLine) {
-        BracketPair *pair = new BracketPair;
-        pair->_openLine = startLine;
-        pair->_closeLine = startLine;
+    void AddOpenBracket(int startLine);
 
-        _brackets.push_back(pair);
-        _brackets_queue.push(pair);
-        _openBrackets++;
-    }
+    void AddCloseBracket(int closeLine);
 
-    void AddCloseBracket(int closeLine) {
-        BracketPair *pair = _brackets_queue.top();
-        _brackets_queue.pop();
-        pair->_closeLine = closeLine;
-        _openBrackets--;
-    }
+    void HandleEXECUTEState();
 
-    void HandleEXECUTEState() {
-        if (hasTokenTypeInCurrentLine(LCB)) {
-            if (!IsBracketPairExists(_currentLineIndex)) {
-                // start scope for the first time !
-                AddOpenBracket(_currentLineIndex);
-            }
-        } else if (hasTokenTypeInCurrentLine(RCB)) {
-            _currentLineIndex = GetStartOfScope(_currentLineIndex);
-        }
-    }
+    bool hasTokenTypeInCurrentLine(const TokenType &type);
 
-    bool hasTokenTypeInCurrentLine(const TokenType &type) {
-        bool result = false;
-        for (const Token &token : (*_all_lines[_currentLineIndex])) {
-            if (token.get_type() == type) {
-                result = true;
-                break;
-            }
-        }
-        return result;
-    }
+    void ResetScopeControl();
 
-    void HandleREADState() {
+    // upon invalid line - resets scope control and continue with EXECUTE mode.
 
-        if (hasTokenTypeInCurrentLine(LCB)) {
-            AddOpenBracket(_currentLineIndex);
-        } else if (hasTokenTypeInCurrentLine(RCB)) {
-            if (_openBrackets == START_BRACkETS_NUM) {
-                // there are 0 open scopes
-                //  exception
-            } else if ((_all_lines[_currentLineIndex])->size() > 1) {
-                // line has } and more than one token.
-                // exception
-            } else {  // there is at least one open scope and valid RCB
-                AddCloseBracket(_currentLineIndex);
-                if (_openBrackets == START_BRACkETS_NUM) {
-                    StartRun();
-                }
-            }
-        }
+    void HandleREADState();
 
-    }
+    void HandleRUNState();
 
-    void HandleRUNState() {
-        if (!hasMoreTokens()) {
-            GoToNextLine();
-        } else if (GetCurrentToken().get_type() == RCB) {
-            _currentLineIndex = GetStartOfScope(_currentLineIndex);
-        }
-    }
-
-    void HandleStates() {
-        if (_state == EXECUTE) {
-            HandleEXECUTEState();
-        } else if (_state == READ) {
-            HandleREADState();
-        } else if (_state == RUN) {
-            HandleRUNState();
-        }
-    }
+    void HandleStates();
 
 public:
 
@@ -157,22 +81,13 @@ public:
         this->_currentLineIndex = RESET_LINE_INDEX;
         this->_state = EXECUTE;
         this->_openBrackets = 0;
+        this->_skipLine = false;
     }
 
     // Getters
-    Token GetCurrentToken() {
-        vector<Token> *current_line = this->_all_lines[this->_currentLineIndex];
-        return (*current_line)[this->_currentTokenIndex];
-    }
+    Token GetCurrentToken();
 
-    Token GetTokenInOffSet(int offset) {
-        int wanted_index = this->_currentTokenIndex + offset;
-        vector<Token> *current_line = this->_all_lines[this->_currentLineIndex];
-        if (0 <= wanted_index && wanted_index < current_line->size()) {
-            return (*current_line)[wanted_index];
-        }
-        return INDEX_OFFSET_ERR
-    }
+    Token GetTokenInOffSet(int offset);
 
     recv_state GetState() {
         return this->_state;
@@ -186,33 +101,12 @@ public:
         return (int) _all_lines[_currentLineIndex]->size();
     }
 
-    int GetEndOfScope(int startLine) {
-        int endLine = startLine;
-        for (BracketPair *pair : _brackets) {
-            if (pair->_openLine == startLine) {
-                endLine = pair->_closeLine;
-                break;
-            }
-        }
-        return endLine;
-    }
+    int GetEndOfScope(int startLine);
 
     // functionality for data control
-    void SetNewLine(vector<Token> *newLine) {
-        this->_all_lines.push_back(newLine);
-        this->_currentLineIndex = (int) _all_lines.size() - 1;
-        this->_currentTokenIndex = RESET_TOKEN_INDEX;
-        HandleStates();
-    }
+    void SetNewLine(vector<Token> *newLine);
 
-    void Advance(int steps) {
-        _currentTokenIndex += steps;
-        vector<Token> *currentLine = _all_lines[_currentLineIndex];
-        if (_currentTokenIndex >= currentLine->size()) {
-            // need to move to next line - if exists!
-            GoToNextLine();
-        }
-    }
+    void Advance(int steps);
 
     void SetState(recv_state _state) {
         this->_state = _state;
@@ -222,68 +116,29 @@ public:
         _currentTokenIndex = (int) _all_lines[_currentLineIndex]->size();
     }
 
-    void StartRead() {
-        SetState(READ);
-        SetTokenIndexToEndOfLine();
-    }
+    void TriggerSkipLine();
 
-    void StartRun() {
-        _state = RUN;
-        runUntilLine = GetEndOfScope(_currentLineIndex);
-        _currentLineIndex = GetStartOfScope(runUntilLine);
-        _currentTokenIndex = 0;
-    }
+    void BuildScope();
 
-    void StopRun() {
-        _state = EXECUTE;
-        Advance(GetLineSize());
-    }
+    void StartRun();
 
-    void GoToNextLine() {
-        if (_currentLineIndex < _all_lines.size() - 1) {
-            _currentLineIndex++;
-            _currentTokenIndex = 0;
-            HandleStates();
-        }
-    }
+    void StopRun();
+
+    void GoToNextLine();
+
+    void InvalidLineHandle(string extra);
 
     /**
      * is called on the first line of the scope.
      */
-    void SkipCurrentScope() {
-        _currentLineIndex = GetEndOfScope(_currentLineIndex);
-        if (_currentLineIndex == runUntilLine) {
-            StopRun();  //reached last scope end.
-        } else {
-            _currentLineIndex++;
-            HandleStates();
-        }
-    }
+    void SkipCurrentScope();
 
     // Information functions
-    bool hasMoreTokens() {
-        if (_all_lines.size() <= _currentLineIndex) {
-            return false;
-        }
-        return _all_lines[_currentLineIndex]->size() > _currentTokenIndex;
-    }
+    bool hasMoreTokens();
 
-    bool IsScopeReady(int scopeLine) {
-        return _openBrackets == 0;
-    }
+    bool ShouldSkipLine();
 
-    void printline() {
-        cout << _all_lines[_currentLineIndex]->size() << endl;
-    }
-
-    string h() {
-        string s;
-        for (Token t : *_all_lines[_currentLineIndex]) {
-            s += t.get_value() + " ";
-        }
-        return s;
-    }
+    bool IsScopeReady(int scopeLine) { return _openBrackets == 0; }
 };
-
 
 #endif

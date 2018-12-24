@@ -1,7 +1,3 @@
-//
-// Created by tomme on 23/12/2018.
-//
-
 #ifndef PROJECT_DATAREADERSERVER_H
 #define PROJECT_DATAREADERSERVER_H
 

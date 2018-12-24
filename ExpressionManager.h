@@ -7,9 +7,11 @@
 #include "Expression.h"
 #include "VarManager.h"
 #include "DataHandler.h"
-#include "CommandFactory.h"
-#include "CommandExpression.h"
 
+#include "CommandExpression.h"
+#include "CommandFactory.h"
+
+#define UNKNOWN_CMD ", unknown command: "
 
 using namespace std;
 
@@ -26,27 +28,9 @@ class ExpressionManager {
      * return an expression with existing key.
      * if the expression is not yet created - create it and return it.
      */
-    Expression *GetExpression(const string &exp) {
-        Expression *target = _knownExpressions[exp];
+    Expression *GetExpression(const string &exp);
 
-        if (target == nullptr) {
-            target = new CommandExpression(_factory.GetCommand(exp));
-            _knownExpressions[exp] = target;
-        }
-
-        return target;
-    }
-
-    void LoadKnownExpressions() {
-        _knownExpressions["var"] = nullptr;
-        _knownExpressions["="] = nullptr;
-        _knownExpressions["sleep"] = nullptr;
-        _knownExpressions["print"] = nullptr;
-        _knownExpressions["openDataServer"] = nullptr;
-        _knownExpressions["connect"] = nullptr;
-        _knownExpressions["if"] = nullptr;
-        _knownExpressions["while"] = nullptr;
-    }
+    void LoadKnownExpressions();
 
 public:
 
@@ -56,31 +40,7 @@ public:
         LoadKnownExpressions();
     }
 
-    Expression *GetNextExpression() {
-        string exp = _dataHandler->GetCurrentToken().get_value();
-
-        if (!(_knownExpressions.find(exp) == _knownExpressions.end())) {
-            // is an expression in map
-            return GetExpression(exp);
-        } else { // is not an expression, may be var - check next
-
-            _dataHandler->Advance(NEXT);
-            if (_dataHandler->hasMoreTokens()) {
-                exp = _dataHandler->GetCurrentToken().get_value();
-
-                if (!(_knownExpressions.find(exp) == _knownExpressions.end())) {
-                    return GetExpression(exp);
-                }
-
-            }
-        }
-
-        cout << "Syntax error! " << exp << " line: "
-             << _dataHandler->GetCurrentLineIndex() << endl;
-        return nullptr;
-
-    }
-
+    Expression *GetNextExpression();
 };
 
 

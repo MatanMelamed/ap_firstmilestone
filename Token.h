@@ -1,3 +1,5 @@
+#include <utility>
+
 #ifndef PROJECT_TOKEN_H
 #define PROJECT_TOKEN_H
 
@@ -10,7 +12,7 @@ using namespace std;
 enum TokenType {
     CMD,
     SP,
-    STR,
+    WORD,
     DELIMITER,
     LCB, //Left Curly Brace
     RCB, //Right Curly Brace
@@ -20,6 +22,7 @@ enum TokenType {
     ERR,
     LRB,
     RRB,
+    STR,
 };
 
 
@@ -33,7 +36,7 @@ class Token {
 
     map<int, string> type_converter = {{0,  "CMD"},
                                        {1,  "SP"},
-                                       {2,  "STR"},
+                                       {2,  "WORD"},
                                        {3,  "DELIMITER"},
                                        {4,  "LCB"},
                                        {5,  "RCB"},
@@ -42,7 +45,8 @@ class Token {
                                        {8,  "BOOL"},
                                        {9,  "ERR"},
                                        {10, "LRB"},
-                                       {11, "RRB"},};
+                                       {11, "RRB"},
+                                       {12, "STR"}};
 
 public:
 
@@ -54,8 +58,8 @@ public:
         this->_type = type;
         this->_value = value;
         this->_priority = priority;
-        this->_must_be_after = must_kriptonite;
-        this->_cant_be_after = cant_kriptonite;
+        this->_must_be_after = std::move(must_kriptonite);
+        this->_cant_be_after = std::move(cant_kriptonite);
     }
 
     TokenType get_type() const {
@@ -70,29 +74,7 @@ public:
         return _priority;
     }
 
-    bool isValidAfterToken(char check) const {
-        bool result = true;
-
-        if (!_must_be_after.empty()) {
-            result = false;
-            for (char c : _must_be_after) {
-                if (check == c) {
-                    result = true;
-                    break;
-                }
-            }
-        } else if (!_cant_be_after.empty()) {
-            result = true;
-            for (char c: _cant_be_after) {
-                if (check == c) {
-                    result = false;
-                    break;
-                }
-            }
-        }
-
-        return result;
-    }
+    bool isValidAfterToken(char check) const;
 
     void Print() {
         cout << "Type: " << type_converter.at(_type) << " ,";

@@ -1,10 +1,6 @@
-//
-// Created by tomme on 21/12/2018.
-//
-
 #include "Minus.h"
 
-Minus::Minus(Expression* expression1, Expression* expression2) {
+Minus::Minus(Expression *expression1, Expression *expression2) {
     this->exp1 = expression1;
     this->exp2 = expression2;
 }
