@@ -26,6 +26,7 @@ public:
         string hertzString = _dataHandler->GetCurrentToken().get_value();
         double hertz = _expCalculator->GetExpression(hertzString)->Calculate();
         _dataHandler->Advance(1);
+        cout << "Please wait until simulator is opened";
         this->server->OpenServer(port,hertz);
     }
     ~OpenDataServerCommand(){

@@ -49,9 +49,13 @@ void Lexer::FileLexer() {
         _target = NOT_FILE;
         CommandLineLexer();
     } else {
+
         string line = _lines[_lineNumber];
         _lineNumber++;
 
+        if (_lineNumber == 15) {
+            cout << "";
+        }
         vector<Token> *splitted = Split(line);
 
         _dataHandler->SetNewLine(splitted);

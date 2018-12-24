@@ -7,7 +7,6 @@
 using namespace std;
 
 void DataReaderServer::OpenServer(int port, int time) {
-    cout << "Please wait until simulator is opened";
     int serverSocket = this->CreateServerSocket(port);
     cin.get();
     struct MyParams *params = new MyParams();
