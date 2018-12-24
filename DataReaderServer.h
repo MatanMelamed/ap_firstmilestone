@@ -84,9 +84,10 @@ public:
     }
     void OpenServer(int port, int hertz);
 
-    void UpdateSymbleTable(float* buffer);
+    void UpdateSymbleTable(vector<double> convertedInfo);
 
     static void* thread_func(void* arg);
+    static vector<double> StringToInfo(string input);
 
     void needToStop(){
         this->stop = true;
