@@ -12,6 +12,7 @@
 #include "ConnectCommand.h"
 #include "WhileCommand.h"
 #include "IfCommand.h"
+#include "ExitCommand.h"
 
 using namespace std;
 

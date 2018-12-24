@@ -17,8 +17,8 @@ int main(int args, char **argv) {
 
     DataHandler dataHandler;
     ExpressionManager expressionManager(&dataHandler);
-    string target = args == TWO ? argv[ONE] : NOT_FILE;
-    //string target = "run.txt";
+    //string target = args == TWO ? argv[ONE] : NOT_FILE;
+    string target = "run.txt";
     Lexer l = Lexer(&dataHandler, target);
 
     while (!dataHandler.IsShuttingDown()) {
@@ -33,7 +33,7 @@ int main(int args, char **argv) {
 void Parser(DataHandler *dataHandler, ExpressionManager *expressionManager) {
 
     if (dataHandler->GetState() != READ && !dataHandler->ShouldSkipLine()) {
-        while (dataHandler->hasMoreTokens() && !dataHandler->IsShuttingDown()) {
+        while (!dataHandler->IsShuttingDown() && dataHandler->hasMoreTokens()) {
             Expression *e = expressionManager->GetNextExpression();
             /**
              * expression might be invalid, dont break the code,

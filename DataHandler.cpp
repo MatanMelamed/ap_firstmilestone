@@ -170,7 +170,8 @@ void DataHandler::AddOpenBracket(int startLine) {
     pair->_closeLine = startLine;
 
     _brackets.push_back(pair);
-    _brackets_queue.push(pair);
+    auto it = _brackets.end() - 1;
+    _brackets_queue.push(*it);
     _openBrackets++;
 }
 
@@ -215,12 +216,16 @@ void DataHandler::EmptyBracketsQueue() {
 }
 
 void DataHandler::EmptyBrackets() {
-    vector<BracketPair *>::iterator it;
-    // delete all objects from the end to the first, without the first.
-    for (it = _brackets.end() - 1; it != _brackets.begin(); it++) {
-        delete *it;
+    if (!_brackets.empty()) {
+        vector<BracketPair *>::iterator it;
+        // delete all objects from the end to the first, without the first.
+        for (it = _brackets.end() - 1; it != _brackets.begin(); it++) {
+            if(*it !=nullptr){
+                delete *it;
+            }
+        }
+        delete *it; // delete first object
     }
-    delete *it; // delete first object
 }
 
 void DataHandler::EraseAllLines() {

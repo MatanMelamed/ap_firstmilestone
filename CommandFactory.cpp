@@ -28,6 +28,9 @@ Command *CommandFactory::GetCommand(const string &name) {
     } else if (name == "if") {
         target = new IfCommand(this->_dataHandler, this->_varManager,
                                this->_expressionCalculator);
+    } else if (name == "exit") {
+        target = new ExitCommand(this->_dataHandler, this->_varManager,
+                                 this->_expressionCalculator);
     }
     return target;
 }

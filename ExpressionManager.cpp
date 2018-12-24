@@ -20,6 +20,7 @@ void ExpressionManager::LoadKnownExpressions() {
     _knownExpressions["connect"] = nullptr;
     _knownExpressions["if"] = nullptr;
     _knownExpressions["while"] = nullptr;
+    _knownExpressions["exit"] = nullptr;
 }
 
 Expression *ExpressionManager::GetNextExpression() {

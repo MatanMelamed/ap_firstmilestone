@@ -33,4 +33,6 @@ public:
     virtual ~Command() = 0;
 };
 
+inline Command::~Command() {}
+
 #endif

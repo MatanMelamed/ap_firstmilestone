@@ -12,7 +12,7 @@ protected:
 public:
     double Calculate() override = 0;
 
-    ~BinaryExpression() override = default;
+    ~BinaryExpression() override {};
 };
 
 #endif

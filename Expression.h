@@ -9,4 +9,6 @@ public:
     virtual ~Expression() = 0;
 };
 
+inline Expression::~Expression() {}
+
 #endif
