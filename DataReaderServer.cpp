@@ -1,23 +1,26 @@
-//
-// Created by tomme on 23/12/2018.
-//
-
 #include "DataReaderServer.h"
 #include <iostream>
 #include <string>
+
 using namespace std;
 
 void DataReaderServer::OpenServer(int port, int time) {
 
-    struct MyParams* params = new MyParams();
+    struct MyParams *params = new MyParams();
     params->port = port;
     params->time = time;
     params->data = this;
     pthread_t trid;
+
+    // create server
+    // start listening
+    // wait for simulator
+    // pthread only receive - receive
     pthread_create(&trid, nullptr, DataReaderServer::thread_func, params);
 }
-void* DataReaderServer::thread_func(void *arg) {
-    struct MyParams* params = (struct MyParams*) arg;
+
+void *DataReaderServer::thread_func(void *arg) {
+    struct MyParams *params = (struct MyParams *) arg;
     int sockfd, newsockfd, portno, clilen;
     char buffer[1024];
     struct sockaddr_in serv_addr, cli_addr;
@@ -53,7 +56,8 @@ void* DataReaderServer::thread_func(void *arg) {
     clilen = sizeof(cli_addr);
 
     /* Accept actual connection from the client */
-    newsockfd = accept(sockfd, (struct sockaddr *) &cli_addr, (socklen_t *) &clilen);
+    newsockfd = accept(sockfd, (struct sockaddr *) &cli_addr,
+                       (socklen_t *) &clilen);
 
     if (newsockfd < 0) {
         perror("ERROR on accept");
@@ -70,7 +74,7 @@ void* DataReaderServer::thread_func(void *arg) {
             perror("ERROR reading from socket");
             exit(1);
         }
-        vector<double>convertedInfo  = StringToInfo(buffer);
+        vector<double> convertedInfo = StringToInfo(buffer);
         params->data->UpdateSymbleTable(convertedInfo);
 
         sleep(params->time / MILI_SEC);
@@ -80,7 +84,7 @@ void* DataReaderServer::thread_func(void *arg) {
     return nullptr;
 }
 
-vector<double>DataReaderServer::StringToInfo(string input) {
+vector<double> DataReaderServer::StringToInfo(string input) {
 
     vector<double> result;
     string sum;
@@ -98,16 +102,22 @@ vector<double>DataReaderServer::StringToInfo(string input) {
 
     return result;
 }
+
 void DataReaderServer::UpdateSymbleTable(vector<double> convertedInfo) {
     string pathToAllVars[XML_AMOUNT_VARS] = {INDICATE_SPD, INDICATE_ALT,
-           PRESSURE_ALT, PITCH_DEG,ROLL_DEG, IN_PITCH_DEG,IN_ROLL_DEG,
-           ENC_INDICATE_ALT,ENC_PRESURE_ALT, GPS_ALT,
-           GPS_GRND_SPD, GPS_VERTICAL_SPD,HEAD_DEG, CMPS_HEAD_DEG,
-           SLIP_SKID, TURN_RATE, SPEED_FPM,AILERON, ELEVATOR, RUDDER,
-                               FLAPS, THROTTLE, RPM};
+                                             PRESSURE_ALT, PITCH_DEG, ROLL_DEG,
+                                             IN_PITCH_DEG, IN_ROLL_DEG,
+                                             ENC_INDICATE_ALT, ENC_PRESURE_ALT,
+                                             GPS_ALT,
+                                             GPS_GRND_SPD, GPS_VERTICAL_SPD,
+                                             HEAD_DEG, CMPS_HEAD_DEG,
+                                             SLIP_SKID, TURN_RATE, SPEED_FPM,
+                                             AILERON, ELEVATOR, RUDDER,
+                                             FLAPS, THROTTLE, RPM};
     for (int i = 0; i <= XML_AMOUNT_VARS; ++i) {
-        if(this->_varManager->pathExist(pathToAllVars[i])) {
-            this->_varManager->UpdateAllVars(pathToAllVars[i],convertedInfo[i]);
+        if (this->_varManager->pathExist(pathToAllVars[i])) {
+            this->_varManager->UpdateAllVars(pathToAllVars[i],
+                                             convertedInfo[i]);
         }
     }
 }

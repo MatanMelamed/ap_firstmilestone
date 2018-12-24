@@ -70,7 +70,7 @@
 
 class DataReaderServer {
 private:
-    VarManager* _varManager;
+    VarManager *_varManager;
     bool stop;
 public:
     struct MyParams {
@@ -78,21 +78,23 @@ public:
         int time;
         DataReaderServer *data;
     };
-    DataReaderServer(VarManager *varManager){
+
+    DataReaderServer(VarManager *varManager) {
         this->_varManager = varManager;
         this->stop = false;
     }
+
     void OpenServer(int port, int hertz);
 
     void UpdateSymbleTable(vector<double> convertedInfo);
 
-    static void* thread_func(void* arg);
+    static void *thread_func(void *arg);
+
     static vector<double> StringToInfo(string input);
 
-    void needToStop(){
+    void needToStop() {
         this->stop = true;
     }
 };
 
-
-#endif //PROJECT_DATAREADERSERVER_H
+#endif
