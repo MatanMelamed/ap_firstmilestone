@@ -33,6 +33,8 @@ Command *CommandFactory::GetCommand(const string &name) {
                                  this->_expressionCalculator);
     } else if (name == "enterc") {
         target = new EntercCommand(this->_dataHandler);
+    } else if (name == "help") {
+        target = new HelpCommand(this->_dataHandler, this->_varManager);
     }
     return target;
 }

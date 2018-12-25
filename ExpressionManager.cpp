@@ -22,6 +22,7 @@ void ExpressionManager::LoadKnownExpressions() {
     _knownExpressions["while"] = nullptr;
     _knownExpressions["exit"] = nullptr;
     _knownExpressions["enterc"] = nullptr;
+    _knownExpressions["help"] = nullptr;
 }
 
 Expression *ExpressionManager::GetNextExpression() {

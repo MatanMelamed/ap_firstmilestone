@@ -27,7 +27,7 @@ enum recv_state {
     READ,       // only read
     EXECUTE,    // read and execute
     RUN,        // only execute
-    HALT,       // shuting down
+    HALT,       // shutting down
 };
 
 /**
@@ -74,7 +74,6 @@ class DataHandler {
     void EmptyBrackets();
 
     // upon invalid line - resets scope control and continue with EXECUTE mode.
-
     void HandleREADState();
 
     void HandleRUNState();

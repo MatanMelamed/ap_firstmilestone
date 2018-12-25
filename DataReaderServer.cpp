@@ -19,7 +19,6 @@ void *DataReaderServer::StartListeningForData(void *arg) {
     char buffer[256];
     string current_string;
     string leftovers;
-    int index = 0;
 
     /* If connection is established then start communicating */
     while (!server->stop) {
@@ -120,3 +119,4 @@ void DataReaderServer::Try(string &buffer, string &c, string &l) {
         c.clear();
     }
 }
+

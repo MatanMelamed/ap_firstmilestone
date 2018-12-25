@@ -17,8 +17,7 @@ int main(int args, char **argv) {
 
     DataHandler dataHandler;
     ExpressionManager expressionManager(&dataHandler);
-    //string target = args == TWO ? argv[ONE] : NOT_FILE;
-    string target = "run.txt";
+    string target = args == TWO ? argv[ONE] : NOT_FILE;
     Lexer l = Lexer(&dataHandler, target);
 
     while (!dataHandler.IsShuttingDown()) {

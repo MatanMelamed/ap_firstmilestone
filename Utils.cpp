@@ -1,6 +1,5 @@
 #include "Utils.h"
 
-
 /**
  * receives a string of doubles separated by ','.
  * returns vector of doubles with these values.

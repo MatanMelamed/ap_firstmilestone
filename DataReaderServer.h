@@ -24,7 +24,7 @@ class DataReaderServer {
     bool stop;
 
 public:
-    struct MyParams {
+    struct ServerParams {
         int port;
         int hertz;
         int serverSocket;
@@ -51,6 +51,7 @@ public:
     void needToStop() {
         this->stop = true;
     }
+
 };
 
 #endif

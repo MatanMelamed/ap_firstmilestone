@@ -228,6 +228,7 @@ void Tokenizer::SetCommandTokenizer() {
     valid_tokens.emplace_back(CMD, "if", 0, " ", "");
     valid_tokens.emplace_back(CMD, "exit", 0, " ", "");
     valid_tokens.emplace_back(CMD, "enterc", 0, " ", "");
+    valid_tokens.emplace_back(CMD, "help", 0, " ", "");
 
 }
 

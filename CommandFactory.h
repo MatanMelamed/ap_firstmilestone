@@ -14,6 +14,7 @@
 #include "WhileCommand.h"
 #include "IfCommand.h"
 #include "ExitCommand.h"
+#include "HelpCommand.h"
 
 using namespace std;
 

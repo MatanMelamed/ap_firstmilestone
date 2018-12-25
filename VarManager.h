@@ -11,12 +11,14 @@
 #include <pthread.h>
 #include "DataReaderClient.h"
 
+#define MILI_SEC 1/1000
 using namespace std;
 
 class VarManager {
 
     map<string, double> _symbolTable;
     map<string, vector<string> > _binds;
+    string _lastBindNeedUpdate;
     vector<string> _specialNames;
 
     DataReaderClient *_client;
@@ -25,6 +27,7 @@ class VarManager {
 public:
     VarManager() {
         _client = nullptr;
+        _lastBindNeedUpdate.clear();
     };
 
     // Setters
@@ -74,6 +77,8 @@ public:
 
     // given string - may be var name or path
     bool hasBind(const string &source);
+
+    void PrintAll();
 };
 
 #endif

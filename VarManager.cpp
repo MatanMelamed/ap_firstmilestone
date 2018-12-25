@@ -20,6 +20,9 @@ void VarManager::Bind(string source, string target) {
     if (!IsBindExist(target, source)) {
         _binds[target].push_back(source);
     }
+    if (target[0] == '\"') {
+        _lastBindNeedUpdate = target;
+    }
     lock.unlock();
 }
 
@@ -44,6 +47,9 @@ bool VarManager::hasBind(const string &source) {
 }
 
 void VarManager::UpdatePath(const string &path, double value) {
+    if (_lastBindNeedUpdate == path) {
+        _lastBindNeedUpdate.clear();
+    }
     if (hasBind(path)) {
         vector<string> source_binds = _binds.at(path);
         vector<string>::iterator it;
@@ -56,6 +62,9 @@ void VarManager::UpdatePath(const string &path, double value) {
 }
 
 void VarManager::UpdateVar(const string &varName, double value) {
+    while (!_lastBindNeedUpdate.empty()) {
+        sleep(MILI_SEC); // wait until server sends first update for last bind
+    }
     SetVarValue(varName, value);
     UpdateVarBinds(varName);
 }
@@ -93,6 +102,14 @@ void VarManager::AddClient(DataReaderClient *newClient) {
     if (_client == nullptr) {
         _client = newClient;
     }
+}
+
+void VarManager::PrintAll() {
+    map<string, double>::iterator it;
+    for (it = _symbolTable.begin(); it != _symbolTable.end(); it++) {
+        cout << (*it).first << ": " << (*it).second << ", ";
+    }
+    cout << endl << ">>";
 }
 
 
