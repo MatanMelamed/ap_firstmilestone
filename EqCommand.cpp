@@ -4,41 +4,36 @@ void EqCommand::doCommand() {
     _dataHandler->Advance(MINUS_ONE);
     string varName = _dataHandler->GetCurrentToken().get_value();
 
+    if (!_varManager->IsVarExist(varName)) {
+        SyntaxErrorHandler(_dataHandler->GetTokenInOffSet(ONE));
+    }
+
     _dataHandler->Advance(TWO);
     string value = _dataHandler->GetCurrentToken().get_value();
 
-    if (value == "bind") {
-        _dataHandler->Advance(ONE);
-        value = this->_dataHandler->GetCurrentToken().get_value();
-        if (value[0] == '\"') {
-            _varManager->SetPath(varName, value);
-            _varManager->SetPathAndVar(value, varName);
-        } else {
-            double *number = new double();
-            if (_varManager->GetValue(value, number)) {
-                string path = _varManager->GetPath(value);
-                _varManager->SetValue(varName, *number);
-                _varManager->SetBindBetweenVars(value, varName);
-
-            } else {
-                // get '=' token.
-                SyntaxErrorHandler(_dataHandler->GetTokenInOffSet(-2));
-            }
-            delete number;
-        }
+    if (value == BIND_INDICATOR) {
+        HandleBind(varName);
     } else {
-        string expression = _dataHandler->GetCurrentToken().get_value();
-        double newValue = _expCalculator->GetResults(expression);
-        _varManager->SetValue(varName, newValue);
-        if (this->_varManager->hasBindVars(varName)) {
-            vector<string> varsConected = this->_varManager->getBindedVars(
-                    varName);
-            for (const string &var: varsConected) {
-                this->_varManager->SetValue(var, newValue);
-            }
-        }
+        HandleSet(varName);
     }
 
     this->_dataHandler->Advance(ONE);
+}
+
+void EqCommand::HandleBind(const string &varName) {
+    _dataHandler->Advance(ONE);
+    string value = this->_dataHandler->GetCurrentToken().get_value();
+
+    if (value[0] == '\"' || _varManager->IsVarExist(value)) {  // path or var
+        _varManager->Bind(varName, value);
+    } else {    // not a bind type - get '=' token.
+        SyntaxErrorHandler(_dataHandler->GetTokenInOffSet(-2));
+    }
+}
+
+void EqCommand::HandleSet(const string &varName) {
+    string expression = _dataHandler->GetCurrentToken().get_value();
+    double newValue = _expCalculator->GetResults(expression);
+    _varManager->UpdateVar(varName, newValue);
 }
 

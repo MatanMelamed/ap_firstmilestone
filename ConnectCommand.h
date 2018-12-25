@@ -12,7 +12,7 @@ public:
                    ShuntingYard *_expCalculator) : Command(_dataHandler,
                                                            _varManager,
                                                            _expCalculator) {
-        client = new DataReaderClient(_varManager);
+        client = new DataReaderClient();
     }
 
     void doCommand() override;

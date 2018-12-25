@@ -7,5 +7,7 @@ void ConnectCommand::doCommand() {
     string portString = _dataHandler->GetCurrentToken().get_value();
     double port = _expCalculator->GetExpression(portString)->Calculate();
     _dataHandler->Advance(ONE);
-    this->client->ConnectClient(ip, (int) port);
+
+    client->StartClient(ip, (int) port);
+    _varManager->AddClient(client);
 }

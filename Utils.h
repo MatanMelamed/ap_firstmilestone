@@ -10,7 +10,7 @@
 using namespace std;
 
 
-vector<string> Split(const string &s, const string &splitters) {
+vector<string> SplitByDelimiters(const string &s, const string &splitters) {
 
     vector<string> tokens;
     string token;
@@ -41,10 +41,10 @@ vector<string> Split(const string &s, const string &splitters) {
 }
 
 template<typename T>
-void pop(map<string, T> *m) {
+void PopulateMapWithPaths(map<string, T> *m,string source) {
     string delimiter ="\n";
     string all;
-    ifstream file("paths.txt");
+    ifstream file(source);
     if (file.is_open()) {
         string line;
         while (getline(file, line)) {
@@ -52,7 +52,7 @@ void pop(map<string, T> *m) {
         }
         file.close();
     }
-    vector<string> paths = Split(all, delimiter);
+    vector<string> paths = SplitByDelimiters(all, delimiter);
     for (vector<string>::const_iterator i = paths.begin();
          i != paths.end(); ++i) {
         (*m)[(*i)];

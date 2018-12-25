@@ -20,4 +20,9 @@ add_executable(ap-firstmilestone main.cpp
         EqCommand.cpp
         CommandFactory.cpp DataReaderServer.cpp
         CommandFactory.h
-        DataReaderServer.h DataReaderClient.cpp DataReaderClient.h ExpressionManager.cpp IfCommand.cpp Lexer.cpp PrintCommand.cpp ScopeCommand.cpp ShuntingYard.cpp SleepCommand.cpp Token.cpp Tokenizer.cpp VarCommand.cpp VarManager.cpp ExitCommand.h ConnectCommand.cpp)
+        DataReaderServer.h DataReaderClient.cpp
+        AndConditionalExpression.cpp
+        DataReaderClient.h ExpressionManager.cpp
+        IfCommand.cpp Lexer.cpp PrintCommand.cpp ScopeCommand.cpp
+        ShuntingYard.cpp SleepCommand.cpp Token.cpp Tokenizer.cpp
+        VarCommand.cpp VarManager.cpp ExitCommand.h ConnectCommand.cpp OpenDataServerCommand.cpp)

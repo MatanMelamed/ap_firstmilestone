@@ -12,34 +12,99 @@ bool VarManager::IsInSpecialNames(const string &name) {
     return result;
 }
 
-bool VarManager::GetValue(const string &var, double *target) {
-    try {
-        *target = this->_symbolTable[var];
-        return true;
-    } catch (const out_of_range &e) {
-        return false;
-    }
-}
-
-vector<string> VarManager:: GetVarsByPath(string path) {
-    return this->_pathToVars[path];
-}
-
-void VarManager::UpdateAllVars(string path, double value) {
-    vector<string> vars = GetVarsByPath(path);
+void VarManager::Bind(string source, string target) {
     lock.lock();
-    for(string var: vars) {
-        this->SetValue(var,value);
+    if (!IsBindExist(source, target)) {
+        _binds[source].push_back(target);
+    }
+    if (!IsBindExist(target, source)) {
+        _binds[target].push_back(source);
     }
     lock.unlock();
 }
-bool VarManager::hasBindVars(string var) {
-    return !(this->_varToVars.find(var) == this->_varToVars.end());
+
+bool VarManager::IsBindExist(const string &source, const string &target) {
+    bool result = false;
+    if (!(_binds.find(source) == _binds.end())) {
+        vector<string> source_binds = _binds.at(source);
+        vector<string>::iterator it;
+        for (it = source_binds.begin(); it != source_binds.end(); it++) {
+            if (*it == target) {
+                result = true;
+                break;
+            }
+        }
+    }
+    return result;
 }
 
-vector<string> VarManager::getBindedVars(string var) {
-    return  this->_varToVars[var];
+bool VarManager::hasBind(const string &source) {
+    bool result = _binds.find(source) != _binds.end();
+    return result;
 }
-void VarManager::SetBindBetweenVars(string sourceVar,string targetVar){
-    this->_varToVars[sourceVar].push_back(targetVar);
+
+void VarManager::UpdatePath(const string &path, double value) {
+    if (hasBind(path)) {
+        lock.lock();
+        vector<string> source_binds = _binds.at(path);
+        vector<string>::iterator it;
+        for (it = source_binds.begin(); it != source_binds.end(); it++) {
+            if (IsVarExist((*it))) {
+                lock.unlock();
+                UpdateVar((*it), value);
+                lock.lock();
+            }
+        }
+        lock.unlock();
+    }
 }
+
+void VarManager::UpdateVar(const string &varName, double value) {
+    lock.lock();
+    SetVarValue(varName, value);
+    lock.unlock();
+    UpdateVarBinds(varName);
+}
+
+void VarManager::UpdateVarBinds(const string &varName) {
+    lock.lock();
+    if (hasBind(varName)) {
+        vector<string> source_binds = _binds.at(varName);
+        vector<string>::iterator it;
+        for (it = source_binds.begin(); it != source_binds.end(); it++) {
+            if (IsVarExist((*it))) {
+                SetVarValue((*it), _symbolTable.at(varName));
+            } else {
+                lock.unlock();
+                SendSimulatorUpdate((*it), _symbolTable.at(varName));
+                lock.lock();
+            }
+        }
+    }
+    lock.unlock();
+}
+
+void VarManager::SendSimulatorUpdate(const string &path, double value) {
+
+    if (_client != nullptr) {
+        string cleanPath = path.substr(0, path.length() - 1);
+        cleanPath = cleanPath.substr(1, cleanPath.length() - 1);
+        UpdateUnit unit = {.path = cleanPath, .value = value};
+        _client->AddTask(unit);
+    }
+}
+
+double VarManager::GetValue(const string &varName) {
+    double value = _symbolTable[varName];
+    return value;
+}
+
+void VarManager::AddClient(DataReaderClient *newClient) {
+    if (_client == nullptr) {
+        _client = newClient;
+    }
+}
+
+
+
+

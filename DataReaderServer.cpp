@@ -1,46 +1,40 @@
 #include "DataReaderServer.h"
-#include <iostream>
-#include <string>
-
-#define NUM_OF_PATHS 23
 
 using namespace std;
 
 void DataReaderServer::OpenServer(int port, int time) {
-    int serverSocket = this->CreateServerSocket(port);
+    int serverSocket = CreateServerSocket(port);
     cin.get();
-    struct MyParams *params = new MyParams();
-    params->port = port;
-    params->hertz = time;
-    params->serverSocket = serverSocket;
-    params->data = this;
+    params.port = port;
+    params.hertz = time;
+    params.serverSocket = serverSocket;
+
     pthread_t trid;
-    pthread_create(&trid, nullptr, DataReaderServer::thread_func, params);
+    pthread_create(&trid, nullptr, DataReaderServer::ReceiveNewData, this);
 }
 
-void *DataReaderServer::thread_func(void *arg) {
-    struct MyParams *params = (struct MyParams *) arg;
-    int n;
+void *DataReaderServer::ReceiveNewData(void *arg) {
+    auto *server = (DataReaderServer *) arg;
+    int numOfReceivedBytes;
     char buffer[256];
 
     /* If connection is established then start communicating */
-    while (!params->data->stop) {
+    while (!server->stop) {
 
         bzero(buffer, 256);
-        n = read(params->serverSocket, buffer, 255);
-
-        if (n < 0) {
+        numOfReceivedBytes = (int) read(server->params.serverSocket, buffer,
+                                        255);
+        if (numOfReceivedBytes < 0) {
             perror("ERROR reading from socket");
             exit(1);
         }
 
         vector<double> convertedInfo = StringToInfo(buffer);
-        params->data->UpdateSymbleTable(convertedInfo);
+        server->SendUpdate(convertedInfo);
 
-        sleep(params->hertz / MILI_SEC);
+        sleep(server->params.hertz / MILI_SEC);
     }
 
-    delete params;
     return nullptr;
 }
 
@@ -48,12 +42,16 @@ vector<double> DataReaderServer::StringToInfo(string input) {
 
     vector<double> result;
     string sum;
+    sum.clear();
     int index = 0;
 
-    while (result.size() == NUM_OF_PATHS) {
-        if (input[index] == ',' || input[index] == '\n') {
-            result.push_back(stod(sum));
-            sum.clear();
+
+    while (input[index]!='\n') {
+        if (input[index] == ',') {
+            if (!sum.empty()) {
+                result.push_back(stod(sum));
+                sum.clear();
+            }
         } else {
             sum += input[index];
         }
@@ -65,25 +63,6 @@ vector<double> DataReaderServer::StringToInfo(string input) {
     }
 
     return result;
-}
-
-void DataReaderServer::UpdateSymbleTable(vector<double> convertedInfo) {
-    string pathToAllVars[XML_AMOUNT_VARS] = {INDICATE_SPD, INDICATE_ALT,
-                                             PRESSURE_ALT, PITCH_DEG, ROLL_DEG,
-                                             IN_PITCH_DEG, IN_ROLL_DEG,
-                                             ENC_INDICATE_ALT, ENC_PRESURE_ALT,
-                                             GPS_ALT,
-                                             GPS_GRND_SPD, GPS_VERTICAL_SPD,
-                                             HEAD_DEG, CMPS_HEAD_DEG,
-                                             SLIP_SKID, TURN_RATE, SPEED_FPM,
-                                             AILERON, ELEVATOR, RUDDER,
-                                             FLAPS, THROTTLE, RPM};
-    for (int i = 0; i <= XML_AMOUNT_VARS; ++i) {
-        if (this->_varManager->pathExist(pathToAllVars[i])) {
-            this->_varManager->UpdateAllVars(pathToAllVars[i],
-                                             convertedInfo[i]);
-        }
-    }
 }
 
 int DataReaderServer::CreateServerSocket(int port) {
@@ -129,4 +108,27 @@ int DataReaderServer::CreateServerSocket(int port) {
         exit(1);
     }
     return newsockfd;
+}
+
+void DataReaderServer::SendUpdate(vector<double> newData) {
+    vector<double>::iterator it;
+    int index = 0;
+    for (it = newData.begin(); it != newData.end(); ++it) {
+        if (_varManager->hasBind(_paths[index])) {
+            _varManager->UpdatePath(_paths[index], (*it));
+        }
+    }
+}
+
+void DataReaderServer::LoadPaths() {
+    ifstream file(PATH_FILE);
+    int index = 0;
+    if (file.is_open()) {
+        string line;
+        while (getline(file, line)) {
+            _paths[index] = line;
+            index++;
+        }
+        file.close();
+    }
 }

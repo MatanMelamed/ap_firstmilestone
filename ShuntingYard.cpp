@@ -72,11 +72,9 @@ Expression *ShuntingYard::CalculateQueue(queue<Token> queuE) {
             stackExp.push(new Number(stod(token.get_value())));
         } else {
             if (token.get_type() == WORD) {
-                if (this->varManager->IsExist(token.get_value())) {
-                    double *number = new double();
-                    this->varManager->GetValue(token.get_value(), number);
-                    stackExp.push(new Number(*number));
-                    delete number;
+                if (this->varManager->IsVarExist(token.get_value())) {
+                    double number = varManager->GetValue(token.get_value());
+                    stackExp.push(new Number(number));
                 } else {
                     throw "no valid variable";
                 }

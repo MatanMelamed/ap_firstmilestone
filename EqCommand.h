@@ -3,6 +3,8 @@
 
 #include "Command.h"
 
+#define BIND_INDICATOR "bind"
+
 using namespace std;
 
 class EqCommand : public Command {
@@ -13,6 +15,12 @@ public:
                                                       _expCalculator) {}
 
     void doCommand() override;
+
+    void HandleBind(const string &varName);
+
+    void HandleSet(const string &varName);
+
+    ~EqCommand() override = default;
 };
 
 #endif

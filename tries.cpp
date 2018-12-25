@@ -12,21 +12,11 @@ void analyze(string s);
 
 int asd() {
 
-    string s;// = "var six=6 + seven ";
+    string s = "\"sdsds\"";
+    cout << s;
+    s = (s.substr(0, s.length() - 1)).substr(1, s.length() - 1);
 
-    s = "openDataServer variable + 5402 +  10 / 88 * 2 10";
-    analyze(s);
-    s = "openDataServer variable + 5402 +  10 / 88 * 2 - 10";
-    analyze(s);
-    s = "openDataServer variable + 5402 +  10 / 88 * 2 ,- 10";
-    analyze(s);
-    s = "openDataServer (variable + 5402 +  10 / 88 * 2) - 10";
-    analyze(s);
-
-    s = "openDataServer (variable + 5402 +  10 / 88 * 2) (- 10)";
-    analyze(s);
-
-
+    cout << s;
     return 0;
 
 
