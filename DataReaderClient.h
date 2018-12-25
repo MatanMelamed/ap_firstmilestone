@@ -12,7 +12,7 @@
 
 #include <string.h>
 #include <string>
-#include <stack>
+#include <queue>
 #include <iostream>
 
 #define ADD_TASK "add"
@@ -28,7 +28,7 @@ struct UpdateUnit {
 class DataReaderClient {
 
     bool _stop;
-    stack<UpdateUnit> _neededUpdates;
+    queue<UpdateUnit> _neededUpdates;
     mutex lock;
 
 public:

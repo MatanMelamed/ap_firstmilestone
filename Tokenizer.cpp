@@ -26,12 +26,6 @@ bool Tokenizer::IsNumber(const string &value) {
 bool Tokenizer::IsToken(const PacketAnalyzer &pa, const Token &t) {
     bool result = true;
 
-    if (pa.line == "rudder = (h0 – heading)/20") {
-        if (pa.new_tokens.size() == 4 && (t.get_value() == "-")) {
-            cout << "";
-        }
-    }
-
     // cant fit the token in the rest of s.
     if (pa.line.length() - pa.index < t.get_value().length()) {
         return !result;
@@ -143,9 +137,6 @@ vector<Token> Tokenizer::MergeExpressionToStrings(PacketAnalyzer &pa) {
     vector<Token> afterMerge;
     string tokenSum;
 
-    if (pa.new_tokens[3].get_type() == LRB) {
-        cout << "";
-    }
     list<vector<Token>> splitSequences;
 
     PopulateSplitSequences(splitSequences);
@@ -236,6 +227,7 @@ void Tokenizer::SetCommandTokenizer() {
     valid_tokens.emplace_back(CMD, "while", 0, " ", "");
     valid_tokens.emplace_back(CMD, "if", 0, " ", "");
     valid_tokens.emplace_back(CMD, "exit", 0, " ", "");
+    valid_tokens.emplace_back(CMD, "enterc", 0, " ", "");
 
 }
 

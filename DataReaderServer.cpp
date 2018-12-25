@@ -4,7 +4,6 @@ using namespace std;
 
 void DataReaderServer::OpenServer(int port, int time) {
     int serverSocket = CreateServerSocket(port);
-    cin.get();
     params.port = port;
     params.hertz = time;
     params.serverSocket = serverSocket;
@@ -34,14 +33,6 @@ void *DataReaderServer::StartListeningForData(void *arg) {
         }
 
         if (AddToCurrent(buffer, current_string, leftovers)) {
-
-            if (index == 50) {
-                cout << current_string << endl;
-            }
-            index++;
-            if (index > 50) {
-                index = 0;
-            }
             vector<double> convertedInfo = StringSeparator(current_string);
             server->SendUpdate(convertedInfo);
             current_string.clear();

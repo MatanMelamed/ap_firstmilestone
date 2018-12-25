@@ -26,4 +26,4 @@ add_executable(ap-firstmilestone
         DataReaderClient.h ExpressionManager.cpp
         IfCommand.cpp Lexer.cpp PrintCommand.cpp ScopeCommand.cpp
         ShuntingYard.cpp SleepCommand.cpp Token.cpp Tokenizer.cpp
-        VarCommand.cpp VarManager.cpp ExitCommand.h ConnectCommand.cpp OpenDataServerCommand.cpp Utils.cpp)
+        VarCommand.cpp VarManager.cpp ExitCommand.h ConnectCommand.cpp OpenDataServerCommand.cpp Utils.cpp EntercCommand.h)

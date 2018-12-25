@@ -4,6 +4,7 @@
 #include <string>
 #include "ShuntingYard.h"
 
+#include "EntercCommand.h"
 #include "VarCommand.h"
 #include "EqCommand.h"
 #include "SleepCommand.h"

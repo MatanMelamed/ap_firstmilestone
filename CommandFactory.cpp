@@ -31,6 +31,8 @@ Command *CommandFactory::GetCommand(const string &name) {
     } else if (name == "exit") {
         target = new ExitCommand(this->_dataHandler, this->_varManager,
                                  this->_expressionCalculator);
+    } else if (name == "enterc") {
+        target = new EntercCommand(this->_dataHandler);
     }
     return target;
 }

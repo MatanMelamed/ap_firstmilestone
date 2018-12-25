@@ -78,7 +78,7 @@ UpdateUnit DataReaderClient::RequestTask(UpdateUnit update, string request) {
     if (request == ADD_TASK) {
         _neededUpdates.push(update);
     } else if (request == GET_TASK) {
-        requested = _neededUpdates.top();
+        requested = _neededUpdates.front();
         _neededUpdates.pop();
     }
     lock.unlock();
