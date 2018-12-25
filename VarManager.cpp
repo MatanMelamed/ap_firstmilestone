@@ -49,7 +49,7 @@ void VarManager::UpdatePath(const string &path, double value) {
         vector<string>::iterator it;
         for (it = source_binds.begin(); it != source_binds.end(); it++) {
             if (IsVarExist((*it))) {
-                UpdateVar((*it), value);
+                SetVarValue((*it), value);
             }
         }
     }
@@ -80,7 +80,7 @@ void VarManager::SendSimulatorUpdate(const string &path, double value) {
         string cleanPath = path.substr(0, path.length() - 1);
         cleanPath = cleanPath.substr(1, cleanPath.length() - 1);
         UpdateUnit unit = {.path = cleanPath, .value = value};
-        _client->AddTask(unit);
+        _client->RequestTask(unit, ADD_TASK);
     }
 }
 

@@ -15,6 +15,9 @@
 #include <stack>
 #include <iostream>
 
+#define ADD_TASK "add"
+#define GET_TASK "get"
+
 using namespace std;
 
 struct UpdateUnit {
@@ -46,11 +49,7 @@ public:
 
     void SendToSimulator(int sockfd);
 
-    void AddTask(UpdateUnit update) {
-        lock.lock();
-        _neededUpdates.push(update);
-        lock.unlock();
-    }
+    UpdateUnit RequestTask(UpdateUnit update,string request);
 
     bool ShouldStop();
 

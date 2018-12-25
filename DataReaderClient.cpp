@@ -56,8 +56,7 @@ void *DataReaderClient::UpdateStatus(void *arg) {
 
 void DataReaderClient::SendToSimulator(int sockfd) {
     while (!_neededUpdates.empty()) {
-        UpdateUnit update = _neededUpdates.top();
-        _neededUpdates.pop();
+        UpdateUnit update = RequestTask(UpdateUnit(), GET_TASK);
         string command =
                 "set " + update.path + " " + to_string(update.value) + "\r\n";
         int n = write(sockfd, command.c_str(), command.size());
@@ -70,4 +69,18 @@ void DataReaderClient::SendToSimulator(int sockfd) {
 
 bool DataReaderClient::ShouldStop() {
     return _stop;
+}
+
+UpdateUnit DataReaderClient::RequestTask(UpdateUnit update, string request) {
+    lock.lock();
+    UpdateUnit requested;
+
+    if (request == ADD_TASK) {
+        _neededUpdates.push(update);
+    } else if (request == GET_TASK) {
+        requested = _neededUpdates.top();
+        _neededUpdates.pop();
+    }
+    lock.unlock();
+    return requested;
 }

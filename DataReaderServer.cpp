@@ -20,6 +20,7 @@ void *DataReaderServer::StartListeningForData(void *arg) {
     char buffer[256];
     string current_string;
     string leftovers;
+    int index = 0;
 
     /* If connection is established then start communicating */
     while (!server->stop) {
@@ -33,6 +34,14 @@ void *DataReaderServer::StartListeningForData(void *arg) {
         }
 
         if (AddToCurrent(buffer, current_string, leftovers)) {
+
+            if (index == 50) {
+                cout << current_string << endl;
+            }
+            index++;
+            if (index > 50) {
+                index = 0;
+            }
             vector<double> convertedInfo = StringSeparator(current_string);
             server->SendUpdate(convertedInfo);
             current_string.clear();
