@@ -54,7 +54,6 @@ void *DataReaderClient::UpdateStatus(void *arg) {
     }
 }
 
-
 void DataReaderClient::SendToSimulator(int sockfd) {
     while (!_neededUpdates.empty()) {
         UpdateUnit update = _neededUpdates.top();

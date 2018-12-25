@@ -12,6 +12,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include "Utils.h"
 
 #define PATH_FILE "paths.txt"
 #define MILI_SEC 1000
@@ -43,9 +44,9 @@ public:
 
     void SendUpdate(vector<double> newData);
 
-    static void *ReceiveNewData(void *arg);
+    static void *StartListeningForData(void *arg);
 
-    static vector<double> StringToInfo(string input);
+    void Try(string &buffer, string &c, string &l);
 
     void needToStop() {
         this->stop = true;

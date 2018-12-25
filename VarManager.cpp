@@ -45,29 +45,22 @@ bool VarManager::hasBind(const string &source) {
 
 void VarManager::UpdatePath(const string &path, double value) {
     if (hasBind(path)) {
-        lock.lock();
         vector<string> source_binds = _binds.at(path);
         vector<string>::iterator it;
         for (it = source_binds.begin(); it != source_binds.end(); it++) {
             if (IsVarExist((*it))) {
-                lock.unlock();
                 UpdateVar((*it), value);
-                lock.lock();
             }
         }
-        lock.unlock();
     }
 }
 
 void VarManager::UpdateVar(const string &varName, double value) {
-    lock.lock();
     SetVarValue(varName, value);
-    lock.unlock();
     UpdateVarBinds(varName);
 }
 
 void VarManager::UpdateVarBinds(const string &varName) {
-    lock.lock();
     if (hasBind(varName)) {
         vector<string> source_binds = _binds.at(varName);
         vector<string>::iterator it;
@@ -75,13 +68,10 @@ void VarManager::UpdateVarBinds(const string &varName) {
             if (IsVarExist((*it))) {
                 SetVarValue((*it), _symbolTable.at(varName));
             } else {
-                lock.unlock();
                 SendSimulatorUpdate((*it), _symbolTable.at(varName));
-                lock.lock();
             }
         }
     }
-    lock.unlock();
 }
 
 void VarManager::SendSimulatorUpdate(const string &path, double value) {

@@ -9,55 +9,12 @@
 
 using namespace std;
 
+vector<double> StringSeparator(string input);
 
-vector<string> SplitByDelimiters(const string &s, const string &splitters) {
+bool UpdateCurrentFromLeftOvers(string &current_string, string &leftovers);
 
-    vector<string> tokens;
-    string token;
-
-    int index = 0;
-    bool skip_char;
-    while (index < s.length()) {
-        skip_char = false;
-        for (char delimiter : splitters) {
-            if (s[index] == delimiter) {
-                tokens.push_back(token);
-                token.clear();
-                index++;
-                skip_char = true;
-                continue;
-            }
-        }
-        if (!skip_char) {
-            token += s[index];
-            index++;
-        }
-    }
-    if (!token.empty()) {
-        tokens.push_back(token);
-    }
-
-    return tokens;
-}
-
-template<typename T>
-void PopulateMapWithPaths(map<string, T> *m,string source) {
-    string delimiter ="\n";
-    string all;
-    ifstream file(source);
-    if (file.is_open()) {
-        string line;
-        while (getline(file, line)) {
-            all += line + delimiter;
-        }
-        file.close();
-    }
-    vector<string> paths = SplitByDelimiters(all, delimiter);
-    for (vector<string>::const_iterator i = paths.begin();
-         i != paths.end(); ++i) {
-        (*m)[(*i)];
-    }
-}
+bool AddToCurrent(const string &buffer, string &current_string,
+                  string &leftovers);
 
 
 #endif

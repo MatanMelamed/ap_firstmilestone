@@ -30,9 +30,12 @@ public:
     // Setters
     // set var value and only its value.
     void SetVarValue(const string &var, double value) {
+        lock.lock();
         this->_symbolTable[var] = value;
+        lock.unlock();
     }
 
+    // add bind between two strings - each may be var or path
     void Bind(string source, string target);
 
     // update all binds of given path
@@ -44,8 +47,10 @@ public:
     // update all the binds of a given var
     void UpdateVarBinds(const string &varName);
 
+    // add a task to update given path with given value to client.
     void SendSimulatorUpdate(const string &path, double value);
 
+    // add client pointer
     void AddClient(DataReaderClient *newClient);
 
     // Getters
@@ -64,8 +69,10 @@ public:
         return !(this->_symbolTable.find(var) == this->_symbolTable.end());
     }
 
+    // chech for specific bind
     bool IsBindExist(const string &source, const string &target);
 
+    // given string - may be var name or path
     bool hasBind(const string &source);
 };
 

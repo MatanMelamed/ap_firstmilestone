@@ -4,7 +4,7 @@ set(CMAKE_CXX_STANDARD 11)  # enable C++11 standard
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1y -pthread")
 
-add_executable(ap-firstmilestone main.cpp
+add_executable(ap-firstmilestone
         tries.cpp Lexer.h VarManager.h Command.h DataHandler.h
         Expression.h ExpressionManager.h VarCommand.h CommandExpression.h
         EqCommand.h SleepCommand.h PrintCommand.h OpenDataServerCommand.h ConnectCommand.h
@@ -20,9 +20,10 @@ add_executable(ap-firstmilestone main.cpp
         EqCommand.cpp
         CommandFactory.cpp DataReaderServer.cpp
         CommandFactory.h
+        Utils.h main.cpp
         DataReaderServer.h DataReaderClient.cpp
         AndConditionalExpression.cpp
         DataReaderClient.h ExpressionManager.cpp
         IfCommand.cpp Lexer.cpp PrintCommand.cpp ScopeCommand.cpp
         ShuntingYard.cpp SleepCommand.cpp Token.cpp Tokenizer.cpp
-        VarCommand.cpp VarManager.cpp ExitCommand.h ConnectCommand.cpp OpenDataServerCommand.cpp)
+        VarCommand.cpp VarManager.cpp ExitCommand.h ConnectCommand.cpp OpenDataServerCommand.cpp Utils.cpp)

@@ -10,13 +10,16 @@ void DataReaderServer::OpenServer(int port, int time) {
     params.serverSocket = serverSocket;
 
     pthread_t trid;
-    pthread_create(&trid, nullptr, DataReaderServer::ReceiveNewData, this);
+    pthread_create(&trid, nullptr, DataReaderServer::StartListeningForData,
+                   this);
 }
 
-void *DataReaderServer::ReceiveNewData(void *arg) {
+void *DataReaderServer::StartListeningForData(void *arg) {
     auto *server = (DataReaderServer *) arg;
     int numOfReceivedBytes;
     char buffer[256];
+    string current_string;
+    string leftovers;
 
     /* If connection is established then start communicating */
     while (!server->stop) {
@@ -29,40 +32,15 @@ void *DataReaderServer::ReceiveNewData(void *arg) {
             exit(1);
         }
 
-        vector<double> convertedInfo = StringToInfo(buffer);
-        server->SendUpdate(convertedInfo);
-
+        if (AddToCurrent(buffer, current_string, leftovers)) {
+            vector<double> convertedInfo = StringSeparator(current_string);
+            server->SendUpdate(convertedInfo);
+            current_string.clear();
+        }
         sleep(server->params.hertz / MILI_SEC);
     }
 
     return nullptr;
-}
-
-vector<double> DataReaderServer::StringToInfo(string input) {
-
-    vector<double> result;
-    string sum;
-    sum.clear();
-    int index = 0;
-
-
-    while (input[index]!='\n') {
-        if (input[index] == ',') {
-            if (!sum.empty()) {
-                result.push_back(stod(sum));
-                sum.clear();
-            }
-        } else {
-            sum += input[index];
-        }
-        index++;
-    }
-
-    if (!sum.empty()) {
-        result.push_back(stod(sum));
-    }
-
-    return result;
 }
 
 int DataReaderServer::CreateServerSocket(int port) {
@@ -117,6 +95,7 @@ void DataReaderServer::SendUpdate(vector<double> newData) {
         if (_varManager->hasBind(_paths[index])) {
             _varManager->UpdatePath(_paths[index], (*it));
         }
+        index++;
     }
 }
 
@@ -130,5 +109,14 @@ void DataReaderServer::LoadPaths() {
             index++;
         }
         file.close();
+    }
+}
+
+// try to demonstrate server behavior
+void DataReaderServer::Try(string &buffer, string &c, string &l) {
+    if (AddToCurrent(buffer, c, l)) {
+        vector<double> convertedInfo = StringSeparator(c);
+        SendUpdate(convertedInfo);
+        c.clear();
     }
 }

@@ -47,7 +47,9 @@ public:
     void SendToSimulator(int sockfd);
 
     void AddTask(UpdateUnit update) {
+        lock.lock();
         _neededUpdates.push(update);
+        lock.unlock();
     }
 
     bool ShouldStop();
