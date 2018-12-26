@@ -64,9 +64,12 @@ public:
     bool IsInSpecialNames(const string &name);
 
     bool IsLegal(const string &varName) {
-        bool r = !IsVarExist(varName);
-        bool l = !IsInSpecialNames(varName);
-        return !IsVarExist(varName) && !IsInSpecialNames(varName);
+        return !IsVarExist(varName) && !IsInSpecialNames(varName) &&
+               !IsFirstCharNum(varName);
+    }
+
+    bool IsFirstCharNum(const string &varName) {
+        return (47 < varName[0] && varName[0] < 58);
     }
 
     bool IsVarExist(const string &var) {

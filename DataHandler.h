@@ -11,7 +11,7 @@
 #define RESET_TOKEN_INDEX 0
 #define RESET_LINE_INDEX -1
 #define MINUS_ONE -1
-#define INVALID_LINE_ERR "syntax error occurs in line: " << _currentLineIndex
+#define INVALID_LINE_ERR "Error occurred in line: " << _currentLineIndex
 #define ONE 1
 #define TWO 2
 #define INDEX_OFFSET_ERR Token(ERR,"offset out of range");
@@ -46,6 +46,8 @@ class DataHandler {
     vector<vector<Token> *> _all_lines;
     int _currentLineIndex;
     int _currentTokenIndex;
+    // marks that the current line is not for execution, and if trigger,
+    // will set back to default when new line is read.
     bool _skipLine;
 
     recv_state _state;

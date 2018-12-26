@@ -122,8 +122,9 @@ void DataHandler::HandleREADState() {
 }
 
 void DataHandler::InvalidLineHandle(string extra) {
-    cout << INVALID_LINE_ERR << endl << extra << endl;
-    _all_lines.erase(_all_lines.end() - 1); // delete last line
+    cout << INVALID_LINE_ERR << extra << endl;
+    delete _all_lines[_all_lines.size() - 1]; // delete last line
+    _all_lines.erase(_all_lines.end() - 1); // delete pointer to last line
     ResetScopeControl();
     TriggerSkipLine();
 }
@@ -220,7 +221,7 @@ void DataHandler::EmptyBrackets() {
         vector<BracketPair *>::iterator it;
         // delete all objects from the end to the first, without the first.
         for (it = _brackets.end() - 1; it != _brackets.begin(); it--) {
-            if(*it !=nullptr){
+            if (*it != nullptr) {
                 delete *it;
             }
         }
