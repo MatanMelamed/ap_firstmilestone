@@ -52,6 +52,7 @@ void *DataReaderClient::UpdateStatus(void *arg) {
     while (!client->ShouldStop()) {
         client->SendToSimulator();
     }
+    return nullptr;
 }
 
 void DataReaderClient::SendToSimulator() {

@@ -27,7 +27,8 @@ void DataHandler::GoToNextLine() {
 
 void DataHandler::StartRun() {
     SetState(RUN);
-    runUntilLine = GetEndOfScope(_currentLineIndex);
+    runUntilLine = _currentLineIndex;
+    _currentLineIndex = GetStartOfScope(_currentLineIndex);
     _currentTokenIndex = RESET_TOKEN_INDEX;
 }
 
