@@ -54,6 +54,7 @@ void ExpressionManager::EmptyExpressionMap() {
     }
 }
 
+
 ExpressionManager::~ExpressionManager() {
     EmptyExpressionMap();
 }

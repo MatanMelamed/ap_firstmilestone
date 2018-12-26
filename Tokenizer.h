@@ -88,6 +88,8 @@ public:
 
     // add known expressions of shunting yard.
     void SetShuntingYard();
+
+    void ToLowerCase(Token &t);
 };
 
 #endif

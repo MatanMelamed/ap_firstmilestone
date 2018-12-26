@@ -9,7 +9,7 @@ void ConnectCommand::doCommand() {
     string ip = _dataHandler->GetCurrentToken().get_value();
     _dataHandler->Advance(ONE);
     string portString = _dataHandler->GetCurrentToken().get_value();
-    double port = _expCalculator->GetExpression(portString)->Calculate();
+    double port = _expCalculator->GetResults(portString);
     _dataHandler->Advance(ONE);
 
     _clientThread = client->StartClient(ip, (int) port);

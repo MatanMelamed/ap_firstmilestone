@@ -28,7 +28,7 @@ void *DataReaderServer::StartListeningForData(void *arg) {
     while (!server->stop) {
 
         bzero(buffer, 256);
-        numOfReceivedBytes = (int) read(server->_params._serverSocket, buffer,
+        numOfReceivedBytes = (int) read(server->_params._clientSocket, buffer,
                                         255);
         if (numOfReceivedBytes < 0) {
             perror("ERROR reading from socket");

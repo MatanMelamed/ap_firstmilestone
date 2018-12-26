@@ -49,6 +49,8 @@ public:
 
     // empty the expression map
     void EmptyExpressionMap();
+
+    virtual ~ExpressionManager();
 };
 
 

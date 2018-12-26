@@ -60,7 +60,6 @@ queue<Token> ShuntingYard::ShuntingYardAlgorithm(vector<Token> splitPhrase) {
 Expression *ShuntingYard::CalculateQueue(queue<Token> queuE) {
     stack<Expression *> stackExp;
     vector<Token> vecToken;
-    Expression *temp;
     while (!queuE.empty()) {
         Token token = queuE.front();
         vecToken.push_back(token);

@@ -133,6 +133,14 @@ void Tokenizer::PopulateSplitSequences(list<vector<Token>> &skipSequences) {
     skipSequences.push_back({Token(WORD, "x"), Token(WORD, "X")});
 }
 
+void Tokenizer::ToLowerCase(Token &t) {
+    for (char c : t.get_value()) {
+        if (64 < (int) c && (int) c < 98) {
+            c = (char) ((int) c + 32);
+        }
+    }
+}
+
 vector<Token> Tokenizer::MergeExpressionToStrings(PacketAnalyzer &pa) {
     vector<Token> afterMerge;
     string tokenSum;
@@ -148,7 +156,9 @@ vector<Token> Tokenizer::MergeExpressionToStrings(PacketAnalyzer &pa) {
         if (currentToken->get_type() == CMD ||
             currentToken->get_type() == LCB ||
             currentToken->get_type() == RCB) {
+
             PushSumAsToken(afterMerge, tokenSum);
+            ToLowerCase(*currentToken);
             afterMerge.push_back(*currentToken);
             continue;
         } else if (currentToken->get_type() == DELIMITER) {
@@ -228,6 +238,7 @@ void Tokenizer::SetCommandTokenizer() {
     valid_tokens.emplace_back(CMD, "if", 0, " ", "");
     valid_tokens.emplace_back(CMD, "exit", 0, " ", "");
     valid_tokens.emplace_back(CMD, "enterc", 0, " ", "");
+    valid_tokens.emplace_back(CMD, "Enterc", 0, " ", "");
     valid_tokens.emplace_back(CMD, "help", 0, " ", "");
 
 }
