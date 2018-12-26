@@ -20,20 +20,19 @@ bool DataHandler::hasMoreTokens() {
 void DataHandler::GoToNextLine() {
     if (_currentLineIndex < _all_lines.size() - 1) {
         _currentLineIndex++;
-        _currentTokenIndex = 0;
+        _currentTokenIndex = RESET_TOKEN_INDEX;
         HandleStates();
     }
 }
 
 void DataHandler::StartRun() {
-    _state = RUN;
+    SetState(RUN);
     runUntilLine = GetEndOfScope(_currentLineIndex);
-    _currentLineIndex = GetStartOfScope(runUntilLine);
-    _currentTokenIndex = 0;
+    _currentTokenIndex = RESET_TOKEN_INDEX;
 }
 
 void DataHandler::StopRun() {
-    _state = EXECUTE;
+    SetState(EXECUTE);
     Advance(GetLineSize());
 }
 
@@ -131,7 +130,7 @@ void DataHandler::InvalidLineHandle(string extra) {
 
 
 void DataHandler::ResetScopeControl() {
-    _state = EXECUTE;
+    SetState(EXECUTE);
     _openBrackets = START_BRACkETS_NUM;
     EmptyBracketsQueue();
 }
@@ -242,7 +241,7 @@ void DataHandler::EraseAll() {
     EmptyBracketsQueue();
     EmptyBrackets();
     EraseAllLines();
-    _state = HALT;
+    SetState(HALT);
 }
 
 bool DataHandler::IsShuttingDown() {

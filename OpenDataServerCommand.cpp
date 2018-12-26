@@ -12,5 +12,5 @@ void OpenDataServerCommand::doCommand() {
 
     _dataHandler->Advance(ONE);
 
-    _serverThread = this->server->OpenServer((int) port, (int) hertz);
+    _serverThread = this->server->StartServer((int) port, (int) hertz);
 }

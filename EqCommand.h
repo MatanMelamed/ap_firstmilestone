@@ -16,8 +16,10 @@ public:
 
     void doCommand() override;
 
+    // handles bind requests.
     void HandleBind(const string &varName);
 
+    // handles set value requests.
     void HandleSet(const string &varName);
 
     ~EqCommand() override = default;

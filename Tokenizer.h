@@ -12,10 +12,10 @@
 using namespace std;
 
 struct PacketAnalyzer {
-    string line;
-    vector<Token> new_tokens;
-    string current_value;
-    int index = 0;
+    string line;                // the current string to tokenize
+    vector<Token> new_tokens;   // the result vector
+    string current_value;       // sum of chars from the string
+    int index = 0;              // index of char in string.
 };
 
 /***
@@ -31,43 +31,62 @@ struct PacketAnalyzer {
  */
 class Tokenizer {
 
-    list<Token> valid_tokens;
-    bool _mergeExpressions;
+    list<Token> valid_tokens;   // list of valid tokens.
+    bool _mergeExpressions;     // if tokens needs to be merged after split
+    // this option is to merge expressions into one string like:
+    // "((10+variable)/5)*100"
 
+    // get a token from given string
     Token GetToken(const string &value);
 
+    // checks if given string is a number
     bool IsNumber(const string &value);
 
-    /**
- * this for is taking each valid token and check if the current
- * location in s, starts with this token value, and after the token
- * value, there is a space
- * function inline so there wont be needed to substr each iteration
- */
+    /***
+     * checks if current state of pa - string starts from pa index in current
+     * string, is equal and valid for given token.
+     */
     bool IsToken(const PacketAnalyzer &pa, const Token &t);
 
-    /**
-     * found token t in current state of packet analyzer,
-     * procced with token analyze specifications.
+    /***
+     * do the given token specification on the current state of pa.
      */
     void DoTokenSpecification(PacketAnalyzer &pa, const Token &t);
 
+    /***
+     * analyze given packet.
+     */
     void AnalyzePacket(PacketAnalyzer &pa);
 
 public:
 
     Tokenizer() { _mergeExpressions = false; }
 
+    /***
+     * creates a new packet analyzer with given string, analyze it and
+     * return the result.
+     */
     vector<Token> Lex(string str);
 
+    /***
+     * add vector of tokens, that if seen near each other in the given order,
+     * then the merging will not merge them into one token.
+     */
     void PopulateSplitSequences(list<vector<Token>> &skipSequences);
 
+    /***
+     * merge the result vector of the given pa into new vector of tokens,
+     * by merging logic using split sequences.
+     */
     vector<Token> MergeExpressionToStrings(PacketAnalyzer &pa);
 
+    // given a string - if not empty, push it as a token into given vector.
     void PushSumAsToken(vector<Token> &afterMerge, string &tokenSum);
 
+    // add known expressions of commands and merging flag.
     void SetCommandTokenizer();
 
+    // add known expressions of shunting yard.
     void SetShuntingYard();
 };
 

@@ -18,6 +18,12 @@
 
 using namespace std;
 
+/***
+ * this class responsibles to create given command with it's needed params.
+ * in this program this class sits inside expression manager and is given
+ * its varmanager. it creates its own expression calculator and gives it to
+ * the different classes.
+ */
 class CommandFactory {
 
     DataHandler *_dataHandler;

@@ -57,29 +57,40 @@ class DataHandler {
     vector<BracketPair *> _brackets;  // all brackets pairs - keep track
     stack<BracketPair *> _brackets_queue; // for building main scopes.
 
+    // get open bracket line by given close bracket line.
     int GetStartOfScope(int closeLine);
 
+    // checks if bracket pair that stats in given line exits.
     bool IsBracketPairExists(int startLine);
 
+    // add open bracket of given line.
     void AddOpenBracket(int startLine);
 
+    // add close bracket of given line.
     void AddCloseBracket(int closeLine);
 
-    void HandleEXECUTEState();
-
+    // checks if given token is in current line.
     bool hasTokenTypeInCurrentLine(const TokenType &type);
 
+    // switch state to execute, reset open brackets num and empty brackets queue
     void ResetScopeControl();
 
+    // empty all brackets fron brackets queue.
     void EmptyBracketsQueue();
 
+    // delete all brackets pair in _brackets.
     void EmptyBrackets();
+
+    // handle execute state.
+    void HandleEXECUTEState();
 
     // upon invalid line - resets scope control and continue with EXECUTE mode.
     void HandleREADState();
 
+    // handle run state
     void HandleRUNState();
 
+    // handles states
     void HandleStates();
 
 public:
@@ -92,66 +103,85 @@ public:
     }
 
     // Getters
+    // get current token.
     Token GetCurrentToken();
 
+    // get token in off set in current line.
     Token GetTokenInOffSet(int offset);
 
+    // get current state.
     recv_state GetState() {
-        return this->_state;
+        return _state;
     }
 
+    // get current line index.
     int GetCurrentLineIndex() {
-        return this->_currentLineIndex;
+        return _currentLineIndex;
     }
 
+    // get size of current line.
     int GetLineSize() {
         return (int) _all_lines[_currentLineIndex]->size();
     }
 
+    // its name.
     int GetEndOfScope(int startLine);
 
     // functionality for data control
+    // adding new line, resetting indexing and calls handle states after.
     void SetNewLine(vector<Token> *newLine);
 
+    // its name.
     void Advance(int steps);
 
+    // its name.
     void SetState(recv_state _state) {
         this->_state = _state;
     }
 
+    // its name.
     void SetTokenIndexToEndOfLine() {
         _currentTokenIndex = (int) _all_lines[_currentLineIndex]->size();
     }
 
+    // marks skipLine as true. - will not execute until new line is read.
     void TriggerSkipLine();
 
+    // switch state to read, and moves the token index to eol.
     void BuildScope();
 
+    // switch state to run, marks the end line of this run by scope.
     void StartRun();
 
+    // switch state to run and moves to last added line.
     void StopRun();
 
+    // if there is another line, advance line, reset token index and handle states.
     void GoToNextLine();
 
     // print error message with line number and optionally the extra string.
     void InvalidLineHandle(string extra);
 
-    /**
-     * is called on the first line of the scope.
-     */
+    // skip the scope that starts from this line.
     void SkipCurrentScope();
 
     // Information functions
+    // check if current line with current token has more tokens.
     bool hasMoreTokens();
 
+    // returns if data marked the line as not to execute or run.
     bool ShouldSkipLine();
 
+    // returns if the scope that starts in given line number is ready to run.
     bool IsScopeReady(int scopeLine) { return _openBrackets == 0; }
 
+    // return is the state of data handler is HALT.
     bool IsShuttingDown();
 
+    // deletes all data in lines.
     void EraseAllLines();
 
+    // deletes all data in object.
     void EraseAll();
 };
 

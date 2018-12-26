@@ -18,11 +18,11 @@ using namespace std;
 class ExpressionManager {
 
     VarManager _varManager;
+    map<string, Expression *> _knownExpressions;
+
     CommandFactory _factory;
 
     DataHandler *_dataHandler;
-
-    map<string, Expression *> _knownExpressions;
 
     /**
      * return an expression with existing key.
@@ -30,6 +30,7 @@ class ExpressionManager {
      */
     Expression *GetExpression(const string &exp);
 
+    // load known expressions.
     void LoadKnownExpressions();
 
 public:
@@ -40,11 +41,14 @@ public:
         LoadKnownExpressions();
     }
 
+    /***
+     * checks if current token or next token is a known expression, if so -
+     * return it.
+     */
     Expression *GetNextExpression();
 
+    // empty the expression map
     void EmptyExpressionMap();
-
-    virtual ~ExpressionManager();
 };
 
 

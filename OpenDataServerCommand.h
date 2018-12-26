@@ -21,6 +21,7 @@ public:
 
     void doCommand() override;
 
+    // mark server to stop, wait until its thread is finished, and delete server
     ~OpenDataServerCommand() override {
         server->Stop();
         pthread_join(_serverThread, nullptr);

@@ -4,7 +4,7 @@
  * receives a string of doubles separated by ','.
  * returns vector of doubles with these values.
  */
-vector<double> StringSeparator(string input) {
+vector<double> StringSeparatorByComma(string input) {
 
     vector<double> result;
     string currentValue;
@@ -29,6 +29,13 @@ vector<double> StringSeparator(string input) {
     return result;
 }
 
+/***
+ * receives a string and a leftover string.
+ * loads leftovers substring into current until reaches the end of leftover
+ * or '\n'.
+ * updates the leftover sub string the leftovers.
+ * if encountered '\n', return true, else false.
+ */
 bool UpdateCurrentFromLeftOvers(string &current_string, string &leftovers) {
     bool hasNewLine = false;
 
@@ -54,10 +61,12 @@ bool UpdateCurrentFromLeftOvers(string &current_string, string &leftovers) {
 }
 
 /***
- * receivces a buffer - target string to populate with all chars from,
- * firstly leftovers if there are - in string leftover, then wll chars from
- * buffer.
- *
+ * receives a buffer, current string and leftovers.
+ * load leftovers into current string by its logic above.
+ * if still hasn't encountered '\n\, then load buffer substring to current
+ * until reaches the end or '\n'.
+ * if encountered '\n' and buffer has more chars, loads them to leftover.
+ * if encountered '\n' anywhere, returns true, else returns false.
  */
 bool AddToCurrent(const string &buffer, string &current_string,
                   string &leftovers) {

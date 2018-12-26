@@ -1,5 +1,10 @@
 #include "ScopeCommand.h"
 
+/***
+ * scope is ready by data handler, check if should stop - skip all scope,
+ * or start running it by going to the next line.
+ * else, tell data handler to build the scope.
+ */
 void ScopeCommand::doCommand() {
     SetScope();
 
@@ -15,6 +20,7 @@ void ScopeCommand::doCommand() {
     }
 }
 
+// set current scope params, and set the right condition.
 void ScopeCommand::SetScope() {
     this->_start_line = _dataHandler->GetCurrentLineIndex();
     if (this->_condition != nullptr) {

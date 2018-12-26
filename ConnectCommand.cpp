@@ -1,5 +1,9 @@
 #include "ConnectCommand.h"
 
+/***
+ * moves one token from 'connect' to take the ip, then another to take the port.
+ * creates and hold a client ref and the thread id of it.
+ */
 void ConnectCommand::doCommand() {
     _dataHandler->Advance(ONE);
     string ip = _dataHandler->GetCurrentToken().get_value();

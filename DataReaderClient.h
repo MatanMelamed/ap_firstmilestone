@@ -35,29 +35,39 @@ public:
     struct ClientParams {
         string _ip;
         int _port;
-        int _sockdf;
+        int _clientSocket;
         pthread_t _pthread;
-    } _params;
+    } _params{};
 
     DataReaderClient() {
         _stop = false;
     };
 
+    // create client thread and start client on it.
     pthread_t StartClient(const string &ip, int port);
 
-    static void *UpdateStatus(void *arg);
-
+    // create a socket and connect to server
     void ConnectToSimulator();
 
-    void SendToSimulator(int sockfd);
+    // while client doesnt need to be stopped, check for task execution.
+    static void *UpdateStatus(void *arg);
 
+    // call for task retrieve and send task.
+    void SendToSimulator();
+
+    /***
+     * get an update and a task as string.
+     * if task is add - insert the update to updates queue.
+     * if task is get - then pop front update from queue and return it.
+     * in the same function for thread locking.
+     */
     UpdateUnit RequestTask(UpdateUnit update, string request);
 
-    bool ShouldStop();
+    // return stop status.
+    bool ShouldStop() { return _stop; }
 
-    void Stop() {
-        _stop = true;
-    }
+    // set stop to true.
+    void Stop() { _stop = true; }
 
 };
 

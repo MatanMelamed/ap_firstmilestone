@@ -12,10 +12,8 @@ int asd() {
     string buffer = "8.00000,1.00000,2.00000,3.00000\n4.00000,5.00";
     string c;
     string l;
-    server.Try(buffer, c, l);
     cout << manager.GetValue("x");
     buffer = "000,6.00000,7.00000\n8.00000,";
-    server.Try(buffer, c, l);
     cout << manager.GetValue("x");
     cin.get();
 }

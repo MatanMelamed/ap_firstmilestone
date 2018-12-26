@@ -4,6 +4,7 @@
 #include "Command.h"
 #include "DataReaderClient.h"
 
+// responsible on closing the client thread and deleting the client.
 class ConnectCommand : public Command {
 
     DataReaderClient *client;

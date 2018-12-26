@@ -2,11 +2,11 @@
 
 using namespace std;
 
-pthread_t DataReaderServer::OpenServer(int port, int time) {
-    int serverSocket = CreateServerSocket(port);
-    params.port = port;
-    params.hertz = time;
-    params.serverSocket = serverSocket;
+pthread_t DataReaderServer::StartServer(int port, int hertz) {
+    _params._port = port;
+    _params._hertz = hertz;
+
+    CreateServerSocket();
 
     pthread_t trid;
     pthread_create(&trid, nullptr, DataReaderServer::StartListeningForData,
@@ -28,7 +28,7 @@ void *DataReaderServer::StartListeningForData(void *arg) {
     while (!server->stop) {
 
         bzero(buffer, 256);
-        numOfReceivedBytes = (int) read(server->params.serverSocket, buffer,
+        numOfReceivedBytes = (int) read(server->_params._serverSocket, buffer,
                                         255);
         if (numOfReceivedBytes < 0) {
             perror("ERROR reading from socket");
@@ -36,40 +36,40 @@ void *DataReaderServer::StartListeningForData(void *arg) {
         }
 
         if (AddToCurrent(buffer, current_string, leftovers)) {
-            vector<double> convertedInfo = StringSeparator(current_string);
+            vector<double> convertedInfo = StringSeparatorByComma(
+                    current_string);
             server->SendUpdate(convertedInfo);
             current_string.clear();
             server->_receivedFirstData = true;
         }
-        sleep(server->params.hertz / MILI_SEC);
+        sleep(server->_params._hertz / MILI_SEC);
     }
 
     return nullptr;
 }
 
-int DataReaderServer::CreateServerSocket(int port) {
-    int sockfd, newsockfd, portno, clilen;
+void DataReaderServer::CreateServerSocket() {
+    int clilen;
     struct sockaddr_in serv_addr, cli_addr;
-    int n;
 
     /* First call to socket() function */
-    sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    _params._serverSocket = socket(AF_INET, SOCK_STREAM, 0);
 
-    if (sockfd < 0) {
+    if (_params._serverSocket < 0) {
         perror("ERROR opening socket");
         exit(1);
     }
 
     /* Initialize socket structure */
     bzero((char *) &serv_addr, sizeof(serv_addr));
-    portno = port;
 
     serv_addr.sin_family = AF_INET;
     serv_addr.sin_addr.s_addr = INADDR_ANY;
-    serv_addr.sin_port = htons(portno);
+    serv_addr.sin_port = htons(_params._port);
 
     /* Now bind the host address using bind() call.*/
-    if (bind(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0) {
+    if (bind(_params._serverSocket, (struct sockaddr *) &serv_addr,
+             sizeof(serv_addr)) < 0) {
         perror("ERROR on binding");
         exit(1);
     }
@@ -78,18 +78,18 @@ int DataReaderServer::CreateServerSocket(int port) {
        * go in sleep mode and will wait for the incoming connection
     */
 
-    listen(sockfd, 5);
+    listen(_params._serverSocket, 5);
     clilen = sizeof(cli_addr);
 
     /* Accept actual connection from the client */
-    newsockfd = accept(sockfd, (struct sockaddr *) &cli_addr,
-                       (socklen_t *) &clilen);
+    _params._clientSocket = accept(_params._serverSocket,
+                                   (struct sockaddr *) &cli_addr,
+                                   (socklen_t *) &clilen);
 
-    if (newsockfd < 0) {
+    if (_params._clientSocket < 0) {
         perror("ERROR on accept");
         exit(1);
     }
-    return newsockfd;
 }
 
 void DataReaderServer::SendUpdate(vector<double> newData) {

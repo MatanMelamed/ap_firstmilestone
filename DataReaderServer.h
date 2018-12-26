@@ -25,10 +25,11 @@ class DataReaderServer {
 
 public:
     struct ServerParams {
-        int port;
-        int hertz;
-        int serverSocket;
-    } params{};
+        int _port;
+        int _hertz;
+        int _serverSocket;
+        int _clientSocket;
+    } _params{};
 
     explicit DataReaderServer(VarManager *varManager) {
         this->_varManager = varManager;
@@ -37,19 +38,26 @@ public:
         LoadPaths();
     }
 
+    // read paths from path.txt file into path map.
     void LoadPaths();
 
-    pthread_t OpenServer(int port, int hertz);
+    // create server thread and start server on it.
+    pthread_t StartServer(int port, int hertz);
 
-    int CreateServerSocket(int port);
+    // create server socket
+    void CreateServerSocket();
 
-    void SendUpdate(vector<double> newData);
-
+    // while server doesnt need to be stopped, check read and update var manager
     static void *StartListeningForData(void *arg);
 
-    void Stop() {
-        this->stop = true;
-    }
+    /***
+     * receive vector of data, and for data that is bound in var manager,
+     * call update on path in var manager.
+     */
+    void SendUpdate(vector<double> newData);
+
+    // set stop to true.
+    void Stop() { stop = true; }
 };
 
 #endif

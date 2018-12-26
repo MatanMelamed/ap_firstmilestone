@@ -9,7 +9,8 @@
 
 using namespace std;
 
-vector<double> StringSeparator(string input);
+//
+vector<double> StringSeparatorByComma(string input);
 
 bool UpdateCurrentFromLeftOvers(string &current_string, string &leftovers);
 
