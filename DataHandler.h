@@ -14,7 +14,7 @@
 #define INVALID_LINE_ERR "syntax error occurs in line: " << _currentLineIndex
 #define ONE 1
 #define TWO 2
-#define INDEX_OFFSET_ERR Token(ERR,"offset out of range",0,"","");
+#define INDEX_OFFSET_ERR Token(ERR,"offset out of range");
 
 using namespace std;
 

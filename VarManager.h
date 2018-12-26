@@ -12,6 +12,7 @@
 #include "DataReaderClient.h"
 
 #define MILI_SEC 1/1000
+
 using namespace std;
 
 class VarManager {

@@ -39,9 +39,11 @@ public:
         pthread_t _pthread;
     } _params;
 
-    DataReaderClient() {};
+    DataReaderClient() {
+        _stop = false;
+    };
 
-    void StartClient(const string &ip, int port);
+    pthread_t StartClient(const string &ip, int port);
 
     static void *UpdateStatus(void *arg);
 
@@ -49,9 +51,13 @@ public:
 
     void SendToSimulator(int sockfd);
 
-    UpdateUnit RequestTask(UpdateUnit update,string request);
+    UpdateUnit RequestTask(UpdateUnit update, string request);
 
     bool ShouldStop();
+
+    void Stop() {
+        _stop = true;
+    }
 
 };
 

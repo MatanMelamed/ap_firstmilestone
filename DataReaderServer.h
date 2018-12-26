@@ -15,12 +15,12 @@
 #include "Utils.h"
 
 #define PATH_FILE "paths.txt"
-#define MILI_SEC 1000
 
 class DataReaderServer {
 
     map<int, string> _paths;
     VarManager *_varManager;
+    bool _receivedFirstData;
     bool stop;
 
 public:
@@ -33,12 +33,13 @@ public:
     explicit DataReaderServer(VarManager *varManager) {
         this->_varManager = varManager;
         this->stop = false;
+        this->_receivedFirstData = false;
         LoadPaths();
     }
 
     void LoadPaths();
 
-    void OpenServer(int port, int hertz);
+    pthread_t OpenServer(int port, int hertz);
 
     int CreateServerSocket(int port);
 
@@ -46,12 +47,9 @@ public:
 
     static void *StartListeningForData(void *arg);
 
-    void Try(string &buffer, string &c, string &l);
-
-    void needToStop() {
+    void Stop() {
         this->stop = true;
     }
-
 };
 
 #endif

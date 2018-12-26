@@ -8,6 +8,6 @@ void ConnectCommand::doCommand() {
     double port = _expCalculator->GetExpression(portString)->Calculate();
     _dataHandler->Advance(ONE);
 
-    client->StartClient(ip, (int) port);
+    _clientThread = client->StartClient(ip, (int) port);
     _varManager->AddClient(client);
 }

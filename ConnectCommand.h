@@ -7,6 +7,7 @@
 class ConnectCommand : public Command {
 
     DataReaderClient *client;
+    pthread_t _clientThread;
 public:
     ConnectCommand(DataHandler *_dataHandler, VarManager *_varManager,
                    ShuntingYard *_expCalculator) : Command(_dataHandler,
@@ -18,7 +19,9 @@ public:
     void doCommand() override;
 
     ~ConnectCommand() override {
-        delete this->client;
+        client->Stop();
+        pthread_join(_clientThread, nullptr);
+        delete client;
     }
 };
 

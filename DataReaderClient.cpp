@@ -1,12 +1,12 @@
 #include "DataReaderClient.h"
 
-void DataReaderClient::StartClient(const string &ip, int port) {
+pthread_t DataReaderClient::StartClient(const string &ip, int port) {
 
     _params._ip = ip;
     _params._port = port;
-
     pthread_create(&_params._pthread, nullptr,
                    DataReaderClient::UpdateStatus, this);
+    return _params._pthread;
 }
 
 void DataReaderClient::ConnectToSimulator() {
@@ -59,6 +59,7 @@ void DataReaderClient::SendToSimulator(int sockfd) {
         UpdateUnit update = RequestTask(UpdateUnit(), GET_TASK);
         string command =
                 "set " + update.path + " " + to_string(update.value) + "\r\n";
+        cout << "send: " << command;
         int n = write(sockfd, command.c_str(), command.size());
         if (n < 0) {
             perror("ERROR writing to socket");

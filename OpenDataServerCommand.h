@@ -4,11 +4,12 @@
 #include "Command.h"
 #include "DataReaderServer.h"
 
-#define LOAD_MSG "Please wait until the simulator loads completly, then press enter"
+#define LOAD_MSG "Please wait until the simulator starts to send information."
 
 class OpenDataServerCommand : public Command {
 
     DataReaderServer *server;
+    pthread_t _serverThread;
 public:
 
     OpenDataServerCommand(DataHandler *_dataHandler, VarManager *_varManager,
@@ -21,7 +22,9 @@ public:
     void doCommand() override;
 
     ~OpenDataServerCommand() override {
-        delete this->server;
+        server->Stop();
+        pthread_join(_serverThread, nullptr);
+        delete server;
     }
 };
 

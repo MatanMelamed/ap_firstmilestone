@@ -2,7 +2,7 @@
 
 using namespace std;
 
-void DataReaderServer::OpenServer(int port, int time) {
+pthread_t DataReaderServer::OpenServer(int port, int time) {
     int serverSocket = CreateServerSocket(port);
     params.port = port;
     params.hertz = time;
@@ -11,6 +11,10 @@ void DataReaderServer::OpenServer(int port, int time) {
     pthread_t trid;
     pthread_create(&trid, nullptr, DataReaderServer::StartListeningForData,
                    this);
+    while (!_receivedFirstData) {
+        sleep(MILI_SEC);
+    }
+    return trid;
 }
 
 void *DataReaderServer::StartListeningForData(void *arg) {
@@ -35,6 +39,7 @@ void *DataReaderServer::StartListeningForData(void *arg) {
             vector<double> convertedInfo = StringSeparator(current_string);
             server->SendUpdate(convertedInfo);
             current_string.clear();
+            server->_receivedFirstData = true;
         }
         sleep(server->params.hertz / MILI_SEC);
     }
@@ -111,12 +116,4 @@ void DataReaderServer::LoadPaths() {
     }
 }
 
-// try to demonstrate server behavior
-void DataReaderServer::Try(string &buffer, string &c, string &l) {
-    if (AddToCurrent(buffer, c, l)) {
-        vector<double> convertedInfo = StringSeparator(c);
-        SendUpdate(convertedInfo);
-        c.clear();
-    }
-}
 

@@ -1,6 +1,7 @@
 #include "OpenDataServerCommand.h"
 
 void OpenDataServerCommand::doCommand() {
+    cout << LOAD_MSG << endl;
     _dataHandler->Advance(ONE);
     string portString = _dataHandler->GetCurrentToken().get_value();
     double port = _expCalculator->GetResults(portString);
@@ -11,5 +12,5 @@ void OpenDataServerCommand::doCommand() {
 
     _dataHandler->Advance(ONE);
 
-    this->server->OpenServer((int) port, (int) hertz);
+    _serverThread = this->server->OpenServer((int) port, (int) hertz);
 }
