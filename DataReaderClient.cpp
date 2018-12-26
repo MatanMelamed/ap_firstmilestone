@@ -59,7 +59,6 @@ void DataReaderClient::SendToSimulator() {
         UpdateUnit update = RequestTask(UpdateUnit(), GET_TASK);
         string command =
                 "set " + update.path + " " + to_string(update.value) + "\r\n";
-        cout << "send: " << command;
         int n = write(_params._clientSocket, command.c_str(), command.size());
         if (n < 0) {
             perror("ERROR writing to socket");
